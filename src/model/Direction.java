@@ -1,4 +1,4 @@
-package de.schoolproject.snake;
+package model;
 
 /**
  * @author Eric
