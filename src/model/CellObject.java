@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 /**
- * @author Stefan
+ * @author Eric Armbruster
  * @version 22.06.2015
  */
 public abstract class CellObject {
@@ -12,12 +12,12 @@ public abstract class CellObject {
 	protected Point position;
 
 	/**
-	 * Subclasses can use this Constructor to create a new Drawable instance.
+	 * Subclasses can use this constructor to create a new CellObject.
 	 * 
 	 * @param image
-	 *            the image of the Drawable
+	 *            the image of the CellObject
 	 * @param position
-	 *            the position of the Drawable
+	 *            the position of the CellObject
 	 */
 	public CellObject(BufferedImage image, Point position) {
 		this.image = image;
@@ -25,7 +25,7 @@ public abstract class CellObject {
 	}
 
 	/**
-	 * A getter-method for the image.
+	 * Returns the image of the CellObject.
 	 * 
 	 * @return the image
 	 */
@@ -34,16 +34,26 @@ public abstract class CellObject {
 	}
 
 	/**
-	 * A getter-method for the position.
+	 * Returns the position of the CellObject.
 	 * 
 	 * @return the position
 	 */
 	public Point getPosition() {
 		return position;
 	}
+	
+	/**
+	 * Sets the position of the CellObject.
+	 * 
+	 * @param position
+	 * 				the position
+	 */
+	public void setPosition(Point position) {
+		this.position = position;
+	}
 
 	/**
-	 * Moves the Drawable.
+	 * Moves the CellObject by xOffset and yOffset.
 	 * 
 	 * @param xOffset
 	 *            the offset in x-axis

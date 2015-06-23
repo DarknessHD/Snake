@@ -60,7 +60,7 @@ public class GameFrame extends JFrame {
 	}
 
 	/**
-	 * Adds a score-value to the final score.
+	 * Adds a score value to the final score.
 	 * 
 	 * @param score
 	 *            the addition to the score

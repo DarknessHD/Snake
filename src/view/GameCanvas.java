@@ -12,7 +12,7 @@ import java.util.List;
 import model.CellObject;
 
 /**
- * @author Stefan
+ * @author Stefan Kameter
  * @version 22.06.2015
  */
 public class GameCanvas extends Canvas {
@@ -33,7 +33,7 @@ public class GameCanvas extends Canvas {
 	 * Creates a new GameCanvas instance.
 	 * 
 	 * @param cellObjects
-	 *            the list of the default-CellObjects
+	 *            the list of default CellObjects
 	 */
 	public GameCanvas(List<CellObject> cellObjects) {
 		this.cellObjects = cellObjects;
@@ -48,12 +48,12 @@ public class GameCanvas extends Canvas {
 	}
 
 	/**
-	 * Adds a new CellObject.
+	 * Adds a CellObject.
 	 * 
 	 * @param cellObject
-	 *            the new CellObject
+	 *            the CellObject
 	 */
-	public void addDrawable(CellObject cellObject) {
+	public void addCellObject(CellObject cellObject) {
 		cellObjects.add(cellObject);
 	}
 

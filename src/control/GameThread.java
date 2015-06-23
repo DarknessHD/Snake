@@ -7,12 +7,12 @@ import view.GameFrame;
 import input.KeyBoard;
 
 /**
- * @author Stefan
+ * @author Stefan Kameter
  * @version 22.06.2015
  */
 public class GameThread implements Runnable {
 	private double ns;
-	private int speed;
+	private int speed, sec;
 	private boolean running;
 
 	/**
@@ -41,13 +41,24 @@ public class GameThread implements Runnable {
 	}
 
 	/**
-	 * Changes the game-speed.
+	 * Increases the game-speed.
 	 * 
-	 * @param speed
-	 *            the addition to the speed
+	 * @param increaseBy
+	 *            the value that the speed gets increased by
 	 */
-	public void addSpeed(int speed) {
-		this.speed += speed;
+	public void increaseSpeed(int increaseBy) {
+		this.speed += increaseBy;
+		ns = 1000000000.0 / this.speed;
+	}
+	
+	/**
+	 * Decreases the game-speed.
+	 * 
+	 * @param decreaseBy
+	 * 			  the value that the speed gets increased by
+	 */
+	public void decreaseSpeed(int decreaseBy) {
+		this.speed -= decreaseBy;
 		ns = 1000000000.0 / this.speed;
 	}
 
@@ -56,8 +67,6 @@ public class GameThread implements Runnable {
 		// TODO MoveSnake (Check: onItem, ...)
 		// TODO Win / Loose
 	}
-
-	private int sec;
 
 	@Override
 	public void run() {

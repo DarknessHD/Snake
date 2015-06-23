@@ -4,7 +4,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 /**
- * @author Stefan
+ * @author Stefan Kameter
  * @version 22.06.2015
  */
 public class KeyBoard extends KeyAdapter {
