@@ -5,11 +5,11 @@ import java.awt.image.BufferedImage;
 import java.util.Objects;
 
 /**
- * @author Eric Armbruster
+ * @author Eric Armbruster, Stefan Kameter
  * @version 22.06.2015
  */
 public abstract class CellObject {
-	
+
 	protected BufferedImage image;
 	protected Point position;
 
@@ -34,12 +34,12 @@ public abstract class CellObject {
 	public BufferedImage getImage() {
 		return image;
 	}
-	
+
 	/**
 	 * Sets the image of the CellObject.
 	 * 
 	 * @param image
-	 * 			the image to set
+	 *            the image to set
 	 */
 	public void setImage(BufferedImage image) {
 		this.image = image;
@@ -53,12 +53,12 @@ public abstract class CellObject {
 	public Point getPosition() {
 		return position;
 	}
-	
+
 	/**
 	 * Sets the position of the CellObject.
 	 * 
 	 * @param position
-	 * 				the position
+	 *            the position
 	 */
 	public void setPosition(Point position) {
 		this.position = Objects.requireNonNull(position);
@@ -75,12 +75,12 @@ public abstract class CellObject {
 	public void move(int xOffset, int yOffset) {
 		this.position.move(xOffset, yOffset);
 	}
-	
+
 	/**
 	 * Subclasses must implement their functionality, when they get hit by a snake.
 	 * 
 	 * @param snake
-	 * 			the snake, which hit the CellObject
+	 *            the snake, which hit the CellObject
 	 */
 	public abstract void onSnakeHitCellObject(Snake snake);
 }

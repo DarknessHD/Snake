@@ -19,13 +19,6 @@ public class Snake {
 	private boolean directionChange = false;
 	
 	/**
-	 * Creates a new Snake instance with exactly two segments, the position at 0, 0 and Direction.DOWN.
-	 */
-	public Snake() {
-		this(MIN_SEGMENTS, new Point(0, 0), Direction.DOWN);
-	}
-	
-	/**
 	 * Creates a new Snake instance with @param startSegments segments.
 	 * 
 	 * @param startSegments

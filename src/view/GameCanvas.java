@@ -77,4 +77,55 @@ public class GameCanvas extends Canvas {
 
 		g.drawImage(buffer, 0, 0, WIDTH, HEIGHT, null);
 	}
+
+	/**
+	 * Mirrors an image vertically.
+	 */
+	public static final int VERTICAL = 0;
+	/**
+	 * Mirrors an image diagonally.
+	 */
+	public static final int DIAGONAL = 1;
+	/**
+	 * Mirrors an image horizontally.
+	 */
+	public static final int HORIZONTAL = 2;
+
+	/**
+	 * Shifts a BufferedImage.
+	 * 
+	 * @param src
+	 *            the source Image
+	 * @param shift
+	 *            types for shift
+	 * @return rotated Image
+	 */
+	public static BufferedImage mirrorImage(BufferedImage src, int shift) {
+		if (shift < 0 || shift > 2)
+			return src;
+
+		int width = src.getWidth();
+		int height = src.getHeight();
+
+		BufferedImage rotatedImage = new BufferedImage(width, height, src.getType());
+
+		int[] srcPixels = new int[width * height];
+		src.getRGB(0, 0, width, height, srcPixels, 0, width);
+
+		for (int y = 0; y < height; y++)
+			for (int x = 0; x < width; x++)
+				switch (shift) {
+				case VERTICAL:
+					rotatedImage.setRGB(x, y, srcPixels[width - 1 - x + y * width]);
+					break;
+				case DIAGONAL:
+					rotatedImage.setRGB(x, y, srcPixels[width - 1 - x + (height - 1 - y) * width]);
+					break;
+				case HORIZONTAL:
+					rotatedImage.setRGB(x, y, srcPixels[x + (height - 1 - y) * width]);
+					break;
+				}
+
+		return rotatedImage;
+	}
 }
