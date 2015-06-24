@@ -2,7 +2,7 @@ package model;
 
 /**
  * @author Eric Armbruster
- * 22.06.2015
+ * @version 22.06.2015
  */
 public enum Direction {
 	/**

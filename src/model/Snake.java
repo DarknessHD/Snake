@@ -6,8 +6,8 @@ import java.util.Deque;
 import java.util.LinkedList;
 
 /**
- * @author Eric
- * 23.06.2015
+ * @author Eric Armbruster
+ * @version 23.06.2015
  */
 public class Snake {
 	

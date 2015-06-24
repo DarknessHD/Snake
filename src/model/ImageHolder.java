@@ -11,7 +11,7 @@ import javax.imageio.ImageIO;
 
 /**
  * @author Stefan Kameter, Eric Armbruster
- * 24.06.2015
+ * @version 24.06.2015
  */
 public class ImageHolder {
 	

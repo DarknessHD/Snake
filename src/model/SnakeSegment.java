@@ -6,7 +6,7 @@ import java.util.Objects;
 
 /**
  * @author Eric Armbruster
- * 23.06.2015
+ * @version 23.06.2015
  */
 public class SnakeSegment extends CellObject {
 
