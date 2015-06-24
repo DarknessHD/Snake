@@ -55,7 +55,7 @@ public class GameThread implements Runnable {
 	 * Decreases the game-speed.
 	 * 
 	 * @param decreaseBy
-	 * 			  the value that the speed gets increased by
+	 * 			  the value that the speed gets decreased by
 	 */
 	public void decreaseSpeed(int decreaseBy) {
 		this.speed -= decreaseBy;

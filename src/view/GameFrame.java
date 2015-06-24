@@ -9,11 +9,16 @@ import javax.swing.JFrame;
 import control.GameThread;
 
 /**
- * @author Stefan
+ * @author Stefan Kameter
  * @version 22.06.2015
  */
 public class GameFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
+
+	/**
+	 * The path of data.
+	 */
+	public static final String DATAPATH = "data";
 
 	private static final String TITLE = "Snake";
 
