@@ -10,7 +10,7 @@ import java.util.Objects;
  */
 public abstract class CellObject {
 	
-	protected BufferedImage image;
+	protected String image;
 	protected Point position;
 
 	/**
@@ -21,7 +21,7 @@ public abstract class CellObject {
 	 * @param position
 	 *            the position of the CellObject
 	 */
-	public CellObject(BufferedImage image, Point position) {
+	public CellObject(String image, Point position) {
 		this.image = image;
 		this.position = Objects.requireNonNull(position);
 	}
@@ -32,16 +32,16 @@ public abstract class CellObject {
 	 * @return the image
 	 */
 	public BufferedImage getImage() {
-		return image;
+		return ImageHolder.getImage(image);
 	}
-
+	
 	/**
 	 * Sets the image of the CellObject.
 	 * 
 	 * @param image
-	 *            the image to set
+	 * 			the image
 	 */
-	public void setImage(BufferedImage image) {
+	public void setImage(String image) {
 		this.image = image;
 	}
 

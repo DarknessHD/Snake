@@ -1,7 +1,6 @@
 package model;
 
 import java.awt.Point;
-import java.awt.image.BufferedImage;
 import java.util.Objects;
 
 /**
@@ -19,7 +18,7 @@ public class SnakeSegment extends CellObject {
 	 * @param position the position of the snake segment
 	 * @param direction the direction of the snake segment
 	 */
-	public SnakeSegment(BufferedImage image, Point position, Direction direction) {
+	public SnakeSegment(String image, Point position, Direction direction) {
 		super(image, position);
 		this.direction = Objects.requireNonNull(direction);
 	}

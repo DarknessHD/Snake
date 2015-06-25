@@ -5,6 +5,8 @@ import java.awt.image.BufferedImage;
 import java.util.Deque;
 import java.util.LinkedList;
 
+import view.GameCanvas;
+
 /**
  * @author Eric Armbruster
  * @version 23.06.2015
@@ -12,7 +14,7 @@ import java.util.LinkedList;
 public class Snake {
 	
 	private static final int MIN_SEGMENTS = 2;
-	private static final String KEY_HEAD = "snakeHead", KEY_TAIL = "snakeTail", KEY_BODY_PART = "snakeBodyPart", KEY_BODY_PART_CURVED = "snakeBodyPartCurved";
+	private static final String HEAD_IMAGE = "snake_head.png", TAIL_IMAGE = "snake_tail.png", BODY_IMAGE = "snake_body.png", CURVE_IMAGE = "snake_curve.png";
 
 	private Deque<SnakeSegment> segments;
 	private Direction lastDirection;
@@ -35,13 +37,12 @@ public class Snake {
 		
 		segments = new LinkedList<SnakeSegment>();
 		
-		segments.addFirst(new SnakeSegment(ImageHolder.getImage(KEY_HEAD), startPosition, startDirection));
+		segments.addFirst(new SnakeSegment(getRotatedHeadImage(startDirection), startPosition, startDirection));
 		
 		Direction opposite = startDirection.getOpposite();
-		BufferedImage snakeBodyPart = ImageHolder.getImage(KEY_BODY_PART);
 		for(int i = 1; i < startSegments-1; i++)
-			segments.add(new SnakeSegment(snakeBodyPart, getNextPosition(startPosition, opposite), startDirection));
-		segments.addLast(new SnakeSegment(ImageHolder.getImage(KEY_TAIL), getNextPosition(startPosition, opposite), startDirection));
+			segments.add(new SnakeSegment(BODY_IMAGE, getNextPosition(startPosition, opposite), startDirection));
+		segments.addLast(new SnakeSegment(TAIL_IMAGE, getNextPosition(startPosition, opposite), startDirection));
 	}
 	
 	/**
@@ -100,21 +101,8 @@ public class Snake {
 	 */
 	public void setLookingDirection(Direction direction) {
 		SnakeSegment head = segments.getFirst();
-		//TODO Rotate Images
-		switch(direction) {
-			case UP:
-				head.setImage(null);
-				break;
-			case DOWN:
-				head.setImage(null);
-				break;
-			case LEFT:
-				head.setImage(null);
-				break;
-			case RIGHT:
-				head.setImage(null);
-				break;
-		}
+		String headImage = getRotatedHeadImage(direction);
+		head.setImage(headImage);
 		directionChange = true;
 		
 		segments.getFirst().setDirection(direction);
@@ -128,7 +116,7 @@ public class Snake {
 			throw new IllegalStateException("Snake must have at least " + MIN_SEGMENTS + "!");
 		
 		segments.removeLast();
-		segments.getLast().setImage(ImageHolder.getImage(KEY_TAIL));
+		segments.getLast().setImage(TAIL_IMAGE);
 	}
 	
 	/**
@@ -136,8 +124,8 @@ public class Snake {
 	 */
 	public void addSegment() {
 		SnakeSegment tail = segments.getLast();
-		tail.setImage(ImageHolder.getImage(KEY_BODY_PART));
-		segments.addLast(new SnakeSegment(ImageHolder.getImage(KEY_TAIL), getNextPosition(tail.getPosition(), tail.getDirection().getOpposite()), tail.getDirection())); //TOOD New Tail
+		tail.setImage(BODY_IMAGE);
+		segments.addLast(new SnakeSegment(TAIL_IMAGE, getNextPosition(tail.getPosition(), tail.getDirection().getOpposite()), tail.getDirection())); //TOOD New Tail
 	}
 	
 	/**
@@ -146,20 +134,57 @@ public class Snake {
 	public void move() {
 		SnakeSegment head = segments.getFirst();
 		if(directionChange) {
+			String curveImage = CURVE_IMAGE;
 			//TODO Rotate Image
-			if(lastDirection == Direction.UP || getLookingDirection() == Direction.UP && lastDirection == Direction.LEFT || getLookingDirection() == Direction.LEFT);
-			else if(lastDirection == Direction.DOWN || getLookingDirection() == Direction.DOWN && lastDirection == Direction.LEFT || getLookingDirection() == Direction.LEFT);
-			else if(lastDirection == Direction.DOWN || getLookingDirection() == Direction.DOWN && lastDirection == Direction.RIGHT || getLookingDirection() == Direction.RIGHT);
-			else if(lastDirection == Direction.UP || getLookingDirection() == Direction.UP && lastDirection == Direction.RIGHT || getLookingDirection() == Direction.RIGHT);
-			else head.setImage(ImageHolder.getImage(KEY_BODY_PART));
+			if(lastDirection == Direction.DOWN || getLookingDirection() == Direction.DOWN && lastDirection == Direction.LEFT || getLookingDirection() == Direction.LEFT)
+				curveImage = curveImage + "DOWN_LEFT";
+			else if(lastDirection == Direction.DOWN || getLookingDirection() == Direction.DOWN && lastDirection == Direction.RIGHT || getLookingDirection() == Direction.RIGHT)
+				curveImage = curveImage + "DOWN_RIGHT";
+			else if(lastDirection == Direction.UP || getLookingDirection() == Direction.UP && lastDirection == Direction.RIGHT || getLookingDirection() == Direction.RIGHT)
+				curveImage = curveImage + "UP_RIGHT";
+				
+			if(ImageHolder.getImage(curveImage) == null) {
+				BufferedImage curve = ImageHolder.getImage(CURVE_IMAGE);
+				
+				if(lastDirection == Direction.DOWN || getLookingDirection() == Direction.DOWN && lastDirection == Direction.LEFT || getLookingDirection() == Direction.LEFT)
+					GameCanvas.mirrorImage(curve, GameCanvas.HORIZONTAL);
+				else if(lastDirection == Direction.DOWN || getLookingDirection() == Direction.DOWN && lastDirection == Direction.RIGHT || getLookingDirection() == Direction.RIGHT)
+					GameCanvas.mirrorImage(curve, GameCanvas.DIAGONAL);
+				else if(lastDirection == Direction.UP || getLookingDirection() == Direction.UP && lastDirection == Direction.RIGHT || getLookingDirection() == Direction.RIGHT)
+					GameCanvas.mirrorImage(curve, GameCanvas.VERTICAL);
+			}
 			
-			head.setImage(ImageHolder.getImage(KEY_BODY_PART_CURVED));
+			head.setImage(curveImage);
 		}
 		else
-			head.setImage(ImageHolder.getImage(KEY_BODY_PART));
-		segments.addFirst(new SnakeSegment(ImageHolder.getImage(KEY_HEAD), getNextPosition(head.getPosition(), head.getDirection()), head.getDirection()));
+			head.setImage(BODY_IMAGE);
+		segments.addFirst(new SnakeSegment(getRotatedHeadImage(head.getDirection()), getNextPosition(head.getPosition(), head.getDirection()), head.getDirection()));
 		
 		removeSegment();
+	}
+	
+	private static String getRotatedHeadImage(Direction headDirection) {
+		BufferedImage head = ImageHolder.getImage(HEAD_IMAGE);
+		
+		String headImage = HEAD_IMAGE + headDirection.toString(); 
+		if(ImageHolder.getImage(headImage) == null) {
+			switch(headDirection) {
+				case UP:
+					head = GameCanvas.mirrorImage(head, GameCanvas.HORIZONTAL);
+					break;
+				case DOWN:
+					head = GameCanvas.mirrorImage(head, GameCanvas.VERTICAL);
+					break;
+				case LEFT:
+					head = GameCanvas.mirrorImage(head, GameCanvas.DIAGONAL);
+					break;
+				case RIGHT:
+					break;
+			}
+			ImageHolder.putImage(headImage, head);
+		}
+		
+		return headImage;
 	}
 	
 	private static Point getNextPosition(Point startPosition, Direction direction) {

@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 import javax.imageio.ImageIO;
 
@@ -14,6 +13,8 @@ import javax.imageio.ImageIO;
  * @version 24.06.2015
  */
 public class ImageHolder {
+	
+	private static String IMG_PATH = "data\\img\\";
 	
 	private static Map<String, BufferedImage> imageHolder = new HashMap<>();
 	
@@ -26,28 +27,27 @@ public class ImageHolder {
 	 * 			the key under which the image gets saved 
 	 * @return the image
 	 */
-	public static BufferedImage getImage(String file, String key) {
-		Objects.requireNonNull(key);
+	public static BufferedImage getImage(String file) {
 		BufferedImage image = imageHolder.get(file);
-		
 		if(image == null) {
 			image = loadImage(file);
 			if(image != null)
-				imageHolder.put(key, image);
+				imageHolder.put(file, image);
 		}
 		
 		return image;
 	}
 	
 	/**
-	 * Returns the BufferedImage under the key in the HashMap if available, otherwise returns null.
+	 * Puts an image under the key in the HashMap.
 	 * 
-	 * @param key
-	 * 			the key under which the image gets saved 
-	 * @return the image
+	 * @param key 
+	 * 			the key under which the image gets saved
+	 * @param image
+	 * 			the image to save
 	 */
-	public static BufferedImage getImage(String key) {
-		return getImage(null, key);
+	public static void putImage(String key, BufferedImage image) {
+		imageHolder.put(key, image);
 	}
 	
 	/**
@@ -61,7 +61,7 @@ public class ImageHolder {
 		BufferedImage image = null;
 		
 		try {
-			image = ImageIO.read(new File(file));
+			image = ImageIO.read(new File(IMG_PATH + file));
 		}
 		catch(IOException e) {
 			e.printStackTrace();
