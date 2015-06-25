@@ -57,7 +57,7 @@ public class GameFrame extends JFrame {
 	}
 
 	private void initComponents() {
-		add(/* gameCanvas = */new GameCanvas(null), BorderLayout.CENTER);
+		add(/* gameCanvas = */new GameCanvas(null, null), BorderLayout.CENTER);
 	}
 
 	private void initListener() {

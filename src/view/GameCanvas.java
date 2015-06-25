@@ -10,6 +10,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import model.CellObject;
+import model.Direction;
+import model.Snake;
+import model.SnakeSegment;
 
 /**
  * @author Stefan Kameter
@@ -27,17 +30,22 @@ public class GameCanvas extends Canvas {
 	private BufferedImage buffer;
 	private Graphics bufferGraphics;
 
+	private Snake snake;
 	private List<CellObject> cellObjects;
 
 	/**
 	 * Creates a new GameCanvas instance.
 	 * 
+	 * @param snake
+	 *            the snake
 	 * @param cellObjects
 	 *            the list of default CellObjects
 	 */
-	public GameCanvas(List<CellObject> cellObjects) {
+	public GameCanvas(Snake snake, List<CellObject> cellObjects) {
 		this.cellObjects = cellObjects;
+		this.snake = snake;
 		this.cellObjects = new LinkedList<CellObject>(); // TODO
+		snake = new Snake(5, new Point(5, 5), Direction.LEFT); // TODO
 
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
@@ -70,9 +78,16 @@ public class GameCanvas extends Canvas {
 			for (int x = 0; x < TILE_WIDTH; x++)
 				bufferGraphics.drawRect(5 + x * TILE_SIZE, 5 + y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 
+		// CellObjects
 		for (CellObject d : cellObjects) {
 			Point position = d.getPosition();
 			bufferGraphics.drawImage(d.getImage(), 5 + position.x * TILE_SIZE, 5 + position.y * TILE_SIZE, TILE_SIZE, TILE_SIZE, null);
+		}
+
+		// Snake
+		for (SnakeSegment s : snake.getSegments()) {
+			Point p = s.getPosition();
+			g.drawImage(s.getImage(), 5 + p.x * TILE_SIZE, 5 + p.y * TILE_SIZE, TILE_SIZE, TILE_SIZE, null);
 		}
 
 		g.drawImage(buffer, 0, 0, WIDTH, HEIGHT, null);
