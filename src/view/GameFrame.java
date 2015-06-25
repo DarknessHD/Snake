@@ -6,6 +6,7 @@ import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
 
+import model.Snake;
 import control.GameThread;
 
 /**
@@ -35,7 +36,7 @@ public class GameFrame extends JFrame {
 		return instance;
 	}
 
-	// private GameCanvas gameCanvas;
+	private GameCanvas gameCanvas;
 
 	private GameThread gameThread;
 	private int score;
@@ -57,7 +58,7 @@ public class GameFrame extends JFrame {
 	}
 
 	private void initComponents() {
-		add(/* gameCanvas = */new GameCanvas(null, null), BorderLayout.CENTER);
+		add(gameCanvas = new GameCanvas(null, null), BorderLayout.CENTER);
 	}
 
 	private void initListener() {
@@ -80,6 +81,13 @@ public class GameFrame extends JFrame {
 	 */
 	public void start() {
 		gameThread.start();
+	}
+
+	/**
+	 * @return player snake
+	 */
+	public Snake getSnake() {
+		return gameCanvas.getSnake();
 	}
 
 	/**

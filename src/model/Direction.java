@@ -20,7 +20,7 @@ public enum Direction {
 	/**
 	 * RIGHT
 	 */
-	RIGHT(0, -1);
+	RIGHT(1, 0);
 
 	private final int xOffset, yOffset;
 
@@ -53,21 +53,16 @@ public enum Direction {
 	 * @return the opposite direction
 	 */
 	public Direction getOpposite() {
-		Direction direction = this;
-		switch (direction) {
+		switch (this) {
 		case DOWN:
-			direction = Direction.UP;
-			break;
+			return Direction.UP;
 		case LEFT:
-			direction = Direction.RIGHT;
-			break;
+			return Direction.RIGHT;
 		case RIGHT:
-			direction = Direction.LEFT;
-			break;
+			return Direction.LEFT;
 		case UP:
-			direction = Direction.DOWN;
-			break;
+			return Direction.DOWN;
 		}
-		return direction;
+		return this;
 	}
 }

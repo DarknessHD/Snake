@@ -37,12 +37,12 @@ public class Snake {
 
 		segments = new LinkedList<SnakeSegment>();
 
-		segments.addFirst(new SnakeSegment(getRotatedHeadImage(startDirection), startPosition, startDirection));
+		segments.addFirst(new SnakeSegment(getRotatedHeadImage(startDirection), new Point(startPosition), startDirection));
 
 		Direction opposite = startDirection.getOpposite();
 		for (int i = 1; i < startSegments - 1; i++)
-			segments.add(new SnakeSegment(BODY_IMAGE, getNextPosition(startPosition, opposite), startDirection));
-		segments.addLast(new SnakeSegment(TAIL_IMAGE, getNextPosition(startPosition, opposite), startDirection));
+			segments.add(new SnakeSegment(BODY_IMAGE, new Point(getNextPosition(startPosition, opposite)), startDirection));
+		segments.addLast(new SnakeSegment(TAIL_IMAGE, new Point(getNextPosition(startPosition, opposite)), startDirection));
 	}
 
 	/**
@@ -130,8 +130,13 @@ public class Snake {
 
 	/**
 	 * Moves the snake one cell forward into the direction its looking into.
+	 * 
+	 * @param direction
+	 *            the new direction
 	 */
-	public void move() {
+	public void move(Direction direction) {
+		setLookingDirection(direction);
+
 		SnakeSegment head = segments.getFirst();
 		if (directionChange) {
 			String curveImage = CURVE_IMAGE;
@@ -146,11 +151,12 @@ public class Snake {
 				BufferedImage curve = ImageHolder.getImage(CURVE_IMAGE);
 
 				if (lastDirection == Direction.DOWN || getLookingDirection() == Direction.DOWN && lastDirection == Direction.LEFT || getLookingDirection() == Direction.LEFT)
-					GameCanvas.mirrorImage(curve, GameCanvas.HORIZONTAL);
+					curve = GameCanvas.mirrorImage(curve, GameCanvas.HORIZONTAL);
 				else if (lastDirection == Direction.DOWN || getLookingDirection() == Direction.DOWN && lastDirection == Direction.RIGHT || getLookingDirection() == Direction.RIGHT)
-					GameCanvas.mirrorImage(curve, GameCanvas.DIAGONAL);
+					curve = GameCanvas.mirrorImage(curve, GameCanvas.DIAGONAL);
 				else if (lastDirection == Direction.UP || getLookingDirection() == Direction.UP && lastDirection == Direction.RIGHT || getLookingDirection() == Direction.RIGHT)
-					GameCanvas.mirrorImage(curve, GameCanvas.VERTICAL);
+					curve = GameCanvas.mirrorImage(curve, GameCanvas.VERTICAL);
+				ImageHolder.putImage(curveImage, curve);
 			}
 
 			head.setImage(curveImage);

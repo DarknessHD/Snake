@@ -2,8 +2,8 @@ package control;
 
 import java.awt.event.KeyEvent;
 
+import model.Direction;
 import view.GameFrame;
-
 import input.KeyBoard;
 
 /**
@@ -50,12 +50,12 @@ public class GameThread implements Runnable {
 		this.speed += increaseBy;
 		ns = 1000000000.0 / this.speed;
 	}
-	
+
 	/**
 	 * Decreases the game-speed.
 	 * 
 	 * @param decreaseBy
-	 * 			  the value that the speed gets decreased by
+	 *            the value that the speed gets decreased by
 	 */
 	public void decreaseSpeed(int decreaseBy) {
 		this.speed -= decreaseBy;
@@ -64,6 +64,14 @@ public class GameThread implements Runnable {
 
 	private void step() {
 		// TODO InputCheck (Change MoveDirection, ...)
+		if (KeyBoard.getInstance().isKeyPressed(KeyEvent.VK_W))
+			GameFrame.getInstance().getSnake().move(Direction.UP);
+		if (KeyBoard.getInstance().isKeyPressed(KeyEvent.VK_D))
+			GameFrame.getInstance().getSnake().move(Direction.RIGHT);
+		if (KeyBoard.getInstance().isKeyPressed(KeyEvent.VK_S))
+			GameFrame.getInstance().getSnake().move(Direction.DOWN);
+		if (KeyBoard.getInstance().isKeyPressed(KeyEvent.VK_A))
+			GameFrame.getInstance().getSnake().move(Direction.LEFT);
 		// TODO MoveSnake (Check: onItem, ...)
 		// TODO Win / Loose
 	}

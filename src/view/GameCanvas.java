@@ -23,9 +23,9 @@ public class GameCanvas extends Canvas {
 
 	private static final int WIDTH = 960;
 	private static final int HEIGHT = 640;
-	private static final int TILE_WIDTH = 60;
-	private static final int TILE_HEIGHT = 40;
-	private static final int TILE_SIZE = 16;
+	private static final int TILE_WIDTH = 30;
+	private static final int TILE_HEIGHT = 20;
+	private static final int TILE_SIZE = 32;
 
 	private BufferedImage buffer;
 	private Graphics bufferGraphics;
@@ -65,6 +65,13 @@ public class GameCanvas extends Canvas {
 		cellObjects.add(cellObject);
 	}
 
+	/**
+	 * @return player snake
+	 */
+	public Snake getSnake() {
+		return snake;
+	}
+
 	@Override
 	public void paint(Graphics g) {
 		if (bufferGraphics == null) {
@@ -87,7 +94,7 @@ public class GameCanvas extends Canvas {
 		// Snake
 		for (SnakeSegment s : snake.getSegments()) {
 			Point p = s.getPosition();
-			g.drawImage(s.getImage(), 5 + p.x * TILE_SIZE, 5 + p.y * TILE_SIZE, TILE_SIZE, TILE_SIZE, null);
+			bufferGraphics.drawImage(s.getImage(), 5 + p.x * TILE_SIZE, 5 + p.y * TILE_SIZE, TILE_SIZE, TILE_SIZE, null);
 		}
 
 		g.drawImage(buffer, 0, 0, WIDTH, HEIGHT, null);
@@ -122,7 +129,7 @@ public class GameCanvas extends Canvas {
 		int width = src.getWidth();
 		int height = src.getHeight();
 
-		BufferedImage rotatedImage = new BufferedImage(width, height, src.getType());
+		BufferedImage rotatedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 
 		int[] srcPixels = new int[width * height];
 		src.getRGB(0, 0, width, height, srcPixels, 0, width);
