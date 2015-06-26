@@ -79,6 +79,9 @@ public class GameCanvas extends Canvas {
 			bufferGraphics = buffer.getGraphics();
 		}
 
+		bufferGraphics.setColor(getBackground());
+		bufferGraphics.fillRect(0, 0, getWidth(), getHeight());
+
 		bufferGraphics.setColor(Color.WHITE);
 
 		for (int y = 0; y < TILE_HEIGHT; y++)
@@ -101,17 +104,29 @@ public class GameCanvas extends Canvas {
 	}
 
 	/**
+	 * Rotates an image by 90 degrees angle.
+	 */
+	public static final int DEGREES90 = 1;
+	/**
+	 * Rotates an image by 180 degrees angle.
+	 */
+	public static final int DEGREES180 = 2;
+	/**
+	 * Rotates an image by 270 degrees angle.
+	 */
+	public static final int DEGREES270 = 3;
+	/**
 	 * Mirrors an image vertically.
 	 */
-	public static final int VERTICAL = 0;
-	/**
-	 * Mirrors an image diagonally.
-	 */
-	public static final int DIAGONAL = 1;
+	public static final int VERTICAL = 4;
 	/**
 	 * Mirrors an image horizontally.
 	 */
-	public static final int HORIZONTAL = 2;
+	public static final int HORIZONTAL = 5;
+	/**
+	 * Mirrors an image diagonally.
+	 */
+	public static final int DIAGONAL = 6;
 
 	/**
 	 * Shifts a BufferedImage.
@@ -119,35 +134,53 @@ public class GameCanvas extends Canvas {
 	 * @param src
 	 *            the source Image
 	 * @param shift
-	 *            types for shift
+	 *            type for shift
 	 * @return rotated Image
 	 */
-	public static BufferedImage mirrorImage(BufferedImage src, int shift) {
-		if (shift < 0 || shift > 2)
+	public static BufferedImage shiftImage(BufferedImage src, int shift) {
+		if (shift < 1 || shift > 6)
 			return src;
 
-		int width = src.getWidth();
-		int height = src.getHeight();
+		int size = src.getWidth();
 
-		BufferedImage rotatedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage rotatedImage = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
 
-		int[] srcPixels = new int[width * height];
-		src.getRGB(0, 0, width, height, srcPixels, 0, width);
+		int[] srcPixels = new int[size * size];
+		src.getRGB(0, 0, size, size, srcPixels, 0, size);
 
-		for (int y = 0; y < height; y++)
-			for (int x = 0; x < width; x++)
-				switch (shift) {
-				case VERTICAL:
-					rotatedImage.setRGB(x, y, srcPixels[width - 1 - x + y * width]);
-					break;
-				case DIAGONAL:
-					rotatedImage.setRGB(x, y, srcPixels[width - 1 - x + (height - 1 - y) * width]);
-					break;
-				case HORIZONTAL:
-					rotatedImage.setRGB(x, y, srcPixels[x + (height - 1 - y) * width]);
-					break;
-				}
-
+		switch (shift) {
+		case VERTICAL:
+			for (int y = 0; y < size; y++)
+				for (int x = 0; x < size; x++)
+					rotatedImage.setRGB(x, y, srcPixels[size - 1 - x + y * size]);
+			break;
+		case HORIZONTAL:
+			for (int y = 0; y < size; y++)
+				for (int x = 0; x < size; x++)
+					rotatedImage.setRGB(x, y, srcPixels[x + (size - 1 - y) * size]);
+			break;
+		case DIAGONAL:
+			for (int y = 0; y < size; y++)
+				for (int x = 0; x < size; x++)
+					rotatedImage.setRGB(x, y, srcPixels[size - 1 - x + (size - 1 - y) * size]);
+			break;
+		default:
+			rotateClockWise(srcPixels, rotatedImage, size);
+			for (int i = 0; i < shift - 1; i++) {
+				int[] pxs = new int[size * size];
+				for (int y = 0; y < size; y++)
+					for (int x = 0; x < size; x++)
+						pxs[x + y * size] = rotatedImage.getRGB(x, y);
+				rotateClockWise(pxs, rotatedImage, size);
+			}
+			break;
+		}
 		return rotatedImage;
+	}
+
+	private static void rotateClockWise(int[] srcPixels, BufferedImage rotatedImage, int size) {
+		for (int y = 0; y < size; y++)
+			for (int x = 0; x < size; x++)
+				rotatedImage.setRGB(x, y, srcPixels[y + (size - 1 - x) * size]);
 	}
 }
