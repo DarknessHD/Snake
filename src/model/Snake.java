@@ -42,7 +42,7 @@ public class Snake {
 
 		Direction opposite = startDirection.getOpposite();
 		for (int i = 1; i < startSegments - 1; i++)
-			segments.add(new SnakeSegment(BODY_IMAGE, getNextPosition(startPosition, opposite),
+			segments.add(new SnakeSegment(RotatedImage.getBody(startDirection), getNextPosition(startPosition, opposite),
 					startDirection));
 		segments.addLast(new SnakeSegment(RotatedImage.getTail(opposite), getNextPosition(startPosition, opposite),
 				startDirection));
@@ -129,32 +129,30 @@ public class Snake {
 	 * Adds a segment to the snake.
 	 */
 	public void addSegment() {
-		SnakeSegment tail = segments.getLast();
-		tail.setImage(BODY_IMAGE);
+		SnakeSegment newBody = segments.getLast();
+		newBody.setImage(RotatedImage.getBody(newBody.getDirection()));
 		segments.addLast(new SnakeSegment(RotatedImage.getTail(segments.getLast().getDirection()), getNextPosition(
-				tail.getPosition(), tail.getDirection().getOpposite()), tail.getDirection()));
+				newBody.getPosition(), newBody.getDirection().getOpposite()), newBody.getDirection()));
 	}
 
 	/**
 	 * Moves the snake one cell forward into the direction its looking into.
-	 * 
-	 * @param direction
-	 *            the new direction
 	 */
-	public void move(Direction direction) {
-		setLookingDirection(direction);
-		SnakeSegment head = segments.getFirst();
+	public void move() {
+		SnakeSegment newBody = segments.getFirst();
 		
-		if (directionChange) 
-			head.setImage(RotatedImage.getCurve(lastDirection, getLookingDirection()));
+		if (directionChange) {
+			newBody.setImage(RotatedImage.getCurve(lastDirection, getLookingDirection()));
+			directionChange = false;
+		}
 		else
-			head.setImage(BODY_IMAGE);
+			newBody.setImage(RotatedImage.getBody(newBody.getDirection()));
 		
-		segments.addFirst(new SnakeSegment(RotatedImage.getHead(head.getDirection()), getNextPosition(
-				new Point(head.getPosition()), head.getDirection()), head.getDirection()));
+		segments.addFirst(new SnakeSegment(RotatedImage.getHead(newBody.getDirection()), getNextPosition(
+				new Point(newBody.getPosition()), newBody.getDirection()), newBody.getDirection()));
 
 		segments.removeLast();
-		segments.getLast().setImage(RotatedImage.getTail(segments.getLast().getDirection()));
+		segments.getLast().setImage(RotatedImage.getTail(segments.getLast().getDirection().getOpposite()));
 	}
 
 	private static Point getNextPosition(Point startPosition, Direction direction) {
@@ -174,13 +172,13 @@ public class Snake {
 
 				if (lastDirection == Direction.DOWN || newDirection == Direction.DOWN
 						&& lastDirection == Direction.LEFT || newDirection == Direction.LEFT)
-					curve = GameCanvas.mirrorImage(curve, GameCanvas.HORIZONTAL);
+					curve = GameCanvas.shiftImage(curve, GameCanvas.DEGREES270);
 				else if (lastDirection == Direction.DOWN || newDirection == Direction.DOWN
 						&& lastDirection == Direction.RIGHT || newDirection == Direction.RIGHT)
-					curve = GameCanvas.mirrorImage(curve, GameCanvas.DIAGONAL);
+					curve = GameCanvas.shiftImage(curve, GameCanvas.DEGREES180);
 				else if (lastDirection == Direction.UP || newDirection == Direction.UP
 						&& lastDirection == Direction.RIGHT || newDirection == Direction.RIGHT)
-					curve = GameCanvas.mirrorImage(curve, GameCanvas.VERTICAL);
+					curve = GameCanvas.shiftImage(curve, GameCanvas.DEGREES90);
 				ImageHolder.putImage(curveImage, curve);
 			}
 
@@ -195,13 +193,13 @@ public class Snake {
 
 				switch (headDirection) {
 				case UP:
-					head = GameCanvas.mirrorImage(head, GameCanvas.HORIZONTAL);
+					head = GameCanvas.shiftImage(head, GameCanvas.DEGREES270);
 					break;
 				case DOWN:
-					head = GameCanvas.mirrorImage(head, GameCanvas.VERTICAL);
+					head = GameCanvas.shiftImage(head, GameCanvas.DEGREES90);
 					break;
 				case LEFT:
-					head = GameCanvas.mirrorImage(head, GameCanvas.DIAGONAL);
+					head = GameCanvas.shiftImage(head, GameCanvas.DEGREES180);
 					break;
 				case RIGHT:
 					break;
@@ -220,21 +218,46 @@ public class Snake {
 
 				switch (tailDirection) {
 				case UP:
-					tail = GameCanvas.mirrorImage(tail, GameCanvas.VERTICAL);
+					tail = GameCanvas.shiftImage(tail, GameCanvas.DEGREES90);
 					break;
 				case DOWN:
-					tail = GameCanvas.mirrorImage(tail, GameCanvas.HORIZONTAL);
+					tail = GameCanvas.shiftImage(tail, GameCanvas.DEGREES270);
 					break;
 				case LEFT:
 					break;
 				case RIGHT:
-					tail = GameCanvas.mirrorImage(tail, GameCanvas.DIAGONAL);
+					tail = GameCanvas.shiftImage(tail, GameCanvas.DEGREES180);
 					break;
 				}
 				ImageHolder.putImage(tailImage, tail);
 			}
 
 			return tailImage;
+		}
+		
+		private static String getBody(Direction bodyDirection) {
+			String bodyImage = BODY_IMAGE + "_" + bodyDirection.toString();
+
+			if (!ImageHolder.isLoaded(bodyImage)) {
+				BufferedImage body = ImageHolder.getImage(BODY_IMAGE);
+
+				switch (bodyDirection) {
+				case UP:
+					body = GameCanvas.shiftImage(body, GameCanvas.DEGREES270);
+					break;
+				case DOWN:
+					body = GameCanvas.shiftImage(body, GameCanvas.DEGREES90);
+					break;
+				case LEFT: 
+					body = GameCanvas.shiftImage(body, GameCanvas.DEGREES180);
+					break;
+				case RIGHT:
+					break;
+				}
+				ImageHolder.putImage(bodyImage, body);
+			}
+
+			return bodyImage;
 		}
 	}
 }
