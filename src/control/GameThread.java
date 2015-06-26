@@ -1,10 +1,12 @@
 package control;
 
+import input.KeyBoard;
+
 import java.awt.event.KeyEvent;
 
 import model.Direction;
+import model.Snake;
 import view.GameFrame;
-import input.KeyBoard;
 
 /**
  * @author Stefan Kameter
@@ -14,6 +16,9 @@ public class GameThread implements Runnable {
 	private double ns;
 	private int speed, sec;
 	private boolean running;
+
+	private Snake player;
+	private Direction dir;
 
 	/**
 	 * Creates a GameThread instance.
@@ -63,15 +68,11 @@ public class GameThread implements Runnable {
 	}
 
 	private void step() {
+		if (player == null)
+			player = GameFrame.getInstance().getSnake();
 		// TODO InputCheck (Change MoveDirection, ...)
-		if (KeyBoard.getInstance().isKeyPressed(KeyEvent.VK_W)) 
-			GameFrame.getInstance().getSnake().move(Direction.UP);
-		if (KeyBoard.getInstance().isKeyPressed(KeyEvent.VK_D))
-			GameFrame.getInstance().getSnake().move(Direction.RIGHT);
-		if (KeyBoard.getInstance().isKeyPressed(KeyEvent.VK_S))
-			GameFrame.getInstance().getSnake().move(Direction.DOWN);
-		if (KeyBoard.getInstance().isKeyPressed(KeyEvent.VK_A))
-			GameFrame.getInstance().getSnake().move(Direction.LEFT);
+		player.setLookingDirection(dir);
+		player.move();
 		// TODO MoveSnake (Check: onItem, ...)
 		// TODO Win / Loose
 		GameFrame.getInstance().repaintGameCanvas();
@@ -93,21 +94,22 @@ public class GameThread implements Runnable {
 				delta--;
 			}
 
+			GameFrame.getInstance().requestFocus();
+			if (KeyBoard.getInstance().isKeyPressed(KeyEvent.VK_W))
+				dir = Direction.UP;
+			if (KeyBoard.getInstance().isKeyPressed(KeyEvent.VK_D))
+				dir = Direction.RIGHT;
+			if (KeyBoard.getInstance().isKeyPressed(KeyEvent.VK_S))
+				dir = Direction.DOWN;
+			if (KeyBoard.getInstance().isKeyPressed(KeyEvent.VK_A))
+				dir = Direction.LEFT;
+
 			if (System.currentTimeMillis() - timer > 1000) {
 				GameFrame.getInstance().requestFocus();
 
 				timer += 1000;
 				int[] dirs = new int[4];
-				if (KeyBoard.getInstance().isKeyPressed(KeyEvent.VK_W))
-					dirs[0] = 1;
-				if (KeyBoard.getInstance().isKeyPressed(KeyEvent.VK_D))
-					dirs[1] = 1;
-				if (KeyBoard.getInstance().isKeyPressed(KeyEvent.VK_S))
-					dirs[2] = 1;
-				if (KeyBoard.getInstance().isKeyPressed(KeyEvent.VK_A))
-					dirs[3] = 1;
-				System.out.println("[ W: " + dirs[0] + ", A: " + dirs[3] + ", S: " + dirs[2] + ", D: " + dirs[1] + " ] (" + sec + "s)");
-				sec++;
+				sec++; // Do we really need sec?
 				// TODO add Score
 			}
 		}

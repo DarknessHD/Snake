@@ -90,8 +90,8 @@ public class GameCanvas extends Canvas {
 
 		// CellObjects
 		for (CellObject d : cellObjects) {
-			Point position = d.getPosition();
-			bufferGraphics.drawImage(d.getImage(), 5 + position.x * TILE_SIZE, 5 + position.y * TILE_SIZE, TILE_SIZE, TILE_SIZE, null);
+			Point p = d.getPosition();
+			bufferGraphics.drawImage(d.getImage(), 5 + p.x * TILE_SIZE, 5 + p.y * TILE_SIZE, TILE_SIZE, TILE_SIZE, null);
 		}
 
 		// Snake
