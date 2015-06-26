@@ -65,4 +65,35 @@ public enum Direction {
 		}
 		return this;
 	}
+
+	/**
+	 * Returns the next direction going clockwise or counterclockwise.
+	 * 
+	 * @param clockwise 
+	 * 				clockwise or counterclockwise
+	 * @return the next direction
+	 */
+	public Direction getNext(boolean clockwise) {
+		switch (this) {
+		case DOWN:
+			return (clockwise) ? Direction.LEFT : Direction.RIGHT;
+		case LEFT:
+			return (clockwise) ? Direction.UP : Direction.DOWN;
+		case RIGHT:
+			return (clockwise) ? Direction.DOWN : Direction.UP;
+		case UP:
+			return (clockwise) ? Direction.RIGHT : Direction.LEFT;
+		}
+
+		return this;
+	}
+	
+	/**
+	 * Returns the next direction going clockwise.
+	 *
+	 * @return the next direction
+	 */
+	public Direction getNext() {
+		return getNext(true);
+	}
 }

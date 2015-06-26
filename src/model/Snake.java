@@ -38,13 +38,14 @@ public class Snake {
 
 		segments = new LinkedList<SnakeSegment>();
 
-		segments.addFirst(new SnakeSegment(RotatedImage.getHead(startDirection), new Point(startPosition), startDirection));
+		segments.addFirst(new SnakeSegment(RotatedImage.get(startDirection, HEAD_IMAGE), new Point(startPosition),
+				startDirection));
 
 		Direction opposite = startDirection.getOpposite();
 		for (int i = 1; i < startSegments - 1; i++)
-			segments.add(new SnakeSegment(RotatedImage.getBody(startDirection), getNextPosition(startPosition, opposite),
-					startDirection));
-		segments.addLast(new SnakeSegment(RotatedImage.getTail(opposite), getNextPosition(startPosition, opposite),
+			segments.add(new SnakeSegment(RotatedImage.get(startDirection, BODY_IMAGE),
+					getNextPosition(startPosition, opposite), startDirection));
+		segments.addLast(new SnakeSegment(RotatedImage.get(opposite, TAIL_IMAGE), getNextPosition(startPosition, opposite),
 				startDirection));
 	}
 
@@ -98,15 +99,16 @@ public class Snake {
 	}
 
 	/**
+	 * IMPORTANT: Always use this method to change the direction of the snake's head!
 	 * Sets the direction the snake's head is looking into.
 	 * 
 	 * @param direction
 	 *            of the snake's head
 	 */
 	public void setLookingDirection(Direction direction) {
-		if(direction != segments.getFirst().getDirection() && direction != lastDirection.getOpposite()) {
+		if (direction != segments.getFirst().getDirection() && direction != lastDirection.getOpposite()) {
 			SnakeSegment head = segments.getFirst();
-			head.setImage(RotatedImage.getHead(direction));
+			head.setImage(RotatedImage.get(direction, HEAD_IMAGE));
 			directionChange = true;
 			this.lastDirection = direction;
 
@@ -122,7 +124,7 @@ public class Snake {
 			throw new IllegalStateException("Snake must have at least " + MIN_SEGMENTS + "!");
 
 		segments.removeLast();
-		segments.getLast().setImage(RotatedImage.getTail(segments.getLast().getDirection()));
+		segments.getLast().setImage(RotatedImage.get(segments.getLast().getDirection(), TAIL_IMAGE));
 	}
 
 	/**
@@ -130,8 +132,8 @@ public class Snake {
 	 */
 	public void addSegment() {
 		SnakeSegment newBody = segments.getLast();
-		newBody.setImage(RotatedImage.getBody(newBody.getDirection()));
-		segments.addLast(new SnakeSegment(RotatedImage.getTail(segments.getLast().getDirection()), getNextPosition(
+		newBody.setImage(RotatedImage.get(newBody.getDirection(), BODY_IMAGE));
+		segments.addLast(new SnakeSegment(RotatedImage.get(segments.getLast().getDirection(), TAIL_IMAGE), getNextPosition(
 				newBody.getPosition(), newBody.getDirection().getOpposite()), newBody.getDirection()));
 	}
 
@@ -140,29 +142,34 @@ public class Snake {
 	 */
 	public void move() {
 		SnakeSegment newBody = segments.getFirst();
-		
+
 		if (directionChange) {
 			newBody.setImage(RotatedImage.getCurve(lastDirection, getLookingDirection()));
 			directionChange = false;
-		}
-		else
-			newBody.setImage(RotatedImage.getBody(newBody.getDirection()));
-		
-		segments.addFirst(new SnakeSegment(RotatedImage.getHead(newBody.getDirection()), getNextPosition(
-				new Point(newBody.getPosition()), newBody.getDirection()), newBody.getDirection()));
+		} else
+			newBody.setImage(RotatedImage.get(newBody.getDirection(), BODY_IMAGE));
+
+		segments.addFirst(new SnakeSegment(RotatedImage.get(newBody.getDirection(), HEAD_IMAGE), getNextPosition(new Point(
+				newBody.getPosition()), newBody.getDirection()), newBody.getDirection()));
 
 		segments.removeLast();
-		segments.getLast().setImage(RotatedImage.getTail(segments.getLast().getDirection().getOpposite()));
+		segments.getLast().setImage(RotatedImage.get(segments.getLast().getDirection().getOpposite(), TAIL_IMAGE));
 	}
 
 	private static Point getNextPosition(Point startPosition, Direction direction) {
 		startPosition.setLocation((int) startPosition.getX() + direction.getXOffset(), (int) startPosition.getY()
 				+ direction.getYOffset());
-		
+
 		return new Point(startPosition);
 	}
 
+	/**
+	 * @author Eric Armbruster
+	 * @version 25.06.15
+	 */
 	private static class RotatedImage {
+
+		private static final Direction DEFAULT_INITIAL_DIRECTION = Direction.RIGHT;
 
 		private static String getCurve(Direction lastDirection, Direction newDirection) {
 			String curveImage = CURVE_IMAGE + "_" + lastDirection.toString() + "_" + newDirection.toString();
@@ -184,80 +191,37 @@ public class Snake {
 
 			return curveImage;
 		}
-
-		private static String getHead(Direction headDirection) {
-			String headImage = HEAD_IMAGE + "_" + headDirection.toString();
-
-			if (!ImageHolder.isLoaded(headImage)) {
-				BufferedImage head = ImageHolder.getImage(HEAD_IMAGE);
-
-				switch (headDirection) {
-				case UP:
-					head = GameCanvas.shiftImage(head, GameCanvas.DEGREES270);
-					break;
-				case DOWN:
-					head = GameCanvas.shiftImage(head, GameCanvas.DEGREES90);
-					break;
-				case LEFT:
-					head = GameCanvas.shiftImage(head, GameCanvas.DEGREES180);
-					break;
-				case RIGHT:
-					break;
-				}
-				ImageHolder.putImage(headImage, head);
-			}
-
-			return headImage;
-		}
-
-		private static String getTail(Direction tailDirection) {
-			String tailImage = TAIL_IMAGE + "_" + tailDirection.toString();
-
-			if (!ImageHolder.isLoaded(tailImage)) {
-				BufferedImage tail = ImageHolder.getImage(TAIL_IMAGE);
-
-				switch (tailDirection) {
-				case UP:
-					tail = GameCanvas.shiftImage(tail, GameCanvas.DEGREES90);
-					break;
-				case DOWN:
-					tail = GameCanvas.shiftImage(tail, GameCanvas.DEGREES270);
-					break;
-				case LEFT:
-					break;
-				case RIGHT:
-					tail = GameCanvas.shiftImage(tail, GameCanvas.DEGREES180);
-					break;
-				}
-				ImageHolder.putImage(tailImage, tail);
-			}
-
-			return tailImage;
-		}
 		
-		private static String getBody(Direction bodyDirection) {
-			String bodyImage = BODY_IMAGE + "_" + bodyDirection.toString();
+		private static String get(Direction newDirection, String image) {
+			return get(newDirection, DEFAULT_INITIAL_DIRECTION, image);
+		}
 
-			if (!ImageHolder.isLoaded(bodyImage)) {
-				BufferedImage body = ImageHolder.getImage(BODY_IMAGE);
+		private static String get(Direction newDirection, Direction initialDirection, String image) {
+			String rotatedImage = image + "_" + newDirection.toString();
+			
+			if (!ImageHolder.isLoaded(rotatedImage)) {	
+				BufferedImage bufferedImage = ImageHolder.getImage(image);
+				if(initialDirection != newDirection) {
+					for (int i = 1; i < Direction.values().length; i++) {
+						if ((initialDirection = initialDirection.getNext()) == newDirection) {
 
-				switch (bodyDirection) {
-				case UP:
-					body = GameCanvas.shiftImage(body, GameCanvas.DEGREES270);
-					break;
-				case DOWN:
-					body = GameCanvas.shiftImage(body, GameCanvas.DEGREES90);
-					break;
-				case LEFT: 
-					body = GameCanvas.shiftImage(body, GameCanvas.DEGREES180);
-					break;
-				case RIGHT:
-					break;
+							switch (i) {
+							case 1:
+								bufferedImage = GameCanvas.shiftImage(bufferedImage, GameCanvas.DEGREES90);
+								break;
+							case 2:
+								bufferedImage = GameCanvas.shiftImage(bufferedImage, GameCanvas.DEGREES180);
+								break;
+							case 3:
+								bufferedImage = GameCanvas.shiftImage(bufferedImage, GameCanvas.DEGREES270);
+								break;
+							}
+						}	
+					}	
 				}
-				ImageHolder.putImage(bodyImage, body);
+				ImageHolder.putImage(rotatedImage, bufferedImage);
 			}
-
-			return bodyImage;
+			return rotatedImage;
 		}
 	}
 }
