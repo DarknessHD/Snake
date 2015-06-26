@@ -74,6 +74,7 @@ public class GameThread implements Runnable {
 			GameFrame.getInstance().getSnake().move(Direction.LEFT);
 		// TODO MoveSnake (Check: onItem, ...)
 		// TODO Win / Loose
+		GameFrame.getInstance().repaintGameCanvas();
 	}
 
 	@Override

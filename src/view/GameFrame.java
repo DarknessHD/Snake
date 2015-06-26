@@ -91,6 +91,13 @@ public class GameFrame extends JFrame {
 	}
 
 	/**
+	 * Repaint only the GameCanvas.
+	 */
+	public void repaintGameCanvas() {
+		gameCanvas.repaint();
+	}
+
+	/**
 	 * Starts the game.
 	 * 
 	 * @param args
