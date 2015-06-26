@@ -71,7 +71,15 @@ public class GameThread implements Runnable {
 		if (player == null)
 			player = GameFrame.getInstance().getSnake();
 		// TODO InputCheck (Change MoveDirection, ...)
-		player.setLookingDirection(dir);
+		
+		
+		
+		//A solution for now!!!
+		if(dir != null)
+			player.setLookingDirection(dir);
+		
+		
+		
 		player.move();
 		// TODO MoveSnake (Check: onItem, ...)
 		// TODO Win / Loose

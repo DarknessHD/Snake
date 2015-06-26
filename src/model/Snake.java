@@ -104,13 +104,13 @@ public class Snake {
 	 *            of the snake's head
 	 */
 	public void setLookingDirection(Direction direction) {
-		if(direction != segments.getFirst().getDirection()) {
+		if(direction != segments.getFirst().getDirection() && direction != lastDirection.getOpposite()) {
 			SnakeSegment head = segments.getFirst();
-			String headImage = RotatedImage.getHead(direction);
-			head.setImage(headImage);
+			head.setImage(RotatedImage.getHead(direction));
 			directionChange = true;
+			this.lastDirection = direction;
 
-			segments.getFirst().setDirection(direction);	
+			segments.getFirst().setDirection(direction);
 		}
 	}
 
@@ -170,14 +170,14 @@ public class Snake {
 			if (!ImageHolder.isLoaded(curveImage)) {
 				BufferedImage curve = ImageHolder.getImage(CURVE_IMAGE);
 
-				if (lastDirection == Direction.DOWN || newDirection == Direction.DOWN
-						&& lastDirection == Direction.LEFT || newDirection == Direction.LEFT)
+				if (lastDirection == Direction.DOWN && newDirection == Direction.LEFT
+						|| lastDirection == Direction.LEFT && newDirection == Direction.DOWN)
 					curve = GameCanvas.shiftImage(curve, GameCanvas.DEGREES270);
-				else if (lastDirection == Direction.DOWN || newDirection == Direction.DOWN
-						&& lastDirection == Direction.RIGHT || newDirection == Direction.RIGHT)
+				else if (lastDirection == Direction.DOWN && newDirection == Direction.RIGHT
+						|| lastDirection == Direction.RIGHT && newDirection == Direction.DOWN)
 					curve = GameCanvas.shiftImage(curve, GameCanvas.DEGREES180);
-				else if (lastDirection == Direction.UP || newDirection == Direction.UP
-						&& lastDirection == Direction.RIGHT || newDirection == Direction.RIGHT)
+				else if (lastDirection == Direction.UP && newDirection == Direction.RIGHT
+						|| lastDirection == Direction.RIGHT && newDirection == Direction.UP)
 					curve = GameCanvas.shiftImage(curve, GameCanvas.DEGREES90);
 				ImageHolder.putImage(curveImage, curve);
 			}
