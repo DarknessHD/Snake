@@ -153,7 +153,8 @@ public class Snake {
 		segments.addFirst(new SnakeSegment(RotatedImage.getHead(head.getDirection()), getNextPosition(
 				new Point(head.getPosition()), head.getDirection()), head.getDirection()));
 
-		removeSegment();
+		segments.removeLast();
+		segments.getLast().setImage(RotatedImage.getTail(segments.getLast().getDirection()));
 	}
 
 	private static Point getNextPosition(Point startPosition, Direction direction) {
