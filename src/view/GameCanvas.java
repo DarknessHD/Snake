@@ -45,7 +45,7 @@ public class GameCanvas extends Canvas {
 		this.cellObjects = cellObjects;
 		this.snake = snake;
 		this.cellObjects = new LinkedList<CellObject>(); // TODO
-		this.snake = new Snake(5, new Point(5, 5), Direction.LEFT); // TODO
+		this.snake = new Snake(5, new Point(5, 5), Direction.RIGHT); // TODO
 
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 

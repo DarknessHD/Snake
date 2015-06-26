@@ -64,7 +64,7 @@ public class GameThread implements Runnable {
 
 	private void step() {
 		// TODO InputCheck (Change MoveDirection, ...)
-		if (KeyBoard.getInstance().isKeyPressed(KeyEvent.VK_W))
+		if (KeyBoard.getInstance().isKeyPressed(KeyEvent.VK_W)) 
 			GameFrame.getInstance().getSnake().move(Direction.UP);
 		if (KeyBoard.getInstance().isKeyPressed(KeyEvent.VK_D))
 			GameFrame.getInstance().getSnake().move(Direction.RIGHT);

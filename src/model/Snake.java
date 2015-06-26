@@ -38,14 +38,13 @@ public class Snake {
 
 		segments = new LinkedList<SnakeSegment>();
 
-		segments.addFirst(new SnakeSegment(RotatedImage.getHead(startDirection), new Point(startPosition),
-				startDirection));
+		segments.addFirst(new SnakeSegment(RotatedImage.getHead(startDirection), new Point(startPosition), startDirection));
 
 		Direction opposite = startDirection.getOpposite();
 		for (int i = 1; i < startSegments - 1; i++)
-			segments.add(new SnakeSegment(BODY_IMAGE, new Point(getNextPosition(startPosition, opposite)),
+			segments.add(new SnakeSegment(BODY_IMAGE, getNextPosition(startPosition, opposite),
 					startDirection));
-		segments.addLast(new SnakeSegment(RotatedImage.getTail(opposite), new Point(getNextPosition(startPosition, opposite)),
+		segments.addLast(new SnakeSegment(RotatedImage.getTail(opposite), getNextPosition(startPosition, opposite),
 				startDirection));
 	}
 
@@ -105,12 +104,14 @@ public class Snake {
 	 *            of the snake's head
 	 */
 	public void setLookingDirection(Direction direction) {
-		SnakeSegment head = segments.getFirst();
-		String headImage = RotatedImage.getHead(direction);
-		head.setImage(headImage);
-		directionChange = true;
+		if(direction != segments.getFirst().getDirection()) {
+			SnakeSegment head = segments.getFirst();
+			String headImage = RotatedImage.getHead(direction);
+			head.setImage(headImage);
+			directionChange = true;
 
-		segments.getFirst().setDirection(direction);
+			segments.getFirst().setDirection(direction);	
+		}
 	}
 
 	/**
@@ -131,7 +132,7 @@ public class Snake {
 		SnakeSegment tail = segments.getLast();
 		tail.setImage(BODY_IMAGE);
 		segments.addLast(new SnakeSegment(RotatedImage.getTail(segments.getLast().getDirection()), getNextPosition(
-				tail.getPosition(), tail.getDirection().getOpposite()), tail.getDirection())); //TODO New Tail
+				tail.getPosition(), tail.getDirection().getOpposite()), tail.getDirection()));
 	}
 
 	/**
@@ -142,15 +143,15 @@ public class Snake {
 	 */
 	public void move(Direction direction) {
 		setLookingDirection(direction);
-
 		SnakeSegment head = segments.getFirst();
-		if (directionChange) {
-
+		
+		if (directionChange) 
 			head.setImage(RotatedImage.getCurve(lastDirection, getLookingDirection()));
-		} else
+		else
 			head.setImage(BODY_IMAGE);
+		
 		segments.addFirst(new SnakeSegment(RotatedImage.getHead(head.getDirection()), getNextPosition(
-				head.getPosition(), head.getDirection()), head.getDirection()));
+				new Point(head.getPosition()), head.getDirection()), head.getDirection()));
 
 		removeSegment();
 	}
@@ -158,7 +159,8 @@ public class Snake {
 	private static Point getNextPosition(Point startPosition, Direction direction) {
 		startPosition.setLocation((int) startPosition.getX() + direction.getXOffset(), (int) startPosition.getY()
 				+ direction.getYOffset());
-		return startPosition;
+		
+		return new Point(startPosition);
 	}
 
 	private static class RotatedImage {
