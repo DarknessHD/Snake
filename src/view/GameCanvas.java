@@ -79,6 +79,9 @@ public class GameCanvas extends Canvas {
 			bufferGraphics = buffer.getGraphics();
 		}
 
+		bufferGraphics.setColor(getBackground());
+		bufferGraphics.fillRect(0, 0, getWidth(), getHeight());
+
 		bufferGraphics.setColor(Color.WHITE);
 
 		for (int y = 0; y < TILE_HEIGHT; y++)
