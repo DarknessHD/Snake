@@ -96,4 +96,13 @@ public enum Direction {
 	public Direction getNext() {
 		return getNext(true);
 	}
+	
+	/**
+	 * Returns the next direction going counterclockwise.
+	 * 
+	 * @return the next direction
+	 */
+	public Direction getLast() {
+		return getNext(false);
+	}
 }
