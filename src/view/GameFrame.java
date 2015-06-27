@@ -11,7 +11,7 @@ import control.GameThread;
 
 /**
  * @author Stefan Kameter
- * @version 22.06.2015
+ * @version 23.06.2015
  */
 public class GameFrame extends JFrame {
 	private static final long serialVersionUID = 1L;

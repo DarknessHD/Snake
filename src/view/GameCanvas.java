@@ -16,7 +16,7 @@ import model.SnakeSegment;
 
 /**
  * @author Stefan Kameter
- * @version 22.06.2015
+ * @version 26.06.2015
  */
 public class GameCanvas extends Canvas {
 	private static final long serialVersionUID = 1L;

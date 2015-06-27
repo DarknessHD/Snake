@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 import java.util.Objects;
 
 /**
- * @author Eric Armbruster, Stefan Kameter
+ * @author Stefan Kameter, Eric Armbruster
  * @version 22.06.2015
  */
 public abstract class CellObject {

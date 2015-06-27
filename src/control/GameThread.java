@@ -10,7 +10,7 @@ import view.GameFrame;
 
 /**
  * @author Stefan Kameter
- * @version 22.06.2015
+ * @version 27.06.2015
  */
 public class GameThread implements Runnable {
 	private double ns;
@@ -71,15 +71,10 @@ public class GameThread implements Runnable {
 		if (player == null)
 			player = GameFrame.getInstance().getSnake();
 		// TODO InputCheck (Change MoveDirection, ...)
-		
-		
-		
-		//A solution for now!!!
-		if(dir != null)
+
+		if (dir != null)
 			player.setLookingDirection(dir);
-		
-		
-		
+
 		player.move();
 		// TODO MoveSnake (Check: onItem, ...)
 		// TODO Win / Loose
@@ -113,10 +108,7 @@ public class GameThread implements Runnable {
 				dir = Direction.LEFT;
 
 			if (System.currentTimeMillis() - timer > 1000) {
-				GameFrame.getInstance().requestFocus();
-
 				timer += 1000;
-				int[] dirs = new int[4];
 				sec++; // Do we really need sec?
 				// TODO add Score
 			}
