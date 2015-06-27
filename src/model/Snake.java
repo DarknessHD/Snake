@@ -106,13 +106,14 @@ public class Snake {
 	 *            of the snake's head
 	 */
 	public void setLookingDirection(Direction direction) {
-		if (direction != segments.getFirst().getDirection() && direction != lastDirection.getOpposite()) {
-			SnakeSegment head = segments.getFirst();
+		SnakeSegment head = segments.getFirst();
+		Direction currentDirection = head.getDirection();
+		if (direction != currentDirection && direction != currentDirection.getOpposite()) {
+			this.lastDirection = head.getDirection();
 			head.setImage(RotatedImage.get(direction, HEAD_IMAGE));
 			directionChange = true;
-			this.lastDirection = direction;
 
-			segments.getFirst().setDirection(direction);
+			head.setDirection(direction);
 		}
 	}
 
@@ -177,24 +178,12 @@ public class Snake {
 			if (!ImageHolder.isLoaded(curveImage)) {
 				BufferedImage curve = ImageHolder.getImage(CURVE_IMAGE);
 
-				if (lastDirection == Direction.DOWN && newDirection == Direction.LEFT);
-				else if(lastDirection == Direction.DOWN && newDirection == Direction.RIGHT)
+				if(lastDirection == Direction.DOWN && newDirection == Direction.RIGHT || lastDirection == Direction.LEFT && newDirection == Direction.UP)
 					curve = GameCanvas.shiftImage(curve, GameCanvas.DEGREES90);
-				
-				else if(lastDirection == Direction.UP && newDirection == Direction.LEFT)
-					curve = GameCanvas.shiftImage(curve, GameCanvas.DEGREES270);
-				else if(lastDirection == Direction.UP && newDirection == Direction.RIGHT)
+				else if(lastDirection == Direction.UP && newDirection == Direction.RIGHT || lastDirection == Direction.LEFT && newDirection == Direction.DOWN)
 					curve = GameCanvas.shiftImage(curve, GameCanvas.DEGREES180);
-				
-				else if(lastDirection == Direction.LEFT && newDirection == Direction.UP)
-					curve = GameCanvas.shiftImage(curve, GameCanvas.DEGREES90);
-				else if(lastDirection == Direction.LEFT && newDirection == Direction.DOWN)
+				else if(lastDirection == Direction.UP && newDirection == Direction.LEFT || lastDirection == Direction.RIGHT && newDirection == Direction.DOWN)
 					curve = GameCanvas.shiftImage(curve, GameCanvas.DEGREES270);
-				
-				else if(lastDirection == Direction.RIGHT && newDirection == Direction.UP);
-				else if(lastDirection == Direction.RIGHT && newDirection == Direction.DOWN)
-					curve = GameCanvas.shiftImage(curve, GameCanvas.DEGREES180);
-				
 				
 				ImageHolder.putImage(curveImage, curve);
 			}
