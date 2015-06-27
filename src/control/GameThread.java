@@ -4,6 +4,8 @@ import input.KeyBoard;
 
 import java.awt.event.KeyEvent;
 
+import javax.swing.JOptionPane;
+
 import model.Direction;
 import model.Snake;
 import view.GameFrame;
@@ -48,23 +50,12 @@ public class GameThread implements Runnable {
 	/**
 	 * Increases the game-speed.
 	 * 
-	 * @param increaseBy
-	 *            the value that the speed gets increased by
+	 * @param speedAddition
+	 *            the value that the speed gets in-/decreased by
 	 */
-	public void increaseSpeed(int increaseBy) {
-		this.speed += increaseBy;
-		ns = 1000000000.0 / this.speed;
-	}
-
-	/**
-	 * Decreases the game-speed.
-	 * 
-	 * @param decreaseBy
-	 *            the value that the speed gets decreased by
-	 */
-	public void decreaseSpeed(int decreaseBy) {
-		this.speed -= decreaseBy;
-		ns = 1000000000.0 / this.speed;
+	public void changeSpeed(int speedAddition) {
+		speed += speedAddition;
+		ns = 1000000000.0 / speed;
 	}
 
 	private void step() {
@@ -75,7 +66,10 @@ public class GameThread implements Runnable {
 		if (dir != null)
 			player.setLookingDirection(dir);
 
-		player.move();
+		if (!player.move()) {
+			JOptionPane.showMessageDialog(GameFrame.getInstance(), "lost");
+			System.exit(0);
+		}
 		// TODO MoveSnake (Check: onItem, ...)
 		// TODO Win / Loose
 		GameFrame.getInstance().repaintGameCanvas();
