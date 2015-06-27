@@ -23,9 +23,15 @@ public class GameCanvas extends Canvas {
 
 	private static final int WIDTH = 960;
 	private static final int HEIGHT = 640;
-	private static final int TILE_WIDTH = 30;
-	private static final int TILE_HEIGHT = 20;
 	private static final int TILE_SIZE = 32;
+	/**
+	 * The width of tiles in the level.
+	 */
+	public static final int LEVEL_WIDTH = 30;
+	/**
+	 * The height of tiles in the level.
+	 */
+	public static final int LEVEL_HEIGHT = 20;
 
 	private BufferedImage buffer;
 	private Graphics bufferGraphics;
@@ -56,6 +62,13 @@ public class GameCanvas extends Canvas {
 	}
 
 	/**
+	 * @return player snake
+	 */
+	public Snake getSnake() {
+		return snake;
+	}
+
+	/**
 	 * Adds a CellObject.
 	 * 
 	 * @param cellObject
@@ -63,13 +76,6 @@ public class GameCanvas extends Canvas {
 	 */
 	public void addCellObject(CellObject cellObject) {
 		cellObjects.add(cellObject);
-	}
-
-	/**
-	 * @return player snake
-	 */
-	public Snake getSnake() {
-		return snake;
 	}
 
 	@Override
@@ -84,8 +90,8 @@ public class GameCanvas extends Canvas {
 
 		bufferGraphics.setColor(Color.WHITE);
 
-		for (int y = 0; y < TILE_HEIGHT; y++)
-			for (int x = 0; x < TILE_WIDTH; x++)
+		for (int y = 0; y < LEVEL_HEIGHT; y++)
+			for (int x = 0; x < LEVEL_WIDTH; x++)
 				bufferGraphics.drawRect(5 + x * TILE_SIZE, 5 + y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 
 		// CellObjects

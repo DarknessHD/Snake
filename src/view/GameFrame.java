@@ -66,14 +66,10 @@ public class GameFrame extends JFrame {
 	}
 
 	/**
-	 * Adds a score value to the final score.
-	 * 
-	 * @param score
-	 *            the addition to the score
+	 * @return player snake
 	 */
-	public void addScore(int score) {
-		this.score += score;
-		setTitle(TITLE + " - Score: " + this.score);
+	public Snake getSnake() {
+		return gameCanvas.getSnake();
 	}
 
 	/**
@@ -84,10 +80,14 @@ public class GameFrame extends JFrame {
 	}
 
 	/**
-	 * @return player snake
+	 * Adds a score value to the final score.
+	 * 
+	 * @param score
+	 *            the addition to the score
 	 */
-	public Snake getSnake() {
-		return gameCanvas.getSnake();
+	public void addScore(int score) {
+		this.score += score;
+		setTitle(TITLE + " - Score: " + this.score);
 	}
 
 	/**
