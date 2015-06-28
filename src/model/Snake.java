@@ -210,15 +210,15 @@ public class Snake {
 	}
 
 	/**
-	 * Returns whether or not the snake has reached the edge of the map.
+	 * Returns whether or not the snake has walked over the edge of the map.
 	 * 
-	 * @return true when the snake has reached the edge of the map, false
+	 * @return true when the snake has walked over the edge of the map, false
 	 *         otherwise.
 	 */
-	public boolean hasReachedEdge() {
+	public boolean hasWalkedOverEdge() {
 		Point headPos = segments.getFirst().getPosition();
-		return (headPos.getX() >= GameCanvas.LEVEL_WIDTH || headPos.getY() >= GameCanvas.LEVEL_HEIGHT
-				|| headPos.getX() <= 0 || headPos.getY() <= 0);
+		return (headPos.getX() > GameCanvas.LEVEL_WIDTH-1 || headPos.getY() > GameCanvas.LEVEL_HEIGHT-1
+				|| headPos.getX() < 0 || headPos.getY() < 0);
 	}
 
 	/**
@@ -231,11 +231,10 @@ public class Snake {
 	 * @return true when the snake was moved, false otherwise.
 	 */
 	public boolean move(boolean endlessLevel) {
-		if (!endlessLevel)
-			if (hasReachedEdge())
-				return false;
-
 		SnakeSegment newBody = segments.getFirst();
+		if (!endlessLevel)
+			if (hasWalkedOverEdge())
+				return false;
 
 		if (directionChange) {
 			newBody.setImage(RotatedImage.getCurve(lastDirection, getLookingDirection()));
@@ -250,6 +249,7 @@ public class Snake {
 		segments.removeLast();
 		segments.getLast().setImage(
 				RotatedImage.get(segments.getLast().getDirection().getOpposite(), RotatedImage.TAIL_IMAGE));
+		
 		return true;
 	}
 
@@ -274,13 +274,13 @@ public class Snake {
 		Point next = getNextPosition(startPosition, direction);
 
 		if (endlessLevel) {
-			if (next.getX() < 0)
-				next.setLocation(GameCanvas.LEVEL_WIDTH, next.getY());
-			else if (next.getY() < 0)
-				next.setLocation(next.getX(), GameCanvas.LEVEL_HEIGHT);
-			else if (next.getX() > GameCanvas.LEVEL_WIDTH)
+			if (next.getX() < -1)
+				next.setLocation(GameCanvas.LEVEL_WIDTH -1, next.getY());
+			else if (next.getY() < -1)
+				next.setLocation(next.getX(), GameCanvas.LEVEL_HEIGHT -1);
+			else if (next.getX() > GameCanvas.LEVEL_WIDTH -1)
 				next.setLocation(0, next.getY());
-			else if (next.getY() > GameCanvas.LEVEL_HEIGHT)
+			else if (next.getY() > GameCanvas.LEVEL_HEIGHT -1)
 				next.setLocation(next.getX(), 0);
 		}
 
