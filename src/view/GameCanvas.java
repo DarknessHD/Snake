@@ -6,7 +6,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import model.CellObject;
@@ -16,7 +16,7 @@ import model.SnakeSegment;
 
 /**
  * @author Stefan Kameter
- * @version 26.06.2015
+ * @version 28.06.2015
  */
 public class GameCanvas extends Canvas {
 	private static final long serialVersionUID = 1L;
@@ -24,6 +24,7 @@ public class GameCanvas extends Canvas {
 	private static final int WIDTH = 960;
 	private static final int HEIGHT = 640;
 	private static final int TILE_SIZE = 32;
+	private static final int TILE_SIZE_BW = (int) (Math.log(TILE_SIZE) / Math.log(2));
 	/**
 	 * The width of tiles in the level.
 	 */
@@ -50,10 +51,10 @@ public class GameCanvas extends Canvas {
 	public GameCanvas(Snake snake, List<CellObject> cellObjects) {
 		this.cellObjects = cellObjects;
 		this.snake = snake;
-		this.cellObjects = new LinkedList<CellObject>(); // TODO
-		this.snake = new Snake(5, new Point(5, 5), Direction.RIGHT); // TODO
+		this.cellObjects = new ArrayList<CellObject>(); // TODO
+		this.snake = new Snake(3, new Point(0, 2), Direction.DOWN); // TODO
 
-		setPreferredSize(new Dimension(WIDTH, HEIGHT));
+		setSize(new Dimension(WIDTH, HEIGHT));
 
 		initListener();
 	}
@@ -81,32 +82,32 @@ public class GameCanvas extends Canvas {
 	@Override
 	public void paint(Graphics g) {
 		if (bufferGraphics == null) {
-			buffer = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
+			buffer = new BufferedImage(WIDTH + 1, HEIGHT + 1, BufferedImage.TYPE_INT_ARGB);
 			bufferGraphics = buffer.getGraphics();
 		}
 
 		bufferGraphics.setColor(getBackground());
 		bufferGraphics.fillRect(0, 0, getWidth(), getHeight());
 
-		bufferGraphics.setColor(Color.WHITE);
+		bufferGraphics.setColor(Color.BLACK);
 
 		for (int y = 0; y < LEVEL_HEIGHT; y++)
 			for (int x = 0; x < LEVEL_WIDTH; x++)
-				bufferGraphics.drawRect(5 + x * TILE_SIZE, 5 + y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+				bufferGraphics.drawRect(x << TILE_SIZE_BW, y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE);
 
 		// CellObjects
-		for (CellObject d : cellObjects) {
-			Point p = d.getPosition();
-			bufferGraphics.drawImage(d.getImage(), 5 + p.x * TILE_SIZE, 5 + p.y * TILE_SIZE, TILE_SIZE, TILE_SIZE, null);
+		for (CellObject o : cellObjects) {
+			Point p = o.getPosition();
+			bufferGraphics.drawImage(o.getImage(), p.x << TILE_SIZE_BW, p.y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE, null);
 		}
 
 		// Snake
 		for (SnakeSegment s : snake.getSegments()) {
 			Point p = s.getPosition();
-			bufferGraphics.drawImage(s.getImage(), 5 + p.x * TILE_SIZE, 5 + p.y * TILE_SIZE, TILE_SIZE, TILE_SIZE, null);
+			bufferGraphics.drawImage(s.getImage(), p.x << TILE_SIZE_BW, p.y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE, null);
 		}
 
-		g.drawImage(buffer, 0, 0, WIDTH, HEIGHT, null);
+		g.drawImage(buffer, 5, 5, WIDTH, HEIGHT, null);
 	}
 
 	/**
