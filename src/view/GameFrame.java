@@ -36,6 +36,7 @@ public class GameFrame extends JFrame {
 	}
 
 	private GameCanvas gameCanvas;
+	private GameMenuPanel gmp;
 
 	private GameThread gameThread;
 	private int score;
@@ -57,11 +58,47 @@ public class GameFrame extends JFrame {
 	}
 
 	private void initComponents() {
-		add(gameCanvas = new GameCanvas(null, null), BorderLayout.CENTER);
+		gameCanvas = new GameCanvas(null, null);
+		gmp = new GameMenuPanel();
+
+		changeComponent(Comp.GAMEMENUPANEL);
 	}
 
 	private void initListener() {
 		addKeyListener(KeyBoard.getInstance());
+	}
+
+	private Comp lastComponent;
+
+	/**
+	 * Changes, which Component is added.
+	 * 
+	 * @param comp
+	 *            the Component, which has to be added
+	 */
+	public void changeComponent(Comp comp) {
+		if (lastComponent != null)
+			switch (lastComponent) {
+			case GAMECANVAS:
+				gameCanvas.revalidate();
+				remove(gameCanvas);
+				break;
+			case GAMEMENUPANEL:
+				gmp.revalidate();
+				remove(gmp);
+				break;
+			}
+
+		lastComponent = comp;
+
+		switch (comp) {
+		case GAMECANVAS:
+			add(gameCanvas, BorderLayout.CENTER);
+			break;
+		case GAMEMENUPANEL:
+			add(gmp, BorderLayout.CENTER);
+			break;
+		}
 	}
 
 	/**
@@ -104,6 +141,5 @@ public class GameFrame extends JFrame {
 	public static void main(String[] args) {
 		GameFrame frame = getInstance();
 		frame.setVisible(true);
-		frame.start();
 	}
 }

@@ -2,12 +2,11 @@ package control;
 
 import input.KeyBoard;
 
-import java.awt.event.KeyEvent;
-
 import javax.swing.JOptionPane;
 
 import model.Direction;
 import model.Snake;
+import view.Comp;
 import view.GameFrame;
 
 /**
@@ -67,8 +66,10 @@ public class GameThread implements Runnable {
 			player.setLookingDirection(dir);
 
 		if (!player.move()) {
-			JOptionPane.showMessageDialog(GameFrame.getInstance(), "lost");
-			System.exit(0);
+			stop();
+			GameFrame.getInstance().changeComponent(Comp.GAMEMENUPANEL);
+			// TODO add score to ScoreList
+			return;
 		}
 		// TODO MoveSnake (Check: onItem, ...)
 		// TODO Win / Loose
@@ -92,13 +93,13 @@ public class GameThread implements Runnable {
 			}
 
 			GameFrame.getInstance().requestFocus();
-			if (KeyBoard.getInstance().isKeyPressed(KeyEvent.VK_W))
+			if (KeyBoard.getInstance().isKeyPressed(KeyBoard.UP))
 				dir = Direction.UP;
-			if (KeyBoard.getInstance().isKeyPressed(KeyEvent.VK_D))
+			if (KeyBoard.getInstance().isKeyPressed(KeyBoard.RIGHT))
 				dir = Direction.RIGHT;
-			if (KeyBoard.getInstance().isKeyPressed(KeyEvent.VK_S))
+			if (KeyBoard.getInstance().isKeyPressed(KeyBoard.DOWN))
 				dir = Direction.DOWN;
-			if (KeyBoard.getInstance().isKeyPressed(KeyEvent.VK_A))
+			if (KeyBoard.getInstance().isKeyPressed(KeyBoard.LEFT))
 				dir = Direction.LEFT;
 
 			if (System.currentTimeMillis() - timer > 1000) {

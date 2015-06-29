@@ -5,9 +5,26 @@ import java.awt.event.KeyEvent;
 
 /**
  * @author Stefan Kameter
- * @version 22.06.2015
+ * @version 29.06.2015
  */
 public class KeyBoard extends KeyAdapter {
+	/**
+	 * KeyCode for moving up.
+	 */
+	public static int UP = KeyEvent.VK_W;
+	/**
+	 * KeyCode for moving right.
+	 */
+	public static int RIGHT = KeyEvent.VK_D;
+	/**
+	 * KeyCode for moving down.
+	 */
+	public static int DOWN = KeyEvent.VK_S;
+	/**
+	 * KeyCode for moving left.
+	 */
+	public static int LEFT = KeyEvent.VK_A;
+
 	private static KeyBoard instance;
 
 	/**

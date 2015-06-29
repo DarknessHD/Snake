@@ -21,8 +21,14 @@ import model.SnakeSegment;
 public class GameCanvas extends Canvas {
 	private static final long serialVersionUID = 1L;
 
-	private static final int WIDTH = 960;
-	private static final int HEIGHT = 640;
+	/**
+	 * Component width.
+	 */
+	public static final int CANVAS_WIDTH = 961;
+	/**
+	 * Component height.
+	 */
+	public static final int CANVAS_HEIGHT = 641;
 	private static final int TILE_SIZE = 32;
 	private static final int TILE_SIZE_BW = (int) (Math.log(TILE_SIZE) / Math.log(2));
 	/**
@@ -54,7 +60,7 @@ public class GameCanvas extends Canvas {
 		this.cellObjects = new ArrayList<CellObject>(); // TODO
 		this.snake = new Snake(3, new Point(0, 2), Direction.DOWN); // TODO
 
-		setSize(new Dimension(WIDTH, HEIGHT));
+		setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
 
 		initListener();
 	}
@@ -82,7 +88,7 @@ public class GameCanvas extends Canvas {
 	@Override
 	public void paint(Graphics g) {
 		if (bufferGraphics == null) {
-			buffer = new BufferedImage(WIDTH + 1, HEIGHT + 1, BufferedImage.TYPE_INT_ARGB);
+			buffer = new BufferedImage(CANVAS_WIDTH, CANVAS_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 			bufferGraphics = buffer.getGraphics();
 		}
 
@@ -107,7 +113,7 @@ public class GameCanvas extends Canvas {
 			bufferGraphics.drawImage(s.getImage(), p.x << TILE_SIZE_BW, p.y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE, null);
 		}
 
-		g.drawImage(buffer, 5, 5, WIDTH, HEIGHT, null);
+		g.drawImage(buffer, 5, 5, buffer.getWidth(), buffer.getHeight(), null);
 	}
 
 	/**
