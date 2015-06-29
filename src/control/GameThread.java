@@ -103,7 +103,8 @@ public class GameThread implements Runnable {
 
 			if (System.currentTimeMillis() - timer > 1000) {
 				timer += 1000;
-				sec++; // Do we really need sec?
+				sec++;
+				GameFrame.getInstance().setScore(sec);
 				// TODO add Score
 			}
 		}

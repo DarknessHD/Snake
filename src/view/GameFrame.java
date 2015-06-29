@@ -11,7 +11,7 @@ import control.GameThread;
 
 /**
  * @author Stefan Kameter
- * @version 23.06.2015
+ * @version 28.06.2015
  */
 public class GameFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -20,7 +20,6 @@ public class GameFrame extends JFrame {
 	 * The path of data.
 	 */
 	public static final String DATAPATH = "data";
-
 	private static final String TITLE = "Snake";
 
 	private static GameFrame instance;
@@ -42,7 +41,7 @@ public class GameFrame extends JFrame {
 	private int score;
 
 	private GameFrame() {
-		addScore(0);
+		setScore(0);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		setLayout(new BorderLayout());
@@ -80,13 +79,13 @@ public class GameFrame extends JFrame {
 	}
 
 	/**
-	 * Adds a score value to the final score.
+	 * Sets the a score value.
 	 * 
 	 * @param score
-	 *            the addition to the score
+	 *            the new score
 	 */
-	public void addScore(int score) {
-		this.score += score;
+	public void setScore(int score) {
+		this.score = score;
 		setTitle(TITLE + " - Score: " + this.score);
 	}
 
