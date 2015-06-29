@@ -109,7 +109,6 @@ public class GameFrame extends JFrame {
 	}
 
 	public void onMove() {
-		
 	}
 
 	/**
