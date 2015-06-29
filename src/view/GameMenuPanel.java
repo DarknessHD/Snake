@@ -8,7 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 /**
- * @author Hoodle
+ * @author Stefan Kameter
  * @version 29.06.2015
  */
 public class GameMenuPanel extends JPanel {

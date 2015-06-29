@@ -1,7 +1,7 @@
 package view;
 
 /**
- * @author Hoodle
+ * @author Stefan Kameter
  * @version 29.06.2015
  */
 public enum Comp {

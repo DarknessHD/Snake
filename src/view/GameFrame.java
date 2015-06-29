@@ -9,9 +9,9 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
-import model.Apple;
-import model.CellObject;
 import model.Snake;
+import model.cellobject.Apple;
+import model.cellobject.CellObject;
 import control.GameThread;
 
 /**
@@ -75,6 +75,24 @@ public class GameFrame extends JFrame {
 		addKeyListener(KeyBoard.getInstance());
 	}
 
+	/**
+	 * @return player snake
+	 */
+	public Snake getSnake() {
+		return gameCanvas.getSnake();
+	}
+
+	/**
+	 * Sets the a score value.
+	 * 
+	 * @param score
+	 *            the new score
+	 */
+	public void setScore(int score) {
+		this.score = score;
+		setTitle(TITLE + " - Score: " + this.score);
+	}
+
 	private Comp lastComponent;
 
 	/**
@@ -108,16 +126,6 @@ public class GameFrame extends JFrame {
 		}
 	}
 
-	public void onMove() {
-	}
-
-	/**
-	 * @return player snake
-	 */
-	public Snake getSnake() {
-		return gameCanvas.getSnake();
-	}
-
 	/**
 	 * Starts the thread of GameLoop.
 	 */
@@ -126,21 +134,17 @@ public class GameFrame extends JFrame {
 	}
 
 	/**
-	 * Sets the a score value.
-	 * 
-	 * @param score
-	 *            the new score
-	 */
-	public void setScore(int score) {
-		this.score = score;
-		setTitle(TITLE + " - Score: " + this.score);
-	}
-
-	/**
 	 * Repaint only the GameCanvas.
 	 */
 	public void repaintGameCanvas() {
 		gameCanvas.repaint();
+	}
+
+	/**
+	 * Executes onSnakeHitCellObject, if necessary.
+	 */
+	public void onMove() {
+		gameCanvas.onMove();
 	}
 
 	/**

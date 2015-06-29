@@ -1,8 +1,11 @@
-package model;
+package model.cellobject;
 
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
+
+import model.ImageHolder;
+import model.Snake;
 
 /**
  * @author Stefan Kameter, Eric Armbruster

@@ -3,6 +3,8 @@ package model;
 import java.awt.Point;
 import java.util.Objects;
 
+import model.cellobject.CellObject;
+
 /**
  * @author Eric Armbruster
  * @version 23.06.2015
