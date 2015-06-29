@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 import view.GameCanvas;
 
@@ -12,8 +13,13 @@ import view.GameCanvas;
  * @version 23.06.2015
  */
 public class Snake {
-
-	private static final int MIN_SEGMENTS = 2, MIN_SPEED = 1, MIN_LIVES = 0, MIN_SCORE = 0;
+	
+	private static final int MIN_SEGMENTS_VALUE = 2, MIN_SPEED_VALUE = 1, MIN_LIVES_VALUE = 0, MIN_SCORE_VALUE = 0;
+	
+	private static final Predicate<Integer> MIN_SEGMENTS = t -> t >= MIN_SEGMENTS_VALUE;
+	private static final Predicate<Integer> MIN_SPEED = t -> t >= MIN_SPEED_VALUE;
+	private static final Predicate<Integer> MIN_LIVES = t -> t >= MIN_LIVES_VALUE;
+	private static final Predicate<Integer> MIN_SCORE = t -> t >= MIN_SCORE_VALUE;
 
 	private Deque<SnakeSegment> segments;
 	private Direction lastDirection;
@@ -35,16 +41,20 @@ public class Snake {
 	 *            the lives of the snake, default is 0
 	 */
 	public Snake(int startSegments, Point startPosition, Direction startDirection, int speed, int lives) {
-		if (startSegments < MIN_SEGMENTS)
-			throw new IllegalArgumentException("Snake must have at least " + MIN_SEGMENTS + "!");
-		if (speed < MIN_SPEED)
-			throw new IllegalArgumentException("Snake must have at least a speed of " + MIN_SPEED + "!");
-		if (lives < MIN_LIVES)
-			throw new IllegalArgumentException("Snake must have at least " + MIN_LIVES + " lives!");
+		if(!MIN_SEGMENTS.test(startSegments))
+			startSegments = MIN_SEGMENTS_VALUE;
+		
+		if(!MIN_SPEED.test(speed))
+			this.speed = MIN_SPEED_VALUE;
+		else
+			this.speed = speed;
+		
+		if(!MIN_LIVES.test(lives))
+			this.lives = MIN_LIVES_VALUE;
+		else
+			this.lives = lives;
 
 		this.lastDirection = Objects.requireNonNull(startDirection);
-		this.speed = speed;
-		this.lives = lives;
 
 		segments = new LinkedList<SnakeSegment>();
 
@@ -52,6 +62,7 @@ public class Snake {
 				startPosition), startDirection));
 
 		Direction opposite = startDirection.getOpposite();
+
 		for (int i = 1; i < startSegments - 1; i++)
 			segments.add(new SnakeSegment(RotatedImage.get(startDirection, RotatedImage.BODY_IMAGE), getNextPosition(
 					startPosition, opposite), startDirection));
@@ -94,9 +105,10 @@ public class Snake {
 	 *            the speed
 	 */
 	public void setSpeed(int speed) {
-		if (speed < MIN_SPEED)
-			throw new IllegalArgumentException("Snake must have at least a speed of " + MIN_SPEED + "!");
-		this.speed = speed;
+		if(!MIN_SPEED.test(speed))
+			this.speed = MIN_SPEED_VALUE;
+		else
+			this.speed = speed;
 	}
 
 	/**
@@ -115,9 +127,10 @@ public class Snake {
 	 *            the lives
 	 */
 	public void setLives(int lives) {
-		if (lives < MIN_LIVES)
-			throw new IllegalArgumentException("Snake must have at least " + MIN_LIVES + " lives!");
-		this.lives = lives;
+		if(!MIN_LIVES.test(lives))
+			this.lives = MIN_LIVES_VALUE;
+		else
+			this.lives = lives;
 	}
 	
 	/**
@@ -136,9 +149,10 @@ public class Snake {
 	 *            the new score
 	 */
 	public void setScore(int score) {
-		if (score < MIN_SCORE)
-			throw new IllegalArgumentException("Snake must have at least a score of " + MIN_SCORE + "!");
-		this.score = score;
+		if(!MIN_SCORE.test(score))
+			this.score = MIN_SCORE_VALUE;
+		else
+			this.score = score;
 	}
 
 	/**
@@ -210,18 +224,21 @@ public class Snake {
 	}
 
 	/**
-	 * Removes a segment from the snake.
+	 * Removes the last segment from the snake.
+	 * 
+	 * @return true, when the last segment was removed and false otherwise, when there are not enough segments left to remove one more. 
 	 */
-	public void removeSegment() {
-		if (segments.size() <= MIN_SEGMENTS)
-			throw new IllegalStateException("Snake must have at least " + MIN_SEGMENTS + "!");
+	public boolean removeSegment() {
+		if(!MIN_SEGMENTS.test(segments.size()-1))
+			return false;
 
 		segments.removeLast();
 		segments.getLast().setImage(RotatedImage.get(segments.getLast().getDirection(), RotatedImage.TAIL_IMAGE));
+		return true;
 	}
 
 	/**
-	 * Adds a segment to the snake.
+	 * Adds a segment to the end of the snake.
 	 */
 	public void addSegment() {
 		SnakeSegment newBody = segments.getLast();

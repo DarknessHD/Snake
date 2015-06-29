@@ -80,7 +80,7 @@ public abstract class CellObject {
 	 * Subclasses must implement their functionality, when they get hit by a snake.
 	 * 
 	 * @param snake
-	 *            the snake, which hit the CellObject
+	 *            the snake, which has hit the CellObject
 	 */
 	public abstract void onSnakeHitCellObject(Snake snake);
 }
