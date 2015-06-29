@@ -1,9 +1,6 @@
 package control;
 
 import input.KeyBoard;
-
-import javax.swing.JOptionPane;
-
 import model.Direction;
 import model.Snake;
 import view.Comp;
