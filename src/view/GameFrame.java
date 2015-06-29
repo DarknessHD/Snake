@@ -3,9 +3,14 @@ package view;
 import input.KeyBoard;
 
 import java.awt.BorderLayout;
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
 
+import model.Apple;
+import model.CellObject;
 import model.Snake;
 import control.GameThread;
 
@@ -58,7 +63,9 @@ public class GameFrame extends JFrame {
 	}
 
 	private void initComponents() {
-		gameCanvas = new GameCanvas(null, null);
+		List<CellObject> cellObjects = new ArrayList<CellObject>();
+		cellObjects.add(new Apple(new Point(10, 10)));
+		gameCanvas = new GameCanvas(null, cellObjects);
 		gmp = new GameMenuPanel();
 
 		changeComponent(Comp.GAMEMENUPANEL);
@@ -99,6 +106,9 @@ public class GameFrame extends JFrame {
 			add(gmp, BorderLayout.CENTER);
 			break;
 		}
+	}
+
+	public void onMove() {
 	}
 
 	/**

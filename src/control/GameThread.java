@@ -68,7 +68,7 @@ public class GameThread implements Runnable {
 			// TODO add score to ScoreList
 			return;
 		}
-		// TODO MoveSnake (Check: onItem, ...)
+		GameFrame.getInstance().onMove();
 		// TODO Win / Loose
 		GameFrame.getInstance().repaintGameCanvas();
 	}

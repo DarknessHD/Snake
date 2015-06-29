@@ -30,7 +30,8 @@ public class GameCanvas extends Canvas {
 	 */
 	public static final int CANVAS_HEIGHT = 641;
 	private static final int TILE_SIZE = 32;
-	private static final int TILE_SIZE_BW = (int) (Math.log(TILE_SIZE) / Math.log(2));
+	private static final int TILE_SIZE_BW = (int) (Math.log(TILE_SIZE) / Math
+			.log(2));
 	/**
 	 * The width of tiles in the level.
 	 */
@@ -57,7 +58,6 @@ public class GameCanvas extends Canvas {
 	public GameCanvas(Snake snake, List<CellObject> cellObjects) {
 		this.cellObjects = cellObjects;
 		this.snake = snake;
-		this.cellObjects = new ArrayList<CellObject>(); // TODO
 		this.snake = new Snake(3, new Point(0, 2), Direction.DOWN); // TODO
 
 		setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
@@ -88,7 +88,8 @@ public class GameCanvas extends Canvas {
 	@Override
 	public void paint(Graphics g) {
 		if (bufferGraphics == null) {
-			buffer = new BufferedImage(CANVAS_WIDTH, CANVAS_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+			buffer = new BufferedImage(CANVAS_WIDTH, CANVAS_HEIGHT,
+					BufferedImage.TYPE_INT_ARGB);
 			bufferGraphics = buffer.getGraphics();
 		}
 
@@ -99,18 +100,21 @@ public class GameCanvas extends Canvas {
 
 		for (int y = 0; y < LEVEL_HEIGHT; y++)
 			for (int x = 0; x < LEVEL_WIDTH; x++)
-				bufferGraphics.drawRect(x << TILE_SIZE_BW, y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE);
+				bufferGraphics.drawRect(x << TILE_SIZE_BW, y << TILE_SIZE_BW,
+						TILE_SIZE, TILE_SIZE);
 
 		// CellObjects
 		for (CellObject o : cellObjects) {
 			Point p = o.getPosition();
-			bufferGraphics.drawImage(o.getImage(), p.x << TILE_SIZE_BW, p.y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE, null);
+			bufferGraphics.drawImage(o.getImage(), p.x << TILE_SIZE_BW,
+					p.y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE, null);
 		}
 
 		// Snake
 		for (SnakeSegment s : snake.getSegments()) {
 			Point p = s.getPosition();
-			bufferGraphics.drawImage(s.getImage(), p.x << TILE_SIZE_BW, p.y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE, null);
+			bufferGraphics.drawImage(s.getImage(), p.x << TILE_SIZE_BW,
+					p.y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE, null);
 		}
 
 		g.drawImage(buffer, 5, 5, buffer.getWidth(), buffer.getHeight(), null);
@@ -156,7 +160,8 @@ public class GameCanvas extends Canvas {
 
 		int size = src.getWidth();
 
-		BufferedImage rotatedImage = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage rotatedImage = new BufferedImage(size, size,
+				BufferedImage.TYPE_INT_ARGB);
 
 		int[] srcPixels = new int[size * size];
 		src.getRGB(0, 0, size, size, srcPixels, 0, size);
@@ -165,17 +170,20 @@ public class GameCanvas extends Canvas {
 		case VERTICAL:
 			for (int y = 0; y < size; y++)
 				for (int x = 0; x < size; x++)
-					rotatedImage.setRGB(x, y, srcPixels[size - 1 - x + y * size]);
+					rotatedImage.setRGB(x, y,
+							srcPixels[size - 1 - x + y * size]);
 			break;
 		case HORIZONTAL:
 			for (int y = 0; y < size; y++)
 				for (int x = 0; x < size; x++)
-					rotatedImage.setRGB(x, y, srcPixels[x + (size - 1 - y) * size]);
+					rotatedImage.setRGB(x, y, srcPixels[x + (size - 1 - y)
+							* size]);
 			break;
 		case DIAGONAL:
 			for (int y = 0; y < size; y++)
 				for (int x = 0; x < size; x++)
-					rotatedImage.setRGB(x, y, srcPixels[size - 1 - x + (size - 1 - y) * size]);
+					rotatedImage.setRGB(x, y, srcPixels[size - 1 - x
+							+ (size - 1 - y) * size]);
 			break;
 		default:
 			rotateClockWise(srcPixels, rotatedImage, size);
@@ -191,7 +199,8 @@ public class GameCanvas extends Canvas {
 		return rotatedImage;
 	}
 
-	private static void rotateClockWise(int[] srcPixels, BufferedImage rotatedImage, int size) {
+	private static void rotateClockWise(int[] srcPixels,
+			BufferedImage rotatedImage, int size) {
 		for (int y = 0; y < size; y++)
 			for (int x = 0; x < size; x++)
 				rotatedImage.setRGB(x, y, srcPixels[y + (size - 1 - x) * size]);
