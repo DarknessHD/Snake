@@ -90,6 +90,7 @@ public class GameThread implements Runnable {
 			}
 
 			GameFrame.getInstance().requestFocus();
+
 			if (KeyBoard.getInstance().isKeyPressed(KeyBoard.UP))
 				dir = Direction.UP;
 			if (KeyBoard.getInstance().isKeyPressed(KeyBoard.RIGHT))
@@ -102,8 +103,7 @@ public class GameThread implements Runnable {
 			if (System.currentTimeMillis() - timer > 1000) {
 				timer += 1000;
 				sec++;
-				GameFrame.getInstance().setScore(sec);
-				// TODO add Score
+				// TODO add Score per second
 			}
 		}
 	}

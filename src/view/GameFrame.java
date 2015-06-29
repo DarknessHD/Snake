@@ -90,7 +90,7 @@ public class GameFrame extends JFrame {
 	 */
 	public void setScore(int score) {
 		this.score = score;
-		setTitle(TITLE + " - Score: " + this.score);
+		setTitle(TITLE);// + " - Score: " + this.score);
 	}
 
 	private Comp lastComponent;
