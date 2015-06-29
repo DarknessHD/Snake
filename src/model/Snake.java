@@ -13,12 +13,12 @@ import view.GameCanvas;
  */
 public class Snake {
 
-	private static final int MIN_SEGMENTS = 2, MIN_SPEED = 1, MIN_LIVES = 0;
+	private static final int MIN_SEGMENTS = 2, MIN_SPEED = 1, MIN_LIVES = 0, MIN_SCORE = 0;
 
 	private Deque<SnakeSegment> segments;
 	private Direction lastDirection;
 	private boolean directionChange = false;
-	private int speed = 1, lives = 1;
+	private int speed = 1, lives = 1, score = 0;
 
 	/**
 	 * Creates a new Snake instance with @param startSegments segments.
@@ -116,8 +116,29 @@ public class Snake {
 	 */
 	public void setLives(int lives) {
 		if (lives < MIN_LIVES)
-			throw new IllegalArgumentException("Snake must have at least " + MIN_LIVES + " lives");
+			throw new IllegalArgumentException("Snake must have at least " + MIN_LIVES + " lives!");
 		this.lives = lives;
+	}
+	
+	/**
+	 * Returns the current score of the snake.
+	 * 
+	 * @return the score
+	 */
+	public int getScore() {
+		return this.score;
+	}
+
+	/**
+	 * Sets the current score of the snake.
+	 * 
+	 * @param score
+	 *            the new score
+	 */
+	public void setScore(int score) {
+		if (score < MIN_SCORE)
+			throw new IllegalArgumentException("Snake must have at least a score of " + MIN_SCORE + "!");
+		this.score = score;
 	}
 
 	/**
