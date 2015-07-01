@@ -3,6 +3,7 @@ package model;
 import java.awt.Point;
 import java.util.Objects;
 
+import view.GameCanvas;
 import model.cellobject.CellObject;
 
 /**
@@ -12,19 +13,41 @@ import model.cellobject.CellObject;
 public class SnakeSegment extends CellObject {
 
 	private Direction direction;
-	
+
 	/**
 	 * Creates a new SnakeSegment instance.
 	 * 
-	 * @param image the image of the snake segment
-	 * @param position the position of the snake segment
-	 * @param direction the direction of the snake segment
+	 * @param image
+	 *            the image of the snake segment
+	 * @param position
+	 *            the position of the snake segment
+	 * @param direction
+	 *            the direction of the snake segment
 	 */
 	public SnakeSegment(String image, Point position, Direction direction) {
 		super(image, position);
 		this.direction = Objects.requireNonNull(direction);
 	}
-	
+
+	/**
+	 * Creates a new SnakeSegment instance.
+	 * 
+	 * @param image
+	 *            the image of the snake segment
+	 * @param startPosition
+	 * @param direction
+	 *            the direction of the snake segment
+	 * @param opposite
+	 *            whether or not the opposite direction is used for getting the
+	 *            adjacent position
+	 * @param endlessLevel
+	 *            whether or not the level is endless
+	 */
+	public SnakeSegment(String image, Point startPosition, Direction direction, boolean opposite, boolean endlessLevel) {
+		this(image, getAdjacentPosition(startPosition, (opposite) ? direction.getOpposite() : direction, endlessLevel),
+				direction);
+	}
+
 	/**
 	 * Returns the direction of the snake segment.
 	 * 
@@ -33,11 +56,12 @@ public class SnakeSegment extends CellObject {
 	public Direction getDirection() {
 		return this.direction;
 	}
-	
+
 	/**
 	 * Sets the direction of the snake segment.
 	 * 
-	 * @param direction the direction of the snake segment
+	 * @param direction
+	 *            the direction of the snake segment
 	 */
 	public void setDirection(Direction direction) {
 		this.direction = Objects.requireNonNull(direction);
@@ -45,6 +69,26 @@ public class SnakeSegment extends CellObject {
 
 	@Override
 	public void onSnakeHitCellObject(Snake snake) {
-		//TODO Game Over Screen!
+		// TODO Game Over Screen!
+	}
+
+	private static Point getAdjacentPosition(Point startPosition, Direction direction, boolean endlessLevel) {
+		startPosition.setLocation((int) startPosition.getX() + direction.getXOffset(), (int) startPosition.getY()
+				+ direction.getYOffset());
+
+		Point adjacent = new Point(startPosition);
+
+		if (endlessLevel) {
+			if (adjacent.getX() < -1)
+				adjacent.setLocation(GameCanvas.LEVEL_WIDTH - 1, adjacent.getY());
+			else if (adjacent.getY() < -1)
+				adjacent.setLocation(adjacent.getX(), GameCanvas.LEVEL_HEIGHT - 1);
+			else if (adjacent.getX() > GameCanvas.LEVEL_WIDTH - 1)
+				adjacent.setLocation(0, adjacent.getY());
+			else if (adjacent.getY() > GameCanvas.LEVEL_HEIGHT - 1)
+				adjacent.setLocation(adjacent.getX(), 0);
+		}
+
+		return adjacent;
 	}
 }
