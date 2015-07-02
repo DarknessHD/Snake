@@ -12,6 +12,7 @@ import model.cellobject.CellObject;
  */
 public class SnakeSegment extends CellObject {
 
+	private static int count = 0;
 	private Direction direction;
 
 	/**
@@ -73,12 +74,14 @@ public class SnakeSegment extends CellObject {
 	}
 
 	private static Point getAdjacentPosition(Point startPosition, Direction direction, boolean endlessLevel) {
+		Point copyStartPosition = new Point(startPosition);
 		startPosition.setLocation((int) startPosition.getX() + direction.getXOffset(), (int) startPosition.getY()
 				+ direction.getYOffset());
 
 		Point adjacent = new Point(startPosition);
+		count++;
 
-		if (endlessLevel) {
+		if(endlessLevel) {
 			if (adjacent.getX() < -1)
 				adjacent.setLocation(GameCanvas.LEVEL_WIDTH - 1, adjacent.getY());
 			else if (adjacent.getY() < -1)
@@ -86,7 +89,12 @@ public class SnakeSegment extends CellObject {
 			else if (adjacent.getX() > GameCanvas.LEVEL_WIDTH - 1)
 				adjacent.setLocation(0, adjacent.getY());
 			else if (adjacent.getY() > GameCanvas.LEVEL_HEIGHT - 1)
-				adjacent.setLocation(adjacent.getX(), 0);
+				adjacent.setLocation(adjacent.getX(), 0);	
+		}
+		else if(adjacent.getX() > GameCanvas.LEVEL_WIDTH - 1 || adjacent.getY() > GameCanvas.LEVEL_HEIGHT - 1
+				|| adjacent.getX() < 0 || adjacent.getY() < 0) {
+			if(count < Direction.values().length)
+				getAdjacentPosition(copyStartPosition, direction.getNext(), endlessLevel);			
 		}
 
 		return adjacent;

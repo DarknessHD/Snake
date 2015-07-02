@@ -14,20 +14,19 @@ import view.GameCanvas;
  */
 public class Snake {
 
-	private static final int MIN_SEGMENTS_VALUE = 2, MIN_SPEED_VALUE = 1, MIN_LIVES_VALUE = 0, MIN_SCORE_VALUE = 0;
+	private static final int MIN_SEGMENTS_VALUE = 2, MIN_LIVES_VALUE = 0, MIN_SCORE_VALUE = 0;
 
 	private static final Predicate<Integer> MIN_SEGMENTS = t -> t >= MIN_SEGMENTS_VALUE;
-	private static final Predicate<Integer> MIN_SPEED = t -> t >= MIN_SPEED_VALUE;
 	private static final Predicate<Integer> MIN_LIVES = t -> t >= MIN_LIVES_VALUE;
 	private static final Predicate<Integer> MIN_SCORE = t -> t >= MIN_SCORE_VALUE;
 
 	private Deque<SnakeSegment> segments;
 	private Direction lastDirection;
-	private boolean directionChange = false;
-	private int speed = 1, lives = 1, score = 0;
+	private boolean directionChange = false, endless;
+	private int lives = 1, score = 0;
 
 	/**
-	 * Creates a new Snake instance with @param startSegments segments.
+	 * Creates a new Snake instance.
 	 * 
 	 * @param startSegments
 	 *            the amount of segments the snake has
@@ -35,19 +34,14 @@ public class Snake {
 	 *            the start position of the snake
 	 * @param startDirection
 	 *            the direction the snake is looking into
-	 * @param speed
-	 *            the speed of the snake, default is 10
+	 * @param endless
+	 *            whether or not the level is endless
 	 * @param lives
 	 *            the lives of the snake, default is 0
 	 */
-	public Snake(int startSegments, Point startPosition, Direction startDirection, int speed, int lives) {
+	public Snake(int startSegments, Point startPosition, Direction startDirection, boolean endless, int lives) {
 		if (!MIN_SEGMENTS.test(startSegments))
 			startSegments = MIN_SEGMENTS_VALUE;
-
-		if (!MIN_SPEED.test(speed))
-			this.speed = MIN_SPEED_VALUE;
-		else
-			this.speed = speed;
 
 		if (!MIN_LIVES.test(lives))
 			this.lives = MIN_LIVES_VALUE;
@@ -55,6 +49,7 @@ public class Snake {
 			this.lives = lives;
 
 		this.lastDirection = Objects.requireNonNull(startDirection);
+		this.endless = endless;
 
 		segments = new LinkedList<SnakeSegment>();
 
@@ -63,15 +58,14 @@ public class Snake {
 
 		for (int i = 1; i < startSegments - 1; i++)
 			segments.add(new SnakeSegment(RotatedImage.get(startDirection, RotatedImage.BODY_IMAGE), startPosition,
-					startDirection, true, false));
+					startDirection, true, endless));
 
 		segments.addLast(new SnakeSegment(RotatedImage.get(startDirection.getOpposite(), RotatedImage.TAIL_IMAGE),
-				startPosition, startDirection, true, false));
+				startPosition, startDirection, true, endless));
 	}
 
 	/**
-	 * Creates a new Snake instance with @param startSegments segments, @param
-	 * speed 10, @param lives 0.
+	 * Creates a new Snake instance.
 	 * 
 	 * @param startSegments
 	 *            the amount of segments the snake has
@@ -79,35 +73,11 @@ public class Snake {
 	 *            the start position of the snake
 	 * @param startDirection
 	 *            the direction the snake is looking into
-	 * @param speed
-	 *            the speed of the snake, default is 10
 	 * @param lives
 	 *            the lives of the snake, default is 0
 	 */
 	public Snake(int startSegments, Point startPosition, Direction startDirection) {
-		this(startSegments, startPosition, startDirection, 10, 0);
-	}
-
-	/**
-	 * Returns the speed of the snake.
-	 * 
-	 * @return the speed
-	 */
-	public int getSpeed() {
-		return this.speed;
-	}
-
-	/**
-	 * Sets the speed of the snake.
-	 * 
-	 * @param speed
-	 *            the speed
-	 */
-	public void setSpeed(int speed) {
-		if (!MIN_SPEED.test(speed))
-			this.speed = MIN_SPEED_VALUE;
-		else
-			this.speed = speed;
+		this(startSegments, startPosition, startDirection, false, 0);
 	}
 
 	/**
@@ -221,8 +191,6 @@ public class Snake {
 			head.setDirection(direction);
 		}
 	}
-	
-	//TODO Do we need an option for endless level here?
 
 	/**
 	 * Removes the last segment from the snake.
@@ -246,50 +214,7 @@ public class Snake {
 		SnakeSegment newBody = segments.getLast();
 		newBody.setImage(RotatedImage.get(newBody.getDirection(), RotatedImage.BODY_IMAGE));
 		segments.addLast(new SnakeSegment(RotatedImage.get(newBody.getDirection().getOpposite(),
-				RotatedImage.TAIL_IMAGE), new Point(newBody.getPosition()), newBody.getDirection(), true, false));
-	}
-
-	/**
-	 * Returns whether or not the snake has walked over the edge of the map.
-	 * 
-	 * @return true when the snake has walked over the edge of the map, false
-	 *         otherwise.
-	 */
-	public boolean hasWalkedOverEdge() {
-		Point headPos = segments.getFirst().getPosition();
-		return (headPos.getX() > GameCanvas.LEVEL_WIDTH - 1 || headPos.getY() > GameCanvas.LEVEL_HEIGHT - 1
-				|| headPos.getX() < 0 || headPos.getY() < 0);
-	}
-
-	/**
-	 * Moves the snake one cell forward into the direction its looking into, if
-	 * possible.
-	 * 
-	 * @param endlessLevel
-	 *            whether or not the level is endless
-	 * 
-	 * @return true when the snake was moved, false otherwise.
-	 */
-	public boolean move(boolean endlessLevel) {
-		SnakeSegment newBody = segments.getFirst();
-		if (!endlessLevel)
-			if (hasWalkedOverEdge())
-				return false;
-
-		if (directionChange) {
-			newBody.setImage(RotatedImage.getCurve(lastDirection, getLookingDirection()));
-			directionChange = false;
-		} else
-			newBody.setImage(RotatedImage.get(newBody.getDirection(), RotatedImage.BODY_IMAGE));
-
-		segments.addFirst(new SnakeSegment(RotatedImage.get(newBody.getDirection(), RotatedImage.HEAD_IMAGE),
-				new Point(newBody.getPosition()), newBody.getDirection(), false, endlessLevel));
-
-		segments.removeLast();
-		segments.getLast().setImage(
-				RotatedImage.get(segments.getLast().getDirection().getOpposite(), RotatedImage.TAIL_IMAGE));
-
-		return true;
+				RotatedImage.TAIL_IMAGE), new Point(newBody.getPosition()), newBody.getDirection(), true, endless));
 	}
 
 	/**
@@ -299,6 +224,26 @@ public class Snake {
 	 * @return true when the snake was moved, false otherwise.
 	 */
 	public boolean move() {
-		return move(false);
+		SnakeSegment newBody = segments.getFirst();
+		Point headPos = newBody.getPosition();
+		if (!endless)
+			if (headPos.getX() > GameCanvas.LEVEL_WIDTH - 1 || headPos.getY() > GameCanvas.LEVEL_HEIGHT - 1
+					|| headPos.getX() < 0 || headPos.getY() < 0)
+				return false;
+
+		if (directionChange) {
+			newBody.setImage(RotatedImage.getCurve(lastDirection, getLookingDirection()));
+			directionChange = false;
+		} else
+			newBody.setImage(RotatedImage.get(newBody.getDirection(), RotatedImage.BODY_IMAGE));
+
+		segments.addFirst(new SnakeSegment(RotatedImage.get(newBody.getDirection(), RotatedImage.HEAD_IMAGE),
+				new Point(newBody.getPosition()), newBody.getDirection(), false, endless));
+
+		segments.removeLast();
+		segments.getLast().setImage(
+				RotatedImage.get(segments.getLast().getDirection().getOpposite(), RotatedImage.TAIL_IMAGE));
+
+		return true;
 	}
 }
