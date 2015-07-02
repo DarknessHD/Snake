@@ -3,12 +3,13 @@ package view;
 import input.KeyBoard;
 
 import java.awt.BorderLayout;
+import java.awt.Point;
 import java.util.List;
 
 import javax.swing.JFrame;
 
+import model.Item;
 import model.Snake;
-import model.cellobject.CellObject;
 import control.GameThread;
 
 /**
@@ -85,23 +86,23 @@ public class GameFrame extends JFrame {
 	 * 
 	 * @param snakes
 	 *            the snakes
-	 * @param cellObjects
-	 *            the list of default CellObjects
+	 * @param items
+	 *            the list of default Items
 	 */
-	public void setLevel(Snake[] snakes, List<CellObject> cellObjects) {
-		gameCanvas.setLevel(snakes, cellObjects);
+	public void setLevel(Snake[] snakes, List<Item> items) {
+		gameCanvas.setLevel(snakes, items);
 
 		start();
 	}
 
 	/**
-	 * Adds a CellObject.
+	 * Adds a Item.
 	 * 
-	 * @param cellObject
-	 *            the CellObject
+	 * @param item
+	 *            the Item
 	 */
-	public void addCellObject(CellObject cellObject) {
-		gameCanvas.addCellObject(cellObject);
+	public void addItem(Item item) {
+		gameCanvas.addItem(item);
 	}
 
 	private Comp lastComponent;
@@ -175,6 +176,17 @@ public class GameFrame extends JFrame {
 	 */
 	public void onMove(int index) {
 		gameCanvas.onMove(index);
+	}
+
+	/**
+	 * Checks whether an item is already placed at that position.
+	 * 
+	 * @param position
+	 *            the position to check
+	 * @return whether an item is already placed at that position
+	 */
+	public boolean checkPosition(Point position) {
+		return gameCanvas.checkPosition(position);
 	}
 
 	/**

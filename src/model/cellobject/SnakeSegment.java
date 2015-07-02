@@ -1,10 +1,12 @@
-package model;
+package model.cellobject;
 
 import java.awt.Point;
 import java.util.Objects;
 
+import model.CellObject;
+import model.Direction;
+import model.Snake;
 import view.GameCanvas;
-import model.cellobject.CellObject;
 
 /**
  * @author Eric Armbruster

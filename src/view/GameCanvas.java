@@ -9,10 +9,12 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.CellObject;
 import model.Direction;
+import model.Item;
+import model.ItemSpawner;
 import model.Snake;
-import model.SnakeSegment;
-import model.cellobject.CellObject;
+import model.cellobject.SnakeSegment;
 
 /**
  * @author Stefan Kameter
@@ -46,7 +48,7 @@ public class GameCanvas extends Canvas {
 	private boolean initialized;
 
 	private Snake[] snakes;
-	private List<CellObject> cellObjects;
+	private List<Item> items;
 
 	/**
 	 * Creates a new GameCanvas instance.
@@ -67,13 +69,13 @@ public class GameCanvas extends Canvas {
 	 * 
 	 * @param snakes
 	 *            the snakes
-	 * @param cellObjects
-	 *            the list of default CellObjects
+	 * @param items
+	 *            the list of default Items
 	 */
-	public void setLevel(Snake[] snakes, List<CellObject> cellObjects) {
+	public void setLevel(Snake[] snakes, List<Item> items) {
 		this.snakes = null;
 
-		this.cellObjects = cellObjects;
+		this.items = items;
 		this.snakes = snakes;
 		this.snakes = new Snake[1]; // TODO
 		this.snakes[0] = new Snake(3, new Point(0, 2), Direction.DOWN); // TODO
@@ -91,13 +93,13 @@ public class GameCanvas extends Canvas {
 	}
 
 	/**
-	 * Adds a CellObject.
+	 * Adds an Item.
 	 * 
-	 * @param cellObject
-	 *            the CellObject
+	 * @param item
+	 *            the Item
 	 */
-	public void addCellObject(CellObject cellObject) {
-		cellObjects.add(cellObject);
+	public void addItem(Item item) {
+		items.add(item);
 	}
 
 	/***
@@ -122,12 +124,13 @@ public class GameCanvas extends Canvas {
 			}
 		}
 
-		for (int i = 0; i < cellObjects.size(); i++) {
-			CellObject obj = cellObjects.get(i);
+		for (int i = 0; i < items.size(); i++) {
+			CellObject obj = (CellObject) items.get(i);
 			Point cp = obj.getPosition();
 			if (sp.x == cp.x && sp.y == cp.y) {
 				obj.onSnakeHitCellObject(snakes[index]);
-				cellObjects.remove(i);
+				items.remove(i);
+				items.add(ItemSpawner.getRandomItem());
 			}
 		}
 	}
@@ -149,21 +152,46 @@ public class GameCanvas extends Canvas {
 				for (int x = 0; x < LEVEL_WIDTH; x++)
 					bufferGraphics.drawRect(x << TILE_SIZE_BW, y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE);
 
-			// CellObjects
-			for (CellObject o : cellObjects) {
+			// Items
+			for (Item i : items) {
+				CellObject o = (CellObject) i;
 				Point p = o.getPosition();
-				bufferGraphics.drawImage(o.getImage(), p.x << TILE_SIZE_BW, p.y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE, null);
+				bufferGraphics.drawImage(o.getImage(), p.x << TILE_SIZE_BW, p.y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE,
+						null);
 			}
 
 			// Snakes
 			for (Snake snake : snakes)
 				for (SnakeSegment s : snake.getSegments()) {
 					Point p = s.getPosition();
-					bufferGraphics.drawImage(s.getImage(), p.x << TILE_SIZE_BW, p.y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE, null);
+					bufferGraphics.drawImage(s.getImage(), p.x << TILE_SIZE_BW, p.y << TILE_SIZE_BW, TILE_SIZE,
+							TILE_SIZE, null);
 				}
 
 			g.drawImage(buffer, 5, 5, buffer.getWidth(), buffer.getHeight(), null);
 		}
+	}
+
+	/**
+	 * Checks whether an item is already placed at that position.
+	 * 
+	 * @param position
+	 *            the position to check
+	 * @return whether an item is already placed at that position
+	 */
+	public boolean checkPosition(Point position) {
+		if (items != null)
+			for (Item i : items)
+				if (!((CellObject) i).getPosition().equals(position))
+					return false;
+
+		if (snakes != null)
+			for (Snake snake : snakes)
+				for (SnakeSegment s : snake.getSegments())
+					if (!s.getPosition().equals(position))
+						return false;
+
+		return true;
 	}
 
 	/**

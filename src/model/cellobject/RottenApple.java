@@ -2,13 +2,15 @@ package model.cellobject;
 
 import java.awt.Point;
 
+import model.CellObject;
+import model.Item;
 import model.Snake;
 
 /**
  * @author Alexander Donocik
  * @version 29.06.2015
  */
-public class RottenApple extends CellObject {
+public class RottenApple extends CellObject implements Item {
 	/**
 	 * Creates an instance of RottenApple.
 	 * 
@@ -16,7 +18,7 @@ public class RottenApple extends CellObject {
 	 *            the position in the map
 	 */
 	public RottenApple(Point position) {
-		super("apple_rotten", position);
+		super("apple", position);
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.Objects;
 import java.util.function.Predicate;
 
+import model.cellobject.SnakeSegment;
 import view.GameCanvas;
 
 /**
@@ -13,17 +14,18 @@ import view.GameCanvas;
  * @version 23.06.2015
  */
 public class Snake {
+	
+	//TODO Check if there is something, when adding a segment 
 
-	private static final int MIN_SEGMENTS_VALUE = 2, MIN_LIVES_VALUE = 0, MIN_SCORE_VALUE = 0;
+	private static final int MIN_SEGMENTS_VALUE = 3, MIN_SCORE_VALUE = 0;
 
 	private static final Predicate<Integer> MIN_SEGMENTS = t -> t >= MIN_SEGMENTS_VALUE;
-	private static final Predicate<Integer> MIN_LIVES = t -> t >= MIN_LIVES_VALUE;
 	private static final Predicate<Integer> MIN_SCORE = t -> t >= MIN_SCORE_VALUE;
 
 	private Deque<SnakeSegment> segments;
 	private Direction lastDirection;
 	private boolean directionChange = false, endless;
-	private int lives = 1, score = 0;
+	private int score = 0;
 
 	/**
 	 * Creates a new Snake instance.
@@ -36,17 +38,10 @@ public class Snake {
 	 *            the direction the snake is looking into
 	 * @param endless
 	 *            whether or not the level is endless
-	 * @param lives
-	 *            the lives of the snake, default is 0
 	 */
-	public Snake(int startSegments, Point startPosition, Direction startDirection, boolean endless, int lives) {
+	public Snake(int startSegments, Point startPosition, Direction startDirection, boolean endless) {
 		if (!MIN_SEGMENTS.test(startSegments))
 			startSegments = MIN_SEGMENTS_VALUE;
-
-		if (!MIN_LIVES.test(lives))
-			this.lives = MIN_LIVES_VALUE;
-		else
-			this.lives = lives;
 
 		this.lastDirection = Objects.requireNonNull(startDirection);
 		this.endless = endless;
@@ -77,29 +72,7 @@ public class Snake {
 	 *            the lives of the snake, default is 0
 	 */
 	public Snake(int startSegments, Point startPosition, Direction startDirection) {
-		this(startSegments, startPosition, startDirection, false, 0);
-	}
-
-	/**
-	 * Returns how many lives the snake has left.
-	 * 
-	 * @return the lives
-	 */
-	public int getLives() {
-		return this.lives;
-	}
-
-	/**
-	 * Sets the amount of lives the snake has.
-	 * 
-	 * @param lives
-	 *            the lives
-	 */
-	public void setLives(int lives) {
-		if (!MIN_LIVES.test(lives))
-			this.lives = MIN_LIVES_VALUE;
-		else
-			this.lives = lives;
+		this(startSegments, startPosition, startDirection, false);
 	}
 
 	/**
@@ -122,6 +95,29 @@ public class Snake {
 			this.score = MIN_SCORE_VALUE;
 		else
 			this.score = score;
+	}
+	
+	/**
+	 * Increases the current score.
+	 * 
+	 * @param increaseBy
+	 *            the value by that the score gets increased
+	 */
+	public void increaseScore(int increaseBy) {
+		score += increaseBy;
+	}
+	
+	/**
+	 * Decreases the current score.
+	 * 
+	 * @param decreaseBy
+	 *            the value by that the score gets decreased
+	 */
+	public void decreaseScore(int decreaseBy) {
+		if (MIN_SCORE.test(score - decreaseBy))
+			score -= decreaseBy;
+		else
+			score = MIN_SCORE_VALUE;
 	}
 
 	/**
@@ -203,7 +199,7 @@ public class Snake {
 			return false;
 
 		segments.removeLast();
-		segments.getLast().setImage(RotatedImage.get(segments.getLast().getDirection(), RotatedImage.TAIL_IMAGE));
+		segments.getLast().setImage(RotatedImage.get(segments.getLast().getDirection().getOpposite(), RotatedImage.TAIL_IMAGE));
 		return true;
 	}
 

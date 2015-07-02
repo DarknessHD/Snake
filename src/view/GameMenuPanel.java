@@ -10,8 +10,10 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import model.Item;
+import model.ItemSpawner;
 import model.cellobject.Apple;
-import model.cellobject.CellObject;
+import model.cellobject.RottenApple;
 
 /**
  * @author Stefan Kameter
@@ -54,15 +56,10 @@ public class GameMenuPanel extends JPanel {
 				GameFrame.getInstance().changeComponent(Comp.GAMECANVAS);
 
 				// TODO choose, load, set level
-				List<CellObject> cellObjects = new ArrayList<CellObject>();
-				cellObjects.add(new Apple(new Point(5, 10)));
-				cellObjects.add(new Apple(new Point(6, 10)));
-				cellObjects.add(new Apple(new Point(7, 10)));
-				cellObjects.add(new Apple(new Point(8, 10)));
-				cellObjects.add(new Apple(new Point(9, 10)));
-				cellObjects.add(new Apple(new Point(10, 10)));
-				cellObjects.add(new Apple(new Point(11, 10)));
-				GameFrame.getInstance().setLevel(null, cellObjects);
+				List<Item> items = new ArrayList<Item>();
+				for (int i = 0; i < 3; i++)
+					items.add(ItemSpawner.getRandomItem());
+				GameFrame.getInstance().setLevel(null, items);
 			}
 		});
 

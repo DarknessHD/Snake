@@ -1,18 +1,16 @@
-package model.cellobject;
+package model;
 
 import java.awt.Point;
 import java.awt.image.BufferedImage;
-import java.util.Objects;
 
-import model.ImageHolder;
-import model.Snake;
+import view.GameFrame;
 
 /**
  * @author Stefan Kameter, Eric Armbruster
  * @version 22.06.2015
  */
-public abstract class CellObject {
-	
+public abstract class CellObject implements Cloneable {
+
 	protected String image;
 	protected Point position;
 
@@ -26,7 +24,7 @@ public abstract class CellObject {
 	 */
 	public CellObject(String image, Point position) {
 		this.image = image;
-		this.position = Objects.requireNonNull(position);
+		this.position = position;
 	}
 
 	/**
@@ -37,12 +35,12 @@ public abstract class CellObject {
 	public BufferedImage getImage() {
 		return ImageHolder.getImage(image);
 	}
-	
+
 	/**
 	 * Sets the image of the CellObject.
 	 * 
 	 * @param image
-	 * 			the image
+	 *            the image
 	 */
 	public void setImage(String image) {
 		this.image = image;
@@ -62,9 +60,14 @@ public abstract class CellObject {
 	 * 
 	 * @param position
 	 *            the position
+	 * @return true when the position was set, false otherwise
 	 */
-	public void setPosition(Point position) {
-		this.position = Objects.requireNonNull(position);
+	public boolean setPosition(Point position) {
+		if (GameFrame.getInstance().checkPosition(position)) {
+			this.position = position;
+			return true;
+		} else
+			return false;
 	}
 
 	/**
@@ -79,8 +82,20 @@ public abstract class CellObject {
 		this.position.move(xOffset, yOffset);
 	}
 
+	@Override
+	public CellObject clone() {
+		try {
+			return (CellObject) super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+			System.exit(1);
+			return null;
+		}
+	}
+
 	/**
-	 * Subclasses must implement their functionality, when they get hit by a snake.
+	 * Subclasses must implement their functionality, when they get hit by a
+	 * snake.
 	 * 
 	 * @param snake
 	 *            the snake, which has hit the CellObject
