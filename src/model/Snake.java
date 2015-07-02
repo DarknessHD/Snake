@@ -24,7 +24,7 @@ public class Snake {
 
 	private Deque<SnakeSegment> segments;
 	private Direction lastDirection;
-	private boolean directionChange = false, endless;
+	private boolean directionChange = false, endless, AI;
 	private int score = 0;
 
 	/**
@@ -39,12 +39,13 @@ public class Snake {
 	 * @param endless
 	 *            whether or not the level is endless
 	 */
-	public Snake(int startSegments, Point startPosition, Direction startDirection, boolean endless) {
+	public Snake(int startSegments, Point startPosition, Direction startDirection, boolean endless, boolean AI) {
 		if (!MIN_SEGMENTS.test(startSegments))
 			startSegments = MIN_SEGMENTS_VALUE;
 
 		this.lastDirection = Objects.requireNonNull(startDirection);
 		this.endless = endless;
+		this.AI = AI;
 
 		segments = new LinkedList<SnakeSegment>();
 
@@ -72,7 +73,7 @@ public class Snake {
 	 *            the lives of the snake, default is 0
 	 */
 	public Snake(int startSegments, Point startPosition, Direction startDirection) {
-		this(startSegments, startPosition, startDirection, false);
+		this(startSegments, startPosition, startDirection, false, false);
 	}
 
 	/**
@@ -158,6 +159,15 @@ public class Snake {
 	 */
 	public Deque<SnakeSegment> getSegments() {
 		return new LinkedList<SnakeSegment>(segments);
+	}
+	
+	/**
+	 * Returns whether or not the snake is an AI.
+	 * 
+	 * @return true when the snake is an AI, false otherwise.
+	 */
+	public boolean isAI() {
+		return AI;
 	}
 
 	/**
