@@ -28,17 +28,16 @@ public class ItemSpawner {
 	 * @return a random item
 	 */
 	public static Item getRandomItem() {
-		Item item = items.get((int) (Math.random() * items.size()));
-		CellObject cellObject = ((CellObject) item).clone();
+		Item item = (Item) (items.get((int) (Math.random() * items.size()))).clone();
 
 		while (true) {
 			int x = (int) (Math.random() * GameCanvas.LEVEL_WIDTH);
 			int y = (int) (Math.random() * GameCanvas.LEVEL_HEIGHT);
 
-			if (cellObject.setPosition(new Point(x, y)))
+			if (item.setPosition(new Point(x, y)))
 				break;
 		}
 
-		return (Item) cellObject;
+		return item;
 	}
 }

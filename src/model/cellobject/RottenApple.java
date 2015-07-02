@@ -2,7 +2,6 @@ package model.cellobject;
 
 import java.awt.Point;
 
-import model.CellObject;
 import model.Item;
 import model.Snake;
 
@@ -10,7 +9,7 @@ import model.Snake;
  * @author Alexander Donocik
  * @version 29.06.2015
  */
-public class RottenApple extends CellObject implements Item {
+public class RottenApple extends Item {
 	/**
 	 * Creates an instance of RottenApple.
 	 * 

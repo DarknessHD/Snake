@@ -1,7 +1,6 @@
 package view;
 
 import java.awt.Dimension;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -10,10 +9,9 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import model.CellObject;
 import model.Item;
 import model.ItemSpawner;
-import model.cellobject.Apple;
-import model.cellobject.RottenApple;
 
 /**
  * @author Stefan Kameter
@@ -56,10 +54,9 @@ public class GameMenuPanel extends JPanel {
 				GameFrame.getInstance().changeComponent(Comp.GAMECANVAS);
 
 				// TODO choose, load, set level
-				List<Item> items = new ArrayList<Item>();
+				GameFrame.getInstance().setLevel(null, null);
 				for (int i = 0; i < 3; i++)
-					items.add(ItemSpawner.getRandomItem());
-				GameFrame.getInstance().setLevel(null, items);
+					GameFrame.getInstance().addItem(ItemSpawner.getRandomItem());
 			}
 		});
 
