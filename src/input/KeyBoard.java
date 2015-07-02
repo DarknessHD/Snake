@@ -9,21 +9,21 @@ import java.awt.event.KeyEvent;
  */
 public class KeyBoard extends KeyAdapter {
 	/**
-	 * KeyCode for moving up.
+	 * KeyCodes for moving up.
 	 */
-	public static int UP = KeyEvent.VK_W;
+	public static final int[] UP = { KeyEvent.VK_W, KeyEvent.VK_UP };
 	/**
-	 * KeyCode for moving right.
+	 * KeyCodes for moving right.
 	 */
-	public static int RIGHT = KeyEvent.VK_D;
+	public static final int[] RIGHT = { KeyEvent.VK_D, KeyEvent.VK_RIGHT };
 	/**
-	 * KeyCode for moving down.
+	 * KeyCodes for moving down.
 	 */
-	public static int DOWN = KeyEvent.VK_S;
+	public static final int[] DOWN = { KeyEvent.VK_S, KeyEvent.VK_DOWN };
 	/**
-	 * KeyCode for moving left.
+	 * KeyCodes for moving left.
 	 */
-	public static int LEFT = KeyEvent.VK_A;
+	public static final int[] LEFT = { KeyEvent.VK_A, KeyEvent.VK_LEFT };
 
 	private static KeyBoard instance;
 

@@ -16,7 +16,7 @@ import model.cellobject.CellObject;
 
 /**
  * @author Stefan Kameter
- * @version 28.06.2015
+ * @version 02.07.2015
  */
 public class GameCanvas extends Canvas {
 	private static final long serialVersionUID = 1L;
@@ -43,21 +43,16 @@ public class GameCanvas extends Canvas {
 	private BufferedImage buffer;
 	private Graphics bufferGraphics;
 
-	private Snake snake;
+	private boolean initialized;
+
+	private Snake[] snakes;
 	private List<CellObject> cellObjects;
 
 	/**
 	 * Creates a new GameCanvas instance.
-	 * 
-	 * @param snake
-	 *            the snake
-	 * @param cellObjects
-	 *            the list of default CellObjects
 	 */
-	public GameCanvas(Snake snake, List<CellObject> cellObjects) {
-		this.cellObjects = cellObjects;
-		this.snake = snake;
-		this.snake = new Snake(3, new Point(0, 2), Direction.DOWN); // TODO
+	public GameCanvas() {
+		initialized = false;
 
 		setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
 
@@ -68,10 +63,31 @@ public class GameCanvas extends Canvas {
 	}
 
 	/**
-	 * @return player snake
+	 * Sets the Level.
+	 * 
+	 * @param snakes
+	 *            the snakes
+	 * @param cellObjects
+	 *            the list of default CellObjects
 	 */
-	public Snake getSnake() {
-		return snake;
+	public void setLevel(Snake[] snakes, List<CellObject> cellObjects) {
+		this.snakes = null;
+
+		this.cellObjects = cellObjects;
+		this.snakes = snakes;
+		this.snakes = new Snake[1]; // TODO
+		this.snakes[0] = new Snake(3, new Point(0, 2), Direction.DOWN); // TODO
+
+		initialized = true;
+	}
+
+	/**
+	 * Returns the snakes.
+	 * 
+	 * @return snakes
+	 */
+	public Snake[] getSnakes() {
+		return snakes;
 	}
 
 	/**
@@ -84,13 +100,16 @@ public class GameCanvas extends Canvas {
 		cellObjects.add(cellObject);
 	}
 
-	/**
+	/***
 	 * Executes onSnakeHitCellObject, if necessary.
+	 * 
+	 * @param index
+	 *            the desired snake
 	 */
-	public void onMove() {
-		CellObject head = snake.getHead();
+	public void onMove(int index) {
+		CellObject head = snakes[index].getHead();
 		Point sp = head.getPosition();
-		List<SnakeSegment> segments = new ArrayList<SnakeSegment>(snake.getSegments());
+		List<SnakeSegment> segments = new ArrayList<SnakeSegment>(snakes[index].getSegments());
 
 		for (int i = 0; i < segments.size(); i++) {
 			SnakeSegment seg = segments.get(i);
@@ -98,7 +117,7 @@ public class GameCanvas extends Canvas {
 				continue;
 			Point segp = seg.getPosition();
 			if (sp.x == segp.x && sp.y == segp.y) {
-				seg.onSnakeHitCellObject(snake);
+				seg.onSnakeHitCellObject(snakes[index]);
 				segments.remove(i);
 			}
 		}
@@ -107,7 +126,7 @@ public class GameCanvas extends Canvas {
 			CellObject obj = cellObjects.get(i);
 			Point cp = obj.getPosition();
 			if (sp.x == cp.x && sp.y == cp.y) {
-				obj.onSnakeHitCellObject(snake);
+				obj.onSnakeHitCellObject(snakes[index]);
 				cellObjects.remove(i);
 			}
 		}
@@ -115,33 +134,36 @@ public class GameCanvas extends Canvas {
 
 	@Override
 	public void paint(Graphics g) {
-		if (bufferGraphics == null) {
-			buffer = new BufferedImage(CANVAS_WIDTH, CANVAS_HEIGHT, BufferedImage.TYPE_INT_ARGB);
-			bufferGraphics = buffer.getGraphics();
+		if (initialized) {
+			if (bufferGraphics == null) {
+				buffer = new BufferedImage(CANVAS_WIDTH, CANVAS_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+				bufferGraphics = buffer.getGraphics();
+			}
+
+			bufferGraphics.setColor(getBackground());
+			bufferGraphics.fillRect(0, 0, getWidth(), getHeight());
+
+			bufferGraphics.setColor(Color.BLACK);
+
+			for (int y = 0; y < LEVEL_HEIGHT; y++)
+				for (int x = 0; x < LEVEL_WIDTH; x++)
+					bufferGraphics.drawRect(x << TILE_SIZE_BW, y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE);
+
+			// CellObjects
+			for (CellObject o : cellObjects) {
+				Point p = o.getPosition();
+				bufferGraphics.drawImage(o.getImage(), p.x << TILE_SIZE_BW, p.y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE, null);
+			}
+
+			// Snakes
+			for (Snake snake : snakes)
+				for (SnakeSegment s : snake.getSegments()) {
+					Point p = s.getPosition();
+					bufferGraphics.drawImage(s.getImage(), p.x << TILE_SIZE_BW, p.y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE, null);
+				}
+
+			g.drawImage(buffer, 5, 5, buffer.getWidth(), buffer.getHeight(), null);
 		}
-
-		bufferGraphics.setColor(getBackground());
-		bufferGraphics.fillRect(0, 0, getWidth(), getHeight());
-
-		bufferGraphics.setColor(Color.BLACK);
-
-		for (int y = 0; y < LEVEL_HEIGHT; y++)
-			for (int x = 0; x < LEVEL_WIDTH; x++)
-				bufferGraphics.drawRect(x << TILE_SIZE_BW, y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE);
-
-		// CellObjects
-		for (CellObject o : cellObjects) {
-			Point p = o.getPosition();
-			bufferGraphics.drawImage(o.getImage(), p.x << TILE_SIZE_BW, p.y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE, null);
-		}
-
-		// Snake
-		for (SnakeSegment s : snake.getSegments()) {
-			Point p = s.getPosition();
-			bufferGraphics.drawImage(s.getImage(), p.x << TILE_SIZE_BW, p.y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE, null);
-		}
-
-		g.drawImage(buffer, 5, 5, buffer.getWidth(), buffer.getHeight(), null);
 	}
 
 	/**

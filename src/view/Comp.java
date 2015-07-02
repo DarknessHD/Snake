@@ -11,5 +11,8 @@ public enum Comp {
 	GAMECANVAS, /**
 	 * Refers to the GameMenuPanel
 	 */
-	GAMEMENUPANEL;
+	GAMEMENUPANEL, /**
+	 * Refers to the ScoreListPanel
+	 */
+	SCORELISTPANEL;
 }

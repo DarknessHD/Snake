@@ -12,11 +12,11 @@ import view.GameFrame;
  */
 public class GameThread implements Runnable {
 	private double ns;
-	private int speed, sec;
+	private int speed/* , sec */;
 	private boolean running;
 
-	private Snake player;
-	private Direction dir;
+	private Snake[] snakes;
+	private Direction[] dirs;
 
 	/**
 	 * Creates a GameThread instance.
@@ -55,24 +55,22 @@ public class GameThread implements Runnable {
 	}
 
 	private void step() {
-		if (player == null)
-			player = GameFrame.getInstance().getSnake();
-		// TODO InputCheck (Change MoveDirection, ...)
+		for (int s = 0; s < snakes.length; s++) {
+			if (dirs[s] != null)
+				snakes[s].setLookingDirection(dirs[s]);
 
-		if (dir != null)
-			player.setLookingDirection(dir);
-
-		if (!player.move()) {
-			stop();
-			GameFrame.getInstance().changeComponent(Comp.GAMEMENUPANEL);
-			// TODO add score to ScoreList
-			return;
+			if (!snakes[s].move()) {
+				stop();
+				GameFrame.getInstance().changeComponent(Comp.GAMEMENUPANEL);
+				// TODO add score to ScoreList
+				return;
+			}
+			GameFrame.getInstance().onMove(s);
 		}
-		GameFrame.getInstance().onMove();
-		// TODO Win / Loose
 		GameFrame.getInstance().repaintGameCanvas();
 	}
 
+	@SuppressWarnings("static-access")
 	@Override
 	public void run() {
 		long lastTime = System.nanoTime();
@@ -91,20 +89,30 @@ public class GameThread implements Runnable {
 
 			GameFrame.getInstance().requestFocus();
 
-			if (KeyBoard.getInstance().isKeyPressed(KeyBoard.UP))
-				dir = Direction.UP;
-			if (KeyBoard.getInstance().isKeyPressed(KeyBoard.RIGHT))
-				dir = Direction.RIGHT;
-			if (KeyBoard.getInstance().isKeyPressed(KeyBoard.DOWN))
-				dir = Direction.DOWN;
-			if (KeyBoard.getInstance().isKeyPressed(KeyBoard.LEFT))
-				dir = Direction.LEFT;
+			if (snakes == null) {
+				snakes = GameFrame.getInstance().getSnakes();
+				dirs = new Direction[snakes.length];
+			}
+
+			for (int s = 0; s < snakes.length; s++) {
+				if (KeyBoard.getInstance().isKeyPressed(KeyBoard.getInstance().UP[s]))
+					dirs[s] = Direction.UP;
+				if (KeyBoard.getInstance().isKeyPressed(KeyBoard.getInstance().RIGHT[s]))
+					dirs[s] = Direction.RIGHT;
+				if (KeyBoard.getInstance().isKeyPressed(KeyBoard.getInstance().DOWN[s]))
+					dirs[s] = Direction.DOWN;
+				if (KeyBoard.getInstance().isKeyPressed(KeyBoard.getInstance().LEFT[s]))
+					dirs[s] = Direction.LEFT;
+			}
 
 			if (System.currentTimeMillis() - timer > 1000) {
 				timer += 1000;
-				sec++;
+				// sec++;
 				// TODO add Score per second
 			}
 		}
+
+		snakes = null;
+		dirs = null;
 	}
 }

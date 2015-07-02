@@ -3,20 +3,17 @@ package view;
 import input.KeyBoard;
 
 import java.awt.BorderLayout;
-import java.awt.Point;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
 
 import model.Snake;
-import model.cellobject.Apple;
 import model.cellobject.CellObject;
 import control.GameThread;
 
 /**
  * @author Stefan Kameter
- * @version 28.06.2015
+ * @version 02.07.2015
  */
 public class GameFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -42,12 +39,12 @@ public class GameFrame extends JFrame {
 
 	private GameCanvas gameCanvas;
 	private GameMenuPanel gmp;
+	private ScoreListPanel slp;
 
 	private GameThread gameThread;
-	private int score;
 
 	private GameFrame() {
-		setScore(0);
+		setTitle(TITLE);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		setLayout(new BorderLayout());
@@ -63,10 +60,9 @@ public class GameFrame extends JFrame {
 	}
 
 	private void initComponents() {
-		List<CellObject> cellObjects = new ArrayList<CellObject>();
-		cellObjects.add(new Apple(new Point(10, 10)));
-		gameCanvas = new GameCanvas(null, cellObjects);
+		gameCanvas = new GameCanvas();
 		gmp = new GameMenuPanel();
+		slp = new ScoreListPanel();
 
 		changeComponent(Comp.GAMEMENUPANEL);
 	}
@@ -76,21 +72,36 @@ public class GameFrame extends JFrame {
 	}
 
 	/**
-	 * @return player snake
+	 * Returns the snakes.
+	 * 
+	 * @return snakes
 	 */
-	public Snake getSnake() {
-		return gameCanvas.getSnake();
+	public Snake[] getSnakes() {
+		return gameCanvas.getSnakes();
 	}
 
 	/**
-	 * Sets the a score value.
+	 * Sets a Level, and starts the GameThread.
 	 * 
-	 * @param score
-	 *            the new score
+	 * @param snakes
+	 *            the snakes
+	 * @param cellObjects
+	 *            the list of default CellObjects
 	 */
-	public void setScore(int score) {
-		this.score = score;
-		setTitle(TITLE);// + " - Score: " + this.score);
+	public void setLevel(Snake[] snakes, List<CellObject> cellObjects) {
+		gameCanvas.setLevel(snakes, cellObjects);
+
+		start();
+	}
+
+	/**
+	 * Adds a CellObject.
+	 * 
+	 * @param cellObject
+	 *            the CellObject
+	 */
+	public void addCellObject(CellObject cellObject) {
+		gameCanvas.addCellObject(cellObject);
 	}
 
 	private Comp lastComponent;
@@ -112,6 +123,10 @@ public class GameFrame extends JFrame {
 				gmp.revalidate();
 				remove(gmp);
 				break;
+			case SCORELISTPANEL:
+				slp.revalidate();
+				remove(slp);
+				break;
 			}
 
 		lastComponent = comp;
@@ -123,13 +138,15 @@ public class GameFrame extends JFrame {
 		case GAMEMENUPANEL:
 			add(gmp, BorderLayout.CENTER);
 			break;
+		case SCORELISTPANEL:
+			add(slp, BorderLayout.CENTER);
+			break;
 		}
+
+		repaint();
 	}
 
-	/**
-	 * Starts the thread of GameLoop.
-	 */
-	public void start() {
+	private void start() {
 		gameThread.start();
 	}
 
@@ -141,10 +158,23 @@ public class GameFrame extends JFrame {
 	}
 
 	/**
-	 * Executes onSnakeHitCellObject, if necessary.
+	 * Increases the game-speed.
+	 * 
+	 * @param speedAddition
+	 *            the value that the speed gets in-/decreased by
 	 */
-	public void onMove() {
-		gameCanvas.onMove();
+	public void changeSpeed(int speedAddition) {
+		gameThread.changeSpeed(speedAddition);
+	}
+
+	/**
+	 * Executes onSnakeHitCellObject, if necessary.
+	 * 
+	 * @param index
+	 *            the desired snake
+	 */
+	public void onMove(int index) {
+		gameCanvas.onMove(index);
 	}
 
 	/**
