@@ -14,8 +14,8 @@ import view.GameCanvas;
  * @version 23.06.2015
  */
 public class Snake {
-	
-	//TODO Check if there is something, when adding a segment 
+
+	// TODO Check if there is something, when adding a segment
 
 	private static final int MIN_SEGMENTS_VALUE = 3, MIN_SCORE_VALUE = 0;
 
@@ -38,6 +38,8 @@ public class Snake {
 	 *            the direction the snake is looking into
 	 * @param endless
 	 *            whether or not the level is endless
+	 * @param AI
+	 *            whether or not the snake is an AI or a player
 	 */
 	public Snake(int startSegments, Point startPosition, Direction startDirection, boolean endless, boolean AI) {
 		if (!MIN_SEGMENTS.test(startSegments))
@@ -97,7 +99,7 @@ public class Snake {
 		else
 			this.score = score;
 	}
-	
+
 	/**
 	 * Increases the current score.
 	 * 
@@ -107,7 +109,7 @@ public class Snake {
 	public void increaseScore(int increaseBy) {
 		score += increaseBy;
 	}
-	
+
 	/**
 	 * Decreases the current score.
 	 * 
@@ -160,7 +162,7 @@ public class Snake {
 	public Deque<SnakeSegment> getSegments() {
 		return new LinkedList<SnakeSegment>(segments);
 	}
-	
+
 	/**
 	 * Returns whether or not the snake is an AI.
 	 * 
@@ -209,7 +211,8 @@ public class Snake {
 			return false;
 
 		segments.removeLast();
-		segments.getLast().setImage(RotatedImage.get(segments.getLast().getDirection().getOpposite(), RotatedImage.TAIL_IMAGE));
+		segments.getLast().setImage(
+				RotatedImage.get(segments.getLast().getDirection().getOpposite(), RotatedImage.TAIL_IMAGE));
 		return true;
 	}
 
