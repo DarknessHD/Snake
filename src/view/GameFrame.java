@@ -3,11 +3,11 @@ package view;
 import input.KeyBoard;
 
 import java.awt.BorderLayout;
-import java.awt.Point;
 import java.util.List;
 
 import javax.swing.JFrame;
 
+import model.CellObject;
 import model.Item;
 import model.Snake;
 import control.GameThread;
@@ -73,36 +73,19 @@ public class GameFrame extends JFrame {
 	}
 
 	/**
-	 * Returns the snakes.
-	 * 
-	 * @return snakes
-	 */
-	public Snake[] getSnakes() {
-		return gameCanvas.getSnakes();
-	}
-
-	/**
 	 * Sets a Level, and starts the GameThread.
 	 * 
 	 * @param snakes
 	 *            the snakes
+	 * @param cellObjects
+	 *            the static CellObjects
 	 * @param items
 	 *            the list of default Items
 	 */
-	public void setLevel(Snake[] snakes, List<Item> items) {
-		gameCanvas.setLevel(snakes, items);
+	public void setLevel(Snake[] snakes, List<CellObject> cellObjects, List<Item> items) {
+		gameCanvas.setLevel(snakes, cellObjects, items);
 
 		start();
-	}
-
-	/**
-	 * Adds a Item.
-	 * 
-	 * @param item
-	 *            the Item
-	 */
-	public void addItem(Item item) {
-		gameCanvas.addItem(item);
 	}
 
 	private Comp lastComponent;
@@ -152,13 +135,6 @@ public class GameFrame extends JFrame {
 	}
 
 	/**
-	 * Repaint only the GameCanvas.
-	 */
-	public void repaintGameCanvas() {
-		gameCanvas.repaint();
-	}
-
-	/**
 	 * Increases the game-speed.
 	 * 
 	 * @param speedAddition
@@ -169,24 +145,12 @@ public class GameFrame extends JFrame {
 	}
 
 	/**
-	 * Executes onSnakeHitCellObject, if necessary.
+	 * Returns the GameCanvas.
 	 * 
-	 * @param index
-	 *            the desired snake
+	 * @return GameCanvas
 	 */
-	public void onMove(int index) {
-		gameCanvas.onMove(index);
-	}
-
-	/**
-	 * Checks whether an item is already placed at that position.
-	 * 
-	 * @param position
-	 *            the position to check
-	 * @return whether an item is already placed at that position
-	 */
-	public boolean checkPosition(Point position) {
-		return gameCanvas.checkPosition(position);
+	public GameCanvas getGameCanvas() {
+		return gameCanvas;
 	}
 
 	/**

@@ -63,23 +63,11 @@ public abstract class CellObject implements Cloneable {
 	 * @return true when the position was set, false otherwise
 	 */
 	public boolean setPosition(Point position) {
-		if (GameFrame.getInstance().checkPosition(position)) {
+		if (GameFrame.getInstance().getGameCanvas().checkPosition(position)) {
 			this.position = position;
 			return true;
 		} else
 			return false;
-	}
-
-	/**
-	 * Moves the CellObject by xOffset and yOffset.
-	 * 
-	 * @param xOffset
-	 *            the offset in x-axis
-	 * @param yOffset
-	 *            the offset in y-axis
-	 */
-	public void move(int xOffset, int yOffset) {
-		this.position.move(xOffset, yOffset);
 	}
 
 	@Override
@@ -94,8 +82,7 @@ public abstract class CellObject implements Cloneable {
 	}
 
 	/**
-	 * Subclasses must implement their functionality, when they get hit by a
-	 * snake.
+	 * Subclasses must implement their functionality, when they get hit by a snake.
 	 * 
 	 * @param snake
 	 *            the snake, which has hit the CellObject

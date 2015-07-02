@@ -3,14 +3,10 @@ package view;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import model.CellObject;
-import model.Item;
 import model.ItemSpawner;
 
 /**
@@ -54,9 +50,9 @@ public class GameMenuPanel extends JPanel {
 				GameFrame.getInstance().changeComponent(Comp.GAMECANVAS);
 
 				// TODO choose, load, set level
-				GameFrame.getInstance().setLevel(null, null);
+				GameFrame.getInstance().setLevel(null, null, null);
 				for (int i = 0; i < 3; i++)
-					GameFrame.getInstance().addItem(ItemSpawner.getRandomItem());
+					GameFrame.getInstance().getGameCanvas().addItem(ItemSpawner.getRandomItem());
 			}
 		});
 

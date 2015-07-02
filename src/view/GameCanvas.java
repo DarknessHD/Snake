@@ -48,6 +48,7 @@ public class GameCanvas extends Canvas {
 	private boolean initialized;
 
 	private Snake[] snakes;
+	private List<CellObject> staticObjects;
 	private List<Item> items;
 
 	/**
@@ -69,14 +70,18 @@ public class GameCanvas extends Canvas {
 	 * 
 	 * @param snakes
 	 *            the snakes
+	 * @param staticObjects
+	 *            the static CellObjects
 	 * @param items
 	 *            the list of default Items
 	 */
-	public void setLevel(Snake[] snakes, List<Item> items) {
-		this.items = items;
+	public void setLevel(Snake[] snakes, List<CellObject> staticObjects, List<Item> items) {
 		this.snakes = snakes;
+		this.staticObjects = staticObjects;
+		this.items = items;
 
 		this.items = new ArrayList<Item>(); // TODO
+		this.staticObjects = new ArrayList<CellObject>(); // TODO
 		this.snakes = new Snake[1]; // TODO
 		this.snakes[0] = new Snake(3, new Point(4, 5), Direction.DOWN); // TODO
 
@@ -123,6 +128,12 @@ public class GameCanvas extends Canvas {
 			}
 		}
 
+		for (int i = 0; i < staticObjects.size(); i++) {
+			CellObject obj = staticObjects.get(i);
+			if (sp.equals(obj.getPosition()))
+				obj.onSnakeHitCellObject(snakes[index]);
+		}
+
 		for (int i = 0; i < items.size(); i++) {
 			Item item = items.get(i);
 			if (sp.equals(item.getPosition())) {
@@ -146,6 +157,11 @@ public class GameCanvas extends Canvas {
 				if (i.getPosition().equals(position))
 					return false;
 
+		if (staticObjects != null)
+			for (CellObject obj : staticObjects)
+				if (obj.getPosition().equals(position))
+					return false;
+
 		if (snakes != null)
 			for (Snake snake : snakes)
 				for (SnakeSegment s : snake.getSegments())
@@ -153,6 +169,24 @@ public class GameCanvas extends Canvas {
 						return false;
 
 		return true;
+	}
+
+	/**
+	 * Returns all Items.
+	 * 
+	 * @return all items
+	 */
+	public List<Item> getItems() {
+		return items;
+	}
+
+	/**
+	 * Returns all Items.
+	 * 
+	 * @return all items
+	 */
+	public List<CellObject> getStaticObjects() {
+		return staticObjects;
 	}
 
 	@Override
@@ -184,6 +218,12 @@ public class GameCanvas extends Canvas {
 					Point p = s.getPosition();
 					bufferGraphics.drawImage(s.getImage(), p.x << TILE_SIZE_BW, p.y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE, null);
 				}
+
+			// StaticObjects
+			for (CellObject obj : staticObjects) {
+				Point p = obj.getPosition();
+				bufferGraphics.drawImage(obj.getImage(), p.x << TILE_SIZE_BW, p.y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE, null);
+			}
 
 			g.drawImage(buffer, 5, 5, buffer.getWidth(), buffer.getHeight(), null);
 		}
