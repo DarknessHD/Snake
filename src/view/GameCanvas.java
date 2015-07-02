@@ -77,9 +77,8 @@ public class GameCanvas extends Canvas {
 		this.snakes = snakes;
 
 		this.items = new ArrayList<Item>(); // TODO
-		this.snakes = new Snake[2]; // TODO
+		this.snakes = new Snake[1]; // TODO
 		this.snakes[0] = new Snake(3, new Point(4, 5), Direction.DOWN); // TODO
-		this.snakes[1] = new Snake(3, new Point(25, 5), Direction.DOWN); // TODO
 
 		initialized = true;
 	}
