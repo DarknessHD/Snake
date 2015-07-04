@@ -3,7 +3,7 @@ TODOs
 
 ALLE:
 	-  TODOs in own classes
-	-  making all better (no lags, more performance, better looking, 'flackern', ...)
+	-  make everything better (no lags, better performance, better looking, 'flackern', ...)
 	
 ALEX:
 	-  Items: onSnakeHitCellObject(), chances, more items
@@ -20,8 +20,6 @@ QUIRIN:
 	- whole IO-logic, classes
 
 ERIC:
-	-  new Snake(boolean endless)
-	-? if (snake.length < snake.MIN_LENGTH) lost()
 	-  addSegment() (tail spawns for example in body) (does not work perfectly)
 	
 ERIC && STEFAN:

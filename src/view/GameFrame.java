@@ -199,7 +199,7 @@ public class GameFrame extends JFrame {
 	}
 
 	/**
-	 * Method has to be called, if game is list.
+	 * Method has to be called, if game is lost.
 	 */
 	public void lost() {
 		gameThread.stop();

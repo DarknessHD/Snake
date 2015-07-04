@@ -9,6 +9,7 @@ import java.util.function.Predicate;
 import control.snakecontroller.Pathfinder;
 import model.cellobject.SnakeSegment;
 import view.GameCanvas;
+import view.GameFrame;
 
 /**
  * @author Eric Armbruster
@@ -198,8 +199,10 @@ public class Snake {
 	 *         there are not enough segments left to remove one more.
 	 */
 	public boolean removeSegment() {
-		if (!MIN_SEGMENTS.test(segments.size() - 1))
+		if (!MIN_SEGMENTS.test(segments.size() - 1)) {
+			GameFrame.getInstance().lost();
 			return false;
+		}
 
 		segments.removeLast();
 		segments.getLast().setImage(
