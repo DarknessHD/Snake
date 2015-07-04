@@ -21,6 +21,7 @@ QUIRIN:
 ERIC:
 	-  new Snake(boolean endless)
 	-? if (snake.length < snake.MIN_LENGTH) lost()
+	-  addSegment() (tail spawns for example in body) (does not work perfectly)
 	
 ERIC && STEFAN:
 	-  PathFinder, AIControl
