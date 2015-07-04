@@ -2,24 +2,25 @@ TODOs
 -----
 
 ALLE:
-	- TODOs in own classes
-	- making all better (no lags, more performance, better looking, ..)
+	-  TODOs in own classes
+	-  making all better (no lags, more performance, better looking, ..)
 	
 ALEX:
-	- Items: onSnakeHitCellObject(), chances
+	-  Items: onSnakeHitCellObject(), chances
 
 STEFAN:
-	- Drawing GameOverScreen
-	- Adding score to scoreList
-	- PauseMenu
-	- KeyBoard (error index out of Bounds)
-	- (More features in LevelChoosePanel
+	-  Drawing GameOverScreen
+	-  Adding score to scoreList
+	-  PauseMenu
+	-  KeyBoard (error index out of Bounds)
+	-( More features in LevelChoosePanel )
 
 QUIRIN:
 	- whole IO-logic, classes
 
 ERIC:
-	- new Snake(boolean endless)
+	-  new Snake(boolean endless)
+	-? if (snake.length < snake.MIN_LENGTH) lost()
 	
 ERIC && STEFAN:
-	- PathFinder, AIControl
+	-  PathFinder, AIControl
