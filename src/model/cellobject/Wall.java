@@ -23,6 +23,6 @@ public class Wall extends CellObject {
 
 	@Override
 	public void onSnakeHitCellObject(Snake snake) {
-		
+		// TODO Game Over Screen!
 	}
 }

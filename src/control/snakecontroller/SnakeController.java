@@ -1,4 +1,4 @@
-package model.snakecontroller;
+package control.snakecontroller;
 
 import model.Direction;
 

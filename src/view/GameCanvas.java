@@ -23,14 +23,6 @@ import model.cellobject.SnakeSegment;
 public class GameCanvas extends Canvas {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * Component width.
-	 */
-	public static final int CANVAS_WIDTH = 961;
-	/**
-	 * Component height.
-	 */
-	public static final int CANVAS_HEIGHT = 641;
 	private static final int TILE_SIZE = 32;
 	private static final int TILE_SIZE_BW = (int) (Math.log(TILE_SIZE) / Math.log(2));
 	/**
@@ -41,6 +33,14 @@ public class GameCanvas extends Canvas {
 	 * The height of tiles in the level.
 	 */
 	public static final int LEVEL_HEIGHT = 20;
+	/**
+	 * Component width.
+	 */
+	public static final int CANVAS_WIDTH = LEVEL_WIDTH * TILE_SIZE + 1;
+	/**
+	 * Component height.
+	 */
+	public static final int CANVAS_HEIGHT = LEVEL_HEIGHT * TILE_SIZE + 1;
 
 	private BufferedImage buffer;
 	private Graphics bufferGraphics;
@@ -82,9 +82,8 @@ public class GameCanvas extends Canvas {
 
 		this.items = new ArrayList<Item>(); // TODO
 		this.staticObjects = new ArrayList<CellObject>(); // TODO
-		this.snakes = new Snake[2]; // TODO
+		this.snakes = new Snake[1]; // TODO
 		this.snakes[0] = new Snake(3, new Point(4, 5), Direction.DOWN); // TODO
-		this.snakes[1] = new Snake(3, new Point(20, 5), Direction.DOWN); // TODO
 
 		initialized = true;
 	}

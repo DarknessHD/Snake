@@ -5,13 +5,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JPanel;
 
-import model.ItemSpawner;
+import view.popup.ChooseLevelPanel;
+import control.Comp;
 
 /**
  * @author Stefan Kameter
- * @version 29.06.2015
+ * @version 04.07.2015
  */
 public class GameMenuPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -47,28 +49,29 @@ public class GameMenuPanel extends JPanel {
 		start.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				GameFrame.getInstance().changeComponent(Comp.GAMECANVAS);
-
-				// TODO choose, load, set level
-				GameFrame.getInstance().setLevel(null, null, null);
-				for (int i = 0; i < 3; i++)
-					GameFrame.getInstance().getGameCanvas().addItem(ItemSpawner.getRandomItem());
+				JDialog dialog = new JDialog(GameFrame.getInstance(), "Choose Level", true);
+				dialog.setResizable(false);
+				ChooseLevelPanel cLP = new ChooseLevelPanel(dialog);
+				dialog.add(cLP);
+				dialog.pack();
+				dialog.setLocationRelativeTo(GameFrame.getInstance());
+				dialog.setVisible(true);
 			}
 		});
 
 		scoreList.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				GameFrame.getInstance().changeComponent(Comp.SCORELISTPANEL);
+				GameFrame.getInstance().getScoreListPanel().setScoreList(GameFrame.getInstance().getScoreList());
 
-				// TODO load, set scoreList
+				GameFrame.getInstance().changeComponent(Comp.SCORELISTPANEL);
 			}
 		});
 
 		exit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
+				GameFrame.getInstance().exit();
 			}
 		});
 	}

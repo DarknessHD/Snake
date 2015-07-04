@@ -3,9 +3,16 @@ package view;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+
+import model.ScoreListEntry;
+import control.Comp;
+import control.GameTableModel;
 
 /**
  * @author Stefan Kameter
@@ -14,6 +21,7 @@ import javax.swing.JPanel;
 public class ScoreListPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
+	private JTable table;
 	private JButton back;
 
 	/**
@@ -29,6 +37,10 @@ public class ScoreListPanel extends JPanel {
 	}
 
 	private void initComponents() {
+		JScrollPane scroll = null;
+		add(scroll = new JScrollPane(table = new JTable(new GameTableModel())));
+		scroll.setBounds((GameCanvas.CANVAS_WIDTH - 400) / 2, (GameCanvas.CANVAS_HEIGHT - 50 - 183) / 2, 400, 183);
+
 		add(back = new JButton("Back"));
 		back.setBounds((GameCanvas.CANVAS_WIDTH - 200) / 2, GameCanvas.CANVAS_HEIGHT - 40, 200, 30);
 	}
@@ -43,9 +55,12 @@ public class ScoreListPanel extends JPanel {
 	}
 
 	/**
-	 * Sets a ScoreList.
+	 * Sets a scoreList.
+	 * 
+	 * @param entries
+	 *            the entries of the scoreList
 	 */
-	public void setScoreList() {
-		// TODO
+	public void setScoreList(List<ScoreListEntry> entries) {
+		((GameTableModel) table.getModel()).setData(entries);
 	}
 }

@@ -1,12 +1,11 @@
 package control;
 
-import input.KeyBoard;
 import model.Direction;
 import model.Snake;
-import model.snakecontroller.AIController;
-import model.snakecontroller.SnakeController;
-import view.Comp;
 import view.GameFrame;
+import control.snakecontroller.AIController;
+import control.snakecontroller.PlayerController;
+import control.snakecontroller.SnakeController;
 
 /**
  * @author Stefan Kameter
@@ -17,22 +16,7 @@ public class GameThread implements Runnable {
 
 	static {
 		controllers = new SnakeController[2];
-
-		controllers[0] = new SnakeController() {
-			@Override
-			public Direction getDirection(int index) {
-				if (KeyBoard.getInstance().isKeyPressed(KeyBoard.UP[index]))
-					return Direction.UP;
-				else if (KeyBoard.getInstance().isKeyPressed(KeyBoard.RIGHT[index]))
-					return Direction.RIGHT;
-				else if (KeyBoard.getInstance().isKeyPressed(KeyBoard.DOWN[index]))
-					return Direction.DOWN;
-				else if (KeyBoard.getInstance().isKeyPressed(KeyBoard.LEFT[index]))
-					return Direction.LEFT;
-				return null;
-			}
-		};
-
+		controllers[0] = new PlayerController();
 		controllers[1] = new AIController();
 	}
 
@@ -86,8 +70,7 @@ public class GameThread implements Runnable {
 
 			if (!snakes[s].move()) {
 				stop();
-				GameFrame.getInstance().changeComponent(Comp.GAMEMENUPANEL);
-				// TODO add score to ScoreList
+				GameFrame.getInstance().changeComponent(Comp.GAMEOVERCANVAS);
 				return;
 			}
 			GameFrame.getInstance().getGameCanvas().onMove(s);
@@ -134,7 +117,7 @@ public class GameThread implements Runnable {
 			if (System.currentTimeMillis() - timer > 1000) {
 				timer += 1000;
 				// sec++;
-				// TODO add Score per second
+				// TODO add Score per second to snakes
 			}
 		}
 

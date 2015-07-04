@@ -3,13 +3,18 @@ package view;
 import input.KeyBoard;
 
 import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
 
 import model.CellObject;
 import model.Item;
+import model.ScoreListEntry;
 import model.Snake;
+import control.Comp;
 import control.GameThread;
 
 /**
@@ -38,15 +43,17 @@ public class GameFrame extends JFrame {
 		return instance;
 	}
 
+	private GameMenuPanel gameMenuPanel;
+	private ScoreListPanel scoreListPanel;
 	private GameCanvas gameCanvas;
-	private GameMenuPanel gmp;
-	private ScoreListPanel slp;
+	private GameOverCanvas gameOverCanvas;
 
 	private GameThread gameThread;
 
+	private List<ScoreListEntry> scoreList;
+
 	private GameFrame() {
 		setTitle(TITLE);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		setLayout(new BorderLayout());
 
@@ -58,18 +65,104 @@ public class GameFrame extends JFrame {
 		setResizable(false);
 
 		gameThread = new GameThread();
+
+		scoreList = new ArrayList<ScoreListEntry>();// TODO load (scoreList, ...)
 	}
 
 	private void initComponents() {
+		gameMenuPanel = new GameMenuPanel();
+		scoreListPanel = new ScoreListPanel();
 		gameCanvas = new GameCanvas();
-		gmp = new GameMenuPanel();
-		slp = new ScoreListPanel();
+		gameOverCanvas = new GameOverCanvas();
 
 		changeComponent(Comp.GAMEMENUPANEL);
 	}
 
 	private void initListener() {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				exit();
+			}
+		});
+
 		addKeyListener(KeyBoard.getInstance());
+	}
+
+	/**
+	 * Returns the GameCanvas.
+	 * 
+	 * @return GameCanvas
+	 */
+	public GameCanvas getGameCanvas() {
+		return gameCanvas;
+	}
+
+	/**
+	 * Returns the ScoreListPanel.
+	 * 
+	 * @return ScoreListPanel
+	 */
+	public ScoreListPanel getScoreListPanel() {
+		return scoreListPanel;
+	}
+
+	/**
+	 * Returns the scoreList.
+	 * 
+	 * @return scoreList
+	 */
+	public List<ScoreListEntry> getScoreList() {
+		return scoreList;
+	}
+
+	private Comp lastComponent;
+
+	/**
+	 * Changes, which Component is added.
+	 * 
+	 * @param comp
+	 *            the Component, which has to be added
+	 */
+	public void changeComponent(Comp comp) {
+		if (lastComponent != null)
+			switch (lastComponent) {
+			case GAMEMENUPANEL:
+				gameMenuPanel.revalidate();
+				remove(gameMenuPanel);
+				break;
+			case SCORELISTPANEL:
+				scoreListPanel.revalidate();
+				remove(scoreListPanel);
+				break;
+			case GAMECANVAS:
+				gameCanvas.revalidate();
+				remove(gameCanvas);
+				break;
+			case GAMEOVERCANVAS:
+				gameOverCanvas.revalidate();
+				remove(gameOverCanvas);
+				break;
+			}
+
+		lastComponent = comp;
+
+		switch (comp) {
+		case GAMEMENUPANEL:
+			add(gameMenuPanel, BorderLayout.CENTER);
+			break;
+		case SCORELISTPANEL:
+			add(scoreListPanel, BorderLayout.CENTER);
+			break;
+		case GAMECANVAS:
+			add(gameCanvas, BorderLayout.CENTER);
+			break;
+		case GAMEOVERCANVAS:
+			add(gameOverCanvas, BorderLayout.CENTER);
+			break;
+		}
+
+		repaint();
 	}
 
 	/**
@@ -88,48 +181,6 @@ public class GameFrame extends JFrame {
 		start();
 	}
 
-	private Comp lastComponent;
-
-	/**
-	 * Changes, which Component is added.
-	 * 
-	 * @param comp
-	 *            the Component, which has to be added
-	 */
-	public void changeComponent(Comp comp) {
-		if (lastComponent != null)
-			switch (lastComponent) {
-			case GAMECANVAS:
-				gameCanvas.revalidate();
-				remove(gameCanvas);
-				break;
-			case GAMEMENUPANEL:
-				gmp.revalidate();
-				remove(gmp);
-				break;
-			case SCORELISTPANEL:
-				slp.revalidate();
-				remove(slp);
-				break;
-			}
-
-		lastComponent = comp;
-
-		switch (comp) {
-		case GAMECANVAS:
-			add(gameCanvas, BorderLayout.CENTER);
-			break;
-		case GAMEMENUPANEL:
-			add(gmp, BorderLayout.CENTER);
-			break;
-		case SCORELISTPANEL:
-			add(slp, BorderLayout.CENTER);
-			break;
-		}
-
-		repaint();
-	}
-
 	private void start() {
 		gameThread.start();
 	}
@@ -145,12 +196,11 @@ public class GameFrame extends JFrame {
 	}
 
 	/**
-	 * Returns the GameCanvas.
-	 * 
-	 * @return GameCanvas
+	 * Has to be called, if game will be exited.
 	 */
-	public GameCanvas getGameCanvas() {
-		return gameCanvas;
+	public void exit() {
+		// TODO save (scoreList, ...)
+		System.exit(0);
 	}
 
 	/**
@@ -159,7 +209,6 @@ public class GameFrame extends JFrame {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		GameFrame frame = getInstance();
-		frame.setVisible(true);
+		getInstance().setVisible(true);
 	}
 }
