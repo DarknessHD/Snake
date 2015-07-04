@@ -15,7 +15,6 @@ import model.Item;
 import model.ItemSpawner;
 import model.Snake;
 import model.cellobject.SnakeSegment;
-import control.snakecontroller.Pathfinder;
 
 /**
  * @author Stefan Kameter

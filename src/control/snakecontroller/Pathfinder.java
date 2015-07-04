@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import view.GameFrame;
 import model.Direction;
 import model.Item;
 import model.Snake;
@@ -17,7 +18,7 @@ public class Pathfinder {
 
 	private Item target;
 	private Snake snake;
-	private Path path;
+	private List<Direction> path;
 
 	/**
 	 * Creates a new Pathfinder instance.
@@ -27,53 +28,40 @@ public class Pathfinder {
 	 */
 	public Pathfinder(Snake snake) {
 		this.snake = snake;
+		findPath();
+	}
+	
+	/**
+	 * Returns the next Direction and removes it from the path.
+	 * 
+	 * @return the next Direction
+	 */
+	public Direction getNextDirection() {
+		Direction next = path.get(0);
+		if(next == null) {
+			findPath();
+			return getNextDirection();
+		}
+		path.remove(0);
+		
+		return next;
 	}
 
 	/**
-	 * Sets the next item target where the snake will go.
+	 * Gets the Snake's path.
 	 * 
-	 * @param target
-	 *            the target item
+	 * @return a list of directions
 	 */
-	public void setTarget(Item target) {
-		this.target = target;
-	}
-
-	/**
-	 * Returns the target item.
-	 * 
-	 * @return the target item
-	 */
-	public Item getTarget() {
-		return target;
-	}
-
-	/**
-	 * Sets the Snake's Path.
-	 * 
-	 * @param path
-	 */
-	public void setPath(Path path) {
-		this.path = path;
-	}
-
-	/**
-	 * Gets the Snake's Path.
-	 * 
-	 * @return the Snake's Path
-	 */
-	public Path getPath() {
+	public List<Direction> getPath() {
 		return path;
 	}
 
 	/**
-	 * Finds a new Path to the target Item.
-	 * 
-	 * @return a new Path instance
+	 * Finds a new path to the target Item and sets it.
 	 */
-	public Path findPath() {
+	public void findPath() {
 		if (target == null)
-			return null;
+			findNearestItem();
 
 		Point currentPosition = (Point) snake.getHead().getPosition().clone();
 		Point targetPosition = target.getPosition();
@@ -126,41 +114,25 @@ public class Pathfinder {
 			currentPosition = nextPosition;
 		} while (!currentPosition.equals(targetPosition));
 
-		return new Path(path);
+		this.path = path;
 	}
 
 	/**
-	 * Finds the nearest Item from the current position of the snake's head.
+	 * Finds the nearest Item from the current position of the snake's head and sets it.
 	 * 
-	 * @param items
-	 *            the map of items
 	 * @return the nearest item
 	 */
-	public Item findNearestItem(List<Item> items) {
+	public Item findNearestItem() {
 		Item nearestItem = null;
 		Point headPosition = snake.getHead().getPosition();
 
-		for (Item item : items) {
+		for (Item item : GameFrame.getInstance().getGameCanvas().getItems()) {
 			Point position = item.getPosition();
 			if (nearestItem == null || position.distance(headPosition) < nearestItem.getPosition().distance(headPosition))
 				nearestItem = item;
 		}
 			
 
-		return nearestItem;
-	}
-
-	//TODO Private
-	public class Path {
-
-		private final List<Direction> path;
-
-		private Path(List<Direction> path) {
-			this.path = path;
-		}
-
-		public List<Direction> getDirections() {
-			return new ArrayList<Direction>(this.path);
-		}
+		return target = nearestItem;
 	}
 }
