@@ -7,6 +7,7 @@ import java.util.Objects;
 import java.util.function.Predicate;
 
 import model.cellobject.SnakeSegment;
+import model.snakecontroller.Pathfinder;
 import view.GameCanvas;
 
 /**
@@ -24,8 +25,9 @@ public class Snake {
 
 	private Deque<SnakeSegment> segments;
 	private Direction lastDirection;
-	private boolean directionChange = false, endless, AI;
+	private boolean directionChange = false, endless;
 	private int score = 0;
+	private Pathfinder pathfinder = null;
 
 	/**
 	 * Creates a new Snake instance.
@@ -38,16 +40,13 @@ public class Snake {
 	 *            the direction the snake is looking into
 	 * @param endless
 	 *            whether or not the level is endless
-	 * @param AI
-	 *            whether or not the snake is an AI or a player
 	 */
-	public Snake(int startSegments, Point startPosition, Direction startDirection, boolean endless, boolean AI) {
+	public Snake(int startSegments, Point startPosition, Direction startDirection, boolean endless) {
 		if (!MIN_SEGMENTS.test(startSegments))
 			startSegments = MIN_SEGMENTS_VALUE;
 
 		this.lastDirection = Objects.requireNonNull(startDirection);
 		this.endless = endless;
-		this.AI = AI;
 
 		segments = new LinkedList<SnakeSegment>();
 
@@ -71,11 +70,9 @@ public class Snake {
 	 *            the start position of the snake
 	 * @param startDirection
 	 *            the direction the snake is looking into
-	 * @param lives
-	 *            the lives of the snake, default is 0
 	 */
 	public Snake(int startSegments, Point startPosition, Direction startDirection) {
-		this(startSegments, startPosition, startDirection, false, false);
+		this(startSegments, startPosition, startDirection, false);
 	}
 
 	/**
@@ -164,12 +161,20 @@ public class Snake {
 	}
 
 	/**
-	 * Returns whether or not the snake is an AI.
-	 * 
-	 * @return true when the snake is an AI, false otherwise.
+	 * Sets the Pathfinder for this snake.
 	 */
-	public boolean isAI() {
-		return AI;
+	public void setPathfinder() {
+		if(pathfinder != null)
+			pathfinder = new Pathfinder(this);
+	}
+	
+	/**
+	 * Returns the Pathfinder of this snake.
+	 * 
+	 * @return the Pathfinder
+	 */
+	public Pathfinder getPathfinder() {
+		return pathfinder;
 	}
 
 	/**
