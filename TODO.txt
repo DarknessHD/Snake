@@ -3,6 +3,7 @@ TODOs
 
 ALLE:
 	- TODOs in own classes
+	- making all better (no lags, more performance, better looking, ..)
 	
 ALEX:
 	- Items: onSnakeHitCellObject(), chances
@@ -12,6 +13,7 @@ STEFAN:
 	- Adding score to scoreList
 	- PauseMenu
 	- KeyBoard (error index out of Bounds)
+	- (More features in LevelChoosePanel
 
 QUIRIN:
 	- whole IO-logic, classes
@@ -20,4 +22,4 @@ ERIC:
 	- new Snake(boolean endless)
 	
 ERIC && STEFAN:
-	- Pathfinder, AIControl
+	- PathFinder, AIControl
