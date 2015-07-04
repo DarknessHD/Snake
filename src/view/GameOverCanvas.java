@@ -62,10 +62,10 @@ public class GameOverCanvas extends Canvas {
 
 		switch (snakes.length) {
 		case 1:
-			drawOneSnakeSituation(bufferGraphics, snakes[0]);
+			drawSituation(bufferGraphics, snakes[0]);
 			break;
 		case 2:
-			drawTwoSnakesSituation(bufferGraphics, snakes);
+			drawSituation(bufferGraphics, snakes);
 			break;
 		}
 
@@ -78,11 +78,11 @@ public class GameOverCanvas extends Canvas {
 		g.drawImage(buffer, 5, 5, buffer.getWidth(), buffer.getHeight(), null);
 	}
 
-	private void drawOneSnakeSituation(Graphics g, Snake snake) {
+	private void drawSituation(Graphics g, Snake snake) {
 		// TODO
 	}
 
-	private void drawTwoSnakesSituation(Graphics g, Snake[] snakes) {
+	private void drawSituation(Graphics g, Snake[] snakes) {
 		// TODO
 	}
 }

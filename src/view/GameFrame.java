@@ -125,6 +125,8 @@ public class GameFrame extends JFrame {
 	 *            the Component, which has to be added
 	 */
 	public void changeComponent(Comp comp) {
+		// TODO flackern, wenn vorhanden
+
 		if (lastComponent != null)
 			switch (lastComponent) {
 			case GAMEMENUPANEL:
@@ -162,6 +164,7 @@ public class GameFrame extends JFrame {
 			break;
 		}
 
+		revalidate();
 		repaint();
 	}
 

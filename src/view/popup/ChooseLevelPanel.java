@@ -59,12 +59,12 @@ public class ChooseLevelPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				dialog.setVisible(false);
 
-				GameFrame.getInstance().changeComponent(Comp.GAMECANVAS);
-
 				// TODO load, set chosen level
 				GameFrame.getInstance().setLevel(null, null, null);
 				for (int i = 0; i < 3; i++)
 					GameFrame.getInstance().getGameCanvas().addItem(ItemSpawner.getRandomItem());
+
+				GameFrame.getInstance().changeComponent(Comp.GAMECANVAS);
 			}
 		});
 	}
