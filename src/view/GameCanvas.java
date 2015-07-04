@@ -15,6 +15,7 @@ import model.Item;
 import model.ItemSpawner;
 import model.Snake;
 import model.cellobject.SnakeSegment;
+import model.cellobject.Wall;
 
 /**
  * @author Stefan Kameter
@@ -82,10 +83,20 @@ public class GameCanvas extends Canvas {
 
 		this.items = new ArrayList<Item>(); // TODO
 		this.staticObjects = new ArrayList<CellObject>(); // TODO
-		this.snakes = new Snake[2]; // TODO
-		this.snakes[0] = new Snake(3, new Point(4, 5), Direction.DOWN); // TODO
-		this.snakes[1] = new Snake(3, new Point(20, 5), Direction.DOWN); // TODO
-		this.snakes[1].setPathfinder();
+		for (int i = 0; i < LEVEL_HEIGHT; i++) { // TODO
+			if (i > 5 && i < 8)
+				continue;
+			this.staticObjects.add(new Wall(new Point(0, i))); // TODO
+			this.staticObjects.add(new Wall(new Point(LEVEL_WIDTH - 1, i))); // TODO
+		}
+		for (int i = 0; i < LEVEL_WIDTH; i++) { // TODO
+			this.staticObjects.add(new Wall(new Point(i, 0))); // TODO
+			this.staticObjects.add(new Wall(new Point(i, LEVEL_HEIGHT - 1))); // TODO
+		}
+		this.snakes = new Snake[1]; // TODO
+		this.snakes[0] = new Snake(3, new Point(4, 5), Direction.DOWN, true); // TODO
+		// this.snakes[1] = new Snake(3, new Point(20, 5), Direction.DOWN); // TODO
+		// this.snakes[1].setPathfinder(); // TODO
 
 		initialized = true;
 	}

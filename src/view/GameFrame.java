@@ -199,6 +199,14 @@ public class GameFrame extends JFrame {
 	}
 
 	/**
+	 * Method has to be called, if game is list.
+	 */
+	public void lost() {
+		gameThread.stop();
+		GameFrame.getInstance().changeComponent(Comp.GAMEOVERCANVAS);
+	}
+
+	/**
 	 * Has to be called, if game will be exited.
 	 */
 	public void exit() {

@@ -1,10 +1,12 @@
 package model;
 
 import java.awt.Point;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.Comparator;
 
 import model.cellobject.Apple;
+import model.cellobject.Booze;
+import model.cellobject.Poop;
 import model.cellobject.RottenApple;
 import view.GameCanvas;
 
@@ -13,13 +15,26 @@ import view.GameCanvas;
  * @version 02.07.2015
  */
 public class ItemSpawner {
-
-	private static final List<Item> items;
+	private static final Item[] items;
 
 	static {
-		items = new ArrayList<Item>();
-		items.add(new Apple(null));
-		items.add(new RottenApple(null));
+		items = new Item[3];
+		items[0] = new Poop(null);
+		items[0] = new Apple(null);
+		items[1] = new RottenApple(null);
+		items[2] = new Booze(null);
+
+		Comparator<Item> comp = new Comparator<Item>() {
+			@Override
+			public int compare(Item i0, Item i1) {
+				if (i0.getChance() < i1.getChance())
+					return -1;
+				else if (i0.getChance() > i1.getChance())
+					return 1;
+				return 0;
+			}
+		};
+		Arrays.sort(items, comp);
 	}
 
 	/**
@@ -28,7 +43,7 @@ public class ItemSpawner {
 	 * @return a random item
 	 */
 	public static Item getRandomItem() {
-		Item item = (Item) (items.get((int) (Math.random() * items.size()))).clone();
+		Item item = (Item) (items[getIndex()]).clone();
 
 		while (true) {
 			int x = (int) (Math.random() * GameCanvas.LEVEL_WIDTH);
@@ -39,5 +54,23 @@ public class ItemSpawner {
 		}
 
 		return item;
+	}
+
+	private static int getIndex() {
+		int number = 0;
+		for (Item item : items)
+			number += item.getChance();
+
+		int random = (int) (Math.random() * number);
+
+		int temp = 0;
+		for (int i = 0; i < items.length; i++) {
+			int chance = items[i].getChance();
+			if (chance + temp > random)
+				return i;
+			temp += chance;
+		}
+
+		return -1;
 	}
 }

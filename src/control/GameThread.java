@@ -69,8 +69,7 @@ public class GameThread implements Runnable {
 				snakes[s].setLookingDirection(dirs[s]);
 
 			if (!snakes[s].move()) {
-				stop();
-				GameFrame.getInstance().changeComponent(Comp.GAMEOVERCANVAS);
+				GameFrame.getInstance().lost();
 				return;
 			}
 			GameFrame.getInstance().getGameCanvas().onMove(s);

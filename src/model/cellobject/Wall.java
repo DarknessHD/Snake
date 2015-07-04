@@ -2,6 +2,7 @@ package model.cellobject;
 
 import java.awt.Point;
 
+import view.GameFrame;
 import model.CellObject;
 import model.Snake;
 
@@ -23,6 +24,6 @@ public class Wall extends CellObject {
 
 	@Override
 	public void onSnakeHitCellObject(Snake snake) {
-		// TODO Game Over Screen!
+		GameFrame.getInstance().lost();
 	}
 }

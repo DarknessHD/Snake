@@ -18,7 +18,7 @@ public class Booze extends Item {
 	 *            the position in the map
 	 */
 	public Booze(Point position) {
-		super("booze", position);
+		super("booze", position, 3);
 	}
 
 	@Override

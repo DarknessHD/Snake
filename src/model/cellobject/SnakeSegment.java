@@ -7,6 +7,7 @@ import model.CellObject;
 import model.Direction;
 import model.Snake;
 import view.GameCanvas;
+import view.GameFrame;
 
 /**
  * @author Eric Armbruster
@@ -72,7 +73,7 @@ public class SnakeSegment extends CellObject {
 
 	@Override
 	public void onSnakeHitCellObject(Snake snake) {
-		// TODO Game Over Screen!
+		GameFrame.getInstance().lost();
 	}
 
 	private static Point getAdjacentPosition(Point startPosition, Direction direction, boolean endlessLevel) {
