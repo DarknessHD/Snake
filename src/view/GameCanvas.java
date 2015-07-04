@@ -15,6 +15,7 @@ import model.Item;
 import model.ItemSpawner;
 import model.Snake;
 import model.cellobject.SnakeSegment;
+import control.snakecontroller.Pathfinder;
 
 /**
  * @author Stefan Kameter
@@ -82,8 +83,10 @@ public class GameCanvas extends Canvas {
 
 		this.items = new ArrayList<Item>(); // TODO
 		this.staticObjects = new ArrayList<CellObject>(); // TODO
-		this.snakes = new Snake[1]; // TODO
+		this.snakes = new Snake[2]; // TODO
 		this.snakes[0] = new Snake(3, new Point(4, 5), Direction.DOWN); // TODO
+		this.snakes[1] = new Snake(3, new Point(20, 5), Direction.DOWN); // TODO
+		this.snakes[1].setPathfinder();
 
 		initialized = true;
 	}

@@ -6,8 +6,8 @@ import java.util.LinkedList;
 import java.util.Objects;
 import java.util.function.Predicate;
 
+import control.snakecontroller.Pathfinder;
 import model.cellobject.SnakeSegment;
-import model.snakecontroller.Pathfinder;
 import view.GameCanvas;
 
 /**

@@ -1,9 +1,8 @@
-package model.snakecontroller;
+package control.snakecontroller;
 
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import model.Direction;
@@ -78,7 +77,7 @@ public class Pathfinder {
 
 		Point currentPosition = (Point) snake.getHead().getPosition().clone();
 		Point targetPosition = target.getPosition();
-		List<Point> path = new ArrayList<Point>();
+		List<Direction> path = new ArrayList<Direction>();
 
 		Direction targetDirectionHorizontal = null;
 		Direction targetDirectionVertical = null;
@@ -122,7 +121,7 @@ public class Pathfinder {
 
 			nextPosition.setLocation(nextPosition.getX() + targetDirection.getXOffset(), nextPosition.getY()
 					+ targetDirection.getYOffset());
-			path.add(nextPosition);
+			path.add(targetDirection);
 
 			currentPosition = nextPosition;
 		} while (!currentPosition.equals(targetPosition));
@@ -137,27 +136,31 @@ public class Pathfinder {
 	 *            the map of items
 	 * @return the nearest item
 	 */
-	public Item findNearestItem(Map<Point, ? extends Item> items) {
-		Point nearestPosition = null;
+	public Item findNearestItem(List<Item> items) {
+		Item nearestItem = null;
 		Point headPosition = snake.getHead().getPosition();
 
-		for (Point position : items.keySet())
-			if (nearestPosition == null || position.distance(headPosition) < nearestPosition.distance(headPosition))
-				nearestPosition = position;
+		for (Item item : items) {
+			Point position = item.getPosition();
+			if (nearestItem == null || position.distance(headPosition) < nearestItem.getPosition().distance(headPosition))
+				nearestItem = item;
+		}
+			
 
-		return items.get(nearestPosition);
+		return nearestItem;
 	}
 
-	private class Path {
+	//TODO Private
+	public class Path {
 
-		private final List<Point> path;
+		private final List<Direction> path;
 
-		private Path(List<Point> path) {
+		private Path(List<Direction> path) {
 			this.path = path;
 		}
 
-		private List<Point> getPoints() {
-			return new ArrayList<Point>(this.path);
+		public List<Direction> getDirections() {
+			return new ArrayList<Direction>(this.path);
 		}
 	}
 }
