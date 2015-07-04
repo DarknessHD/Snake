@@ -96,7 +96,9 @@ public class SnakeSegment extends CellObject {
 		else if(adjacent.getX() > GameCanvas.LEVEL_WIDTH - 1 || adjacent.getY() > GameCanvas.LEVEL_HEIGHT - 1
 				|| adjacent.getX() < 0 || adjacent.getY() < 0) {
 			if(count < Direction.values().length)
-				getAdjacentPosition(copyStartPosition, direction.getNext(), endlessLevel);			
+				getAdjacentPosition(copyStartPosition, direction.getNext(), endlessLevel);
+			else
+				count = 0;
 		}
 
 		return adjacent;

@@ -7,23 +7,22 @@ import model.Snake;
 
 /**
  * @author Alexander Donocik
- * @version 29.06.2015
+ * @version 03.07.2015
  */
-public class Apple extends Item {
+public class Booze extends Item {
 
 	/**
-	 * Creates an instance of Apple.
+	 * Creates an instance of Booze.
 	 * 
 	 * @param position
 	 *            the position in the map
 	 */
-	public Apple(Point position) {
-		super("apple", position);
+	public Booze(Point position) {
+		super("booze", position);
 	}
 
 	@Override
 	public void onSnakeHitCellObject(Snake snake) {
-		snake.addSegment();
-		snake.increaseScore(50);
+		snake.increaseScore(250);
 	}
 }

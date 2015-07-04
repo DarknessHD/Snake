@@ -82,8 +82,9 @@ public class GameCanvas extends Canvas {
 
 		this.items = new ArrayList<Item>(); // TODO
 		this.staticObjects = new ArrayList<CellObject>(); // TODO
-		this.snakes = new Snake[1]; // TODO
+		this.snakes = new Snake[2]; // TODO
 		this.snakes[0] = new Snake(3, new Point(4, 5), Direction.DOWN); // TODO
+		this.snakes[1] = new Snake(3, new Point(20, 5), Direction.DOWN); // TODO
 
 		initialized = true;
 	}
@@ -200,7 +201,7 @@ public class GameCanvas extends Canvas {
 			bufferGraphics.setColor(getBackground());
 			bufferGraphics.fillRect(0, 0, getWidth(), getHeight());
 
-			bufferGraphics.setColor(Color.BLACK);
+			bufferGraphics.setColor(Color.WHITE);
 
 			for (int y = 0; y < LEVEL_HEIGHT; y++)
 				for (int x = 0; x < LEVEL_WIDTH; x++)

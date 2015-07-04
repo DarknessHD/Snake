@@ -4,9 +4,9 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import view.GameCanvas;
 import model.cellobject.Apple;
 import model.cellobject.RottenApple;
+import view.GameCanvas;
 
 /**
  * @author Eric Armbruster, Stefan Kameter

@@ -24,5 +24,6 @@ public class RottenApple extends Item {
 	public void onSnakeHitCellObject(Snake snake) {
 		for (int i = 0; i < 2; i++)
 			snake.removeSegment();
+		snake.decreaseScore(100);
 	}
 }
