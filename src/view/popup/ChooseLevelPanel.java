@@ -61,7 +61,7 @@ public class ChooseLevelPanel extends JPanel {
 
 				// TODO load, set chosen level
 				GameFrame.getInstance().setLevel(null, null, null);
-				for (int i = 0; i < 3; i++)
+				for (int i = 0; i < 8; i++)
 					GameFrame.getInstance().getGameCanvas().addItem(ItemSpawner.getRandomItem());
 
 				GameFrame.getInstance().changeComponent(Comp.GAMECANVAS);

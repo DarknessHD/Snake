@@ -18,11 +18,11 @@ public class ItemSpawner {
 	private static final Item[] items;
 
 	static {
-		items = new Item[3];
+		items = new Item[4];
 		items[0] = new Poop(null);
-		items[0] = new Apple(null);
-		items[1] = new RottenApple(null);
-		items[2] = new Booze(null);
+		items[1] = new Apple(null);
+		items[2] = new RottenApple(null);
+		items[3] = new Booze(null);
 
 		Comparator<Item> comp = new Comparator<Item>() {
 			@Override

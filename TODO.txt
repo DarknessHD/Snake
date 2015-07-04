@@ -1,0 +1,20 @@
+TODOs
+-----
+
+ALLE:
+	- TODOs in eigenen Klassen
+
+ALEX:
+	- Items: onSnakeHitCellObject(), chances
+
+STEFAN:
+	- Drawing GameOverScreen
+	- Adding score to scoreList
+	- PauseMenu
+	- KeyBoard (error index out of Bounds)
+
+QUIRIN:
+	- whole IO
+
+ERIC:
+	- new Snake(boolean endless)
