@@ -22,10 +22,11 @@ public class Snake {
 
 	private static final Predicate<Integer> MIN_SEGMENTS = t -> t >= MIN_SEGMENTS_VALUE;
 	private static final Predicate<Integer> MIN_SCORE = t -> t >= MIN_SCORE_VALUE;
+	private static boolean endless = false;
 
 	private Deque<SnakeSegment> segments;
 	private Direction lastDirection;
-	private boolean directionChange = false, endless;
+	private boolean directionChange = false;
 	private int score = 0;
 	private Pathfinder pathfinder = null;
 
@@ -41,12 +42,11 @@ public class Snake {
 	 * @param endless
 	 *            whether or not the level is endless
 	 */
-	public Snake(int startSegments, Point startPosition, Direction startDirection, boolean endless) {
+	public Snake(int startSegments, Point startPosition, Direction startDirection) {
 		if (!MIN_SEGMENTS.test(startSegments))
 			startSegments = MIN_SEGMENTS_VALUE;
 
 		this.lastDirection = Objects.requireNonNull(startDirection);
-		this.endless = endless;
 
 		segments = new LinkedList<SnakeSegment>();
 
@@ -59,20 +59,6 @@ public class Snake {
 
 		segments.addLast(new SnakeSegment(RotatedImage.get(startDirection.getOpposite(), RotatedImage.TAIL_IMAGE),
 				startPosition, startDirection, true, endless));
-	}
-
-	/**
-	 * Creates a new Snake instance.
-	 * 
-	 * @param startSegments
-	 *            the amount of segments the snake has
-	 * @param startPosition
-	 *            the start position of the snake
-	 * @param startDirection
-	 *            the direction the snake is looking into
-	 */
-	public Snake(int startSegments, Point startPosition, Direction startDirection) {
-		this(startSegments, startPosition, startDirection, false);
 	}
 
 	/**
@@ -164,10 +150,10 @@ public class Snake {
 	 * Sets the Pathfinder for this snake.
 	 */
 	public void setPathfinder() {
-		if(pathfinder != null)
+		if (pathfinder != null)
 			pathfinder = new Pathfinder(this);
 	}
-	
+
 	/**
 	 * Returns the Pathfinder of this snake.
 	 * 
@@ -259,5 +245,24 @@ public class Snake {
 				RotatedImage.get(segments.getLast().getDirection().getOpposite(), RotatedImage.TAIL_IMAGE));
 
 		return true;
+	}
+
+	/**
+	 * Sets map endless or not.
+	 * 
+	 * @param _endless
+	 *            whether or not the map is endless
+	 */
+	public static void setEndless(boolean _endless) {
+		endless = _endless;
+	}
+
+	/**
+	 * Returns whether or not the map is endless.
+	 * 
+	 * @return true, when the map is endless, false otherwise
+	 */
+	public static boolean isEndless() {
+		return endless;
 	}
 }

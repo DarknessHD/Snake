@@ -94,7 +94,8 @@ public class GameCanvas extends Canvas {
 			this.staticObjects.add(new Wall(new Point(i, LEVEL_HEIGHT - 1))); // TODO
 		}
 		this.snakes = new Snake[1]; // TODO
-		this.snakes[0] = new Snake(3, new Point(4, 5), Direction.DOWN, true); // TODO
+		Snake.setEndless(true);
+		this.snakes[0] = new Snake(3, new Point(4, 5), Direction.DOWN); // TODO
 		// this.snakes[1] = new Snake(3, new Point(20, 5), Direction.DOWN); // TODO
 		// this.snakes[1].setPathfinder(); // TODO
 
