@@ -2,8 +2,7 @@ TODOs
 -----
 
 ALLE:
-	- TODOs in eigenen Klassen
-
+	- TODOs in own classes
 ALEX:
 	- Items: onSnakeHitCellObject(), chances
 
@@ -14,7 +13,10 @@ STEFAN:
 	- KeyBoard (error index out of Bounds)
 
 QUIRIN:
-	- whole IO
+	- whole IO-logic, classes
 
 ERIC:
 	- new Snake(boolean endless)
+	
+ERIC && STEFAN:
+	- Pathfinder, AIControl
