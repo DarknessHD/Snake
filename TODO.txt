@@ -3,17 +3,18 @@ TODOs
 
 ALLE:
 	-  TODOs in own classes
-	-  making all better (no lags, more performance, better looking, ..)
+	-  making all better (no lags, more performance, better looking, 'flackern', ...)
 	
 ALEX:
-	-  Items: onSnakeHitCellObject(), chances
+	-  Items: onSnakeHitCellObject(), chances, more items
 
 STEFAN:
-	-  Drawing GameOverScreen
+	-  Drawing GameOverScreen (GameCanvas.buffer is the background)
 	-  Adding score to scoreList
-	-  PauseMenu
+	-  PauseMenu (GameCanvas.buffer is the background)
 	-  KeyBoard (error index out of Bounds)
 	-( More features in LevelChoosePanel )
+	-( Cheats ) :) :)
 
 QUIRIN:
 	- whole IO-logic, classes
