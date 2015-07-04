@@ -76,7 +76,6 @@ public class GameThread implements Runnable {
 			GameFrame.getInstance().getGameCanvas().onMove(s);
 		}
 		GameFrame.getInstance().getGameCanvas().repaint();
-		;
 	}
 
 	@Override
@@ -105,7 +104,7 @@ public class GameThread implements Runnable {
 			for (int s = 0; s < snakes.length; s++) {
 				Direction dir = null;
 
-				if (!snakes[s].isAI())
+				if (snakes[s].getPathfinder() == null)
 					dir = controllers[0].getDirection(s);
 				else
 					dir = controllers[1].getDirection(s);
@@ -118,6 +117,12 @@ public class GameThread implements Runnable {
 				timer += 1000;
 				// sec++;
 				// TODO add Score per second to snakes
+			}
+
+			try {
+				Thread.sleep(15);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 		}
 
