@@ -3,8 +3,8 @@ package model;
 import java.awt.Point;
 import java.util.Objects;
 
-import view.GamePanel;
 import view.GameFrame;
+import control.Constants;
 
 /**
  * @author Eric Armbruster
@@ -39,14 +39,12 @@ public class SnakeSegment extends CellObject {
 	 * @param direction
 	 *            the direction of the snake segment
 	 * @param opposite
-	 *            whether or not the opposite direction is used for getting the
-	 *            adjacent position
+	 *            whether or not the opposite direction is used for getting the adjacent position
 	 * @param endlessLevel
 	 *            whether or not the level is endless
 	 */
 	public SnakeSegment(String image, Point startPosition, Direction direction, boolean opposite, boolean endlessLevel) {
-		this(image, getAdjacentPosition(startPosition, (opposite) ? direction.getOpposite() : direction, endlessLevel),
-				direction);
+		this(image, getAdjacentPosition(startPosition, (opposite) ? direction.getOpposite() : direction, endlessLevel), direction);
 	}
 
 	/**
@@ -75,25 +73,22 @@ public class SnakeSegment extends CellObject {
 
 	private static Point getAdjacentPosition(Point startPosition, Direction direction, boolean endlessLevel) {
 		Point copyStartPosition = new Point(startPosition);
-		startPosition.setLocation((int) startPosition.getX() + direction.getXOffset(), (int) startPosition.getY()
-				+ direction.getYOffset());
+		startPosition.setLocation((int) startPosition.getX() + direction.getXOffset(), (int) startPosition.getY() + direction.getYOffset());
 
 		Point adjacent = new Point(startPosition);
 		count++;
 
-		if(endlessLevel) {
+		if (endlessLevel) {
 			if (adjacent.getX() < -1)
-				adjacent.setLocation(GamePanel.LEVEL_WIDTH - 1, adjacent.getY());
+				adjacent.setLocation(Constants.LEVEL_WIDTH - 1, adjacent.getY());
 			else if (adjacent.getY() < -1)
-				adjacent.setLocation(adjacent.getX(), GamePanel.LEVEL_HEIGHT - 1);
-			else if (adjacent.getX() > GamePanel.LEVEL_WIDTH - 1)
+				adjacent.setLocation(adjacent.getX(), Constants.LEVEL_HEIGHT - 1);
+			else if (adjacent.getX() > Constants.LEVEL_WIDTH - 1)
 				adjacent.setLocation(0, adjacent.getY());
-			else if (adjacent.getY() > GamePanel.LEVEL_HEIGHT - 1)
-				adjacent.setLocation(adjacent.getX(), 0);	
-		}
-		else if(adjacent.getX() > GamePanel.LEVEL_WIDTH - 1 || adjacent.getY() > GamePanel.LEVEL_HEIGHT - 1
-				|| adjacent.getX() < 0 || adjacent.getY() < 0) {
-			if(count < Direction.values().length)
+			else if (adjacent.getY() > Constants.LEVEL_HEIGHT - 1)
+				adjacent.setLocation(adjacent.getX(), 0);
+		} else if (adjacent.getX() > Constants.LEVEL_WIDTH - 1 || adjacent.getY() > Constants.LEVEL_HEIGHT - 1 || adjacent.getX() < 0 || adjacent.getY() < 0) {
+			if (count < Direction.values().length)
 				getAdjacentPosition(copyStartPosition, direction.getNext(), endlessLevel);
 			else
 				count = 0;

@@ -1,4 +1,4 @@
-package model.static_co;
+package model.staticobjects;
 
 import java.awt.Point;
 

@@ -6,9 +6,9 @@ import java.util.LinkedList;
 import java.util.Objects;
 import java.util.function.Predicate;
 
-import control.snakecontroller.Pathfinder;
-import view.GamePanel;
 import view.GameFrame;
+import control.Constants;
+import control.snakecontroller.Pathfinder;
 
 /**
  * @author Eric Armbruster
@@ -50,15 +50,12 @@ public class Snake {
 
 		segments = new LinkedList<SnakeSegment>();
 
-		segments.addFirst(new SnakeSegment(RotatedImage.get(startDirection, RotatedImage.HEAD_IMAGE), new Point(
-				startPosition), startDirection));
+		segments.addFirst(new SnakeSegment(RotatedImage.get(startDirection, RotatedImage.HEAD_IMAGE), new Point(startPosition), startDirection));
 
 		for (int i = 1; i < startSegments - 1; i++)
-			segments.add(new SnakeSegment(RotatedImage.get(startDirection, RotatedImage.BODY_IMAGE), startPosition,
-					startDirection, true, endless));
+			segments.add(new SnakeSegment(RotatedImage.get(startDirection, RotatedImage.BODY_IMAGE), startPosition, startDirection, true, endless));
 
-		segments.addLast(new SnakeSegment(RotatedImage.get(startDirection.getOpposite(), RotatedImage.TAIL_IMAGE),
-				startPosition, startDirection, true, endless));
+		segments.addLast(new SnakeSegment(RotatedImage.get(startDirection.getOpposite(), RotatedImage.TAIL_IMAGE), startPosition, startDirection, true, endless));
 	}
 
 	/**
@@ -125,8 +122,7 @@ public class Snake {
 	}
 
 	/**
-	 * Returns all body parts of the snake. This doesn't contain the head and
-	 * the tail.
+	 * Returns all body parts of the snake. This doesn't contain the head and the tail.
 	 * 
 	 * @return the body parts of the snake
 	 */
@@ -173,8 +169,7 @@ public class Snake {
 	}
 
 	/**
-	 * IMPORTANT: Always use this method to change the direction of the snake's
-	 * head! Sets the direction the snake's head is looking into.
+	 * IMPORTANT: Always use this method to change the direction of the snake's head! Sets the direction the snake's head is looking into.
 	 * 
 	 * @param direction
 	 *            of the snake's head
@@ -194,8 +189,7 @@ public class Snake {
 	/**
 	 * Removes the last segment from the snake.
 	 * 
-	 * @return true, when the last segment was removed and false otherwise, when
-	 *         there are not enough segments left to remove one more.
+	 * @return true, when the last segment was removed and false otherwise, when there are not enough segments left to remove one more.
 	 */
 	public boolean removeSegment() {
 		if (!MIN_SEGMENTS.test(segments.size() - 1)) {
@@ -204,8 +198,7 @@ public class Snake {
 		}
 
 		segments.removeLast();
-		segments.getLast().setImage(
-				RotatedImage.get(segments.getLast().getDirection().getOpposite(), RotatedImage.TAIL_IMAGE));
+		segments.getLast().setImage(RotatedImage.get(segments.getLast().getDirection().getOpposite(), RotatedImage.TAIL_IMAGE));
 		return true;
 	}
 
@@ -215,13 +208,11 @@ public class Snake {
 	public void addSegment() {
 		SnakeSegment newBody = segments.getLast();
 		newBody.setImage(RotatedImage.get(newBody.getDirection(), RotatedImage.BODY_IMAGE));
-		segments.addLast(new SnakeSegment(RotatedImage.get(newBody.getDirection().getOpposite(),
-				RotatedImage.TAIL_IMAGE), new Point(newBody.getPosition()), newBody.getDirection(), true, endless));
+		segments.addLast(new SnakeSegment(RotatedImage.get(newBody.getDirection().getOpposite(), RotatedImage.TAIL_IMAGE), new Point(newBody.getPosition()), newBody.getDirection(), true, endless));
 	}
 
 	/**
-	 * Moves the snake one cell forward into the direction its looking into, if
-	 * possible.
+	 * Moves the snake one cell forward into the direction its looking into, if possible.
 	 * 
 	 * @return true when the snake was moved, false otherwise.
 	 */
@@ -229,8 +220,7 @@ public class Snake {
 		SnakeSegment newBody = segments.getFirst();
 		Point headPos = newBody.getPosition();
 		if (!endless)
-			if (headPos.getX() > GamePanel.LEVEL_WIDTH - 1 || headPos.getY() > GamePanel.LEVEL_HEIGHT - 1
-					|| headPos.getX() < 0 || headPos.getY() < 0)
+			if (headPos.getX() > Constants.LEVEL_WIDTH - 1 || headPos.getY() > Constants.LEVEL_HEIGHT - 1 || headPos.getX() < 0 || headPos.getY() < 0)
 				return false;
 
 		if (directionChange) {
@@ -239,12 +229,10 @@ public class Snake {
 		} else
 			newBody.setImage(RotatedImage.get(newBody.getDirection(), RotatedImage.BODY_IMAGE));
 
-		segments.addFirst(new SnakeSegment(RotatedImage.get(newBody.getDirection(), RotatedImage.HEAD_IMAGE),
-				new Point(newBody.getPosition()), newBody.getDirection(), false, endless));
+		segments.addFirst(new SnakeSegment(RotatedImage.get(newBody.getDirection(), RotatedImage.HEAD_IMAGE), new Point(newBody.getPosition()), newBody.getDirection(), false, endless));
 
 		segments.removeLast();
-		segments.getLast().setImage(
-				RotatedImage.get(segments.getLast().getDirection().getOpposite(), RotatedImage.TAIL_IMAGE));
+		segments.getLast().setImage(RotatedImage.get(segments.getLast().getDirection().getOpposite(), RotatedImage.TAIL_IMAGE));
 
 		return true;
 	}

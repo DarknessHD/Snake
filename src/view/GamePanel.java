@@ -18,8 +18,9 @@ import model.Level;
 import model.Snake;
 import model.SnakeSegment;
 import model.item.Item;
-import model.static_co.StaticCellObject;
+import model.staticobjects.StaticCellObject;
 import control.Comp;
+import control.Constants;
 import control.ItemSpawner;
 import control.ShiftType;
 
@@ -29,31 +30,6 @@ import control.ShiftType;
  */
 public class GamePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * The pixel size of a tile.
-	 */
-	public static final int TILE_SIZE = 32;
-	/**
-	 * The size of a tile (BW).
-	 */
-	public static final int TILE_SIZE_BW = (int) (Math.log(TILE_SIZE) / Math.log(2));
-	/**
-	 * The width of tiles in the level.
-	 */
-	public static final int LEVEL_WIDTH = 30;
-	/**
-	 * The height of tiles in the level.
-	 */
-	public static final int LEVEL_HEIGHT = 20;
-	/**
-	 * Component width.
-	 */
-	public static final int CANVAS_WIDTH = LEVEL_WIDTH * TILE_SIZE + 1;
-	/**
-	 * Component height.
-	 */
-	public static final int CANVAS_HEIGHT = LEVEL_HEIGHT * TILE_SIZE + 1;
 
 	private BufferedImage buffer;
 	private Graphics bufferGraphics;
@@ -70,7 +46,7 @@ public class GamePanel extends JPanel {
 		paused = false;
 		gameOver = false;
 
-		setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
+		setPreferredSize(new Dimension(Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT));
 
 		initListener();
 	}
@@ -215,7 +191,7 @@ public class GamePanel extends JPanel {
 	public void paint(Graphics g) {
 		if (level != null) {
 			if (bufferGraphics == null) {
-				buffer = new BufferedImage(CANVAS_WIDTH, CANVAS_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+				buffer = new BufferedImage(Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 				bufferGraphics = buffer.getGraphics();
 			}
 
@@ -236,27 +212,27 @@ public class GamePanel extends JPanel {
 
 		bufferGraphics.setColor(Color.WHITE);
 
-		for (int y = 0; y < LEVEL_HEIGHT; y++)
-			for (int x = 0; x < LEVEL_WIDTH; x++)
-				bufferGraphics.drawRect(x << TILE_SIZE_BW, y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE);
+		for (int y = 0; y < Constants.LEVEL_HEIGHT; y++)
+			for (int x = 0; x < Constants.LEVEL_WIDTH; x++)
+				bufferGraphics.drawRect(x << Constants.TILE_SIZE_BW, y << Constants.TILE_SIZE_BW, Constants.TILE_SIZE, Constants.TILE_SIZE);
 
 		// Items
 		for (Item i : level.items) {
 			Point p = i.getPosition();
-			bufferGraphics.drawImage(i.getImage(), p.x << TILE_SIZE_BW, p.y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE, null);
+			bufferGraphics.drawImage(i.getImage(), p.x << Constants.TILE_SIZE_BW, p.y << Constants.TILE_SIZE_BW, Constants.TILE_SIZE, Constants.TILE_SIZE, null);
 		}
 
 		// Snakes
 		for (Snake snake : level.snakes)
 			for (SnakeSegment s : snake.getSegments()) {
 				Point p = s.getPosition();
-				bufferGraphics.drawImage(s.getImage(), p.x << TILE_SIZE_BW, p.y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE, null);
+				bufferGraphics.drawImage(s.getImage(), p.x << Constants.TILE_SIZE_BW, p.y << Constants.TILE_SIZE_BW, Constants.TILE_SIZE, Constants.TILE_SIZE, null);
 			}
 
 		// StaticCellObjects
 		for (StaticCellObject obj : level.staticCellObjects) {
 			Point p = obj.getPosition();
-			bufferGraphics.drawImage(obj.getImage(), p.x << TILE_SIZE_BW, p.y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE, null);
+			bufferGraphics.drawImage(obj.getImage(), p.x << Constants.TILE_SIZE_BW, p.y << Constants.TILE_SIZE_BW, Constants.TILE_SIZE, Constants.TILE_SIZE, null);
 		}
 	}
 
@@ -266,7 +242,7 @@ public class GamePanel extends JPanel {
 		bufferGraphics.setFont(new Font("SanSarif", Font.BOLD, 60));
 		String string = "Game Paused";
 		int width = bufferGraphics.getFontMetrics(bufferGraphics.getFont()).stringWidth(string);
-		bufferGraphics.drawString(string, (CANVAS_WIDTH - width) / 2, CANVAS_HEIGHT / 4);
+		bufferGraphics.drawString(string, (Constants.CANVAS_WIDTH - width) / 2, Constants.CANVAS_HEIGHT / 4);
 
 		drawScore();
 
@@ -279,7 +255,7 @@ public class GamePanel extends JPanel {
 		bufferGraphics.setFont(new Font("SanSarif", Font.BOLD, 60));
 		String string = "Game Over";
 		int width = bufferGraphics.getFontMetrics(bufferGraphics.getFont()).stringWidth(string);
-		bufferGraphics.drawString(string, (CANVAS_WIDTH - width) / 2, CANVAS_HEIGHT / 4);
+		bufferGraphics.drawString(string, (Constants.CANVAS_WIDTH - width) / 2, Constants.CANVAS_HEIGHT / 4);
 
 		drawWinning();
 
@@ -305,7 +281,7 @@ public class GamePanel extends JPanel {
 		bufferGraphics.setFont(new Font("SanSarif", Font.BOLD, 45));
 		String string = "Score: " + level.snakes[0].getScore();
 		int width = bufferGraphics.getFontMetrics(bufferGraphics.getFont()).stringWidth(string);
-		bufferGraphics.drawString(string, (CANVAS_WIDTH - width) / 2, CANVAS_HEIGHT / 2);
+		bufferGraphics.drawString(string, (Constants.CANVAS_WIDTH - width) / 2, Constants.CANVAS_HEIGHT / 2);
 	}
 
 	private void drawScoreMP() {
@@ -315,7 +291,7 @@ public class GamePanel extends JPanel {
 			bufferGraphics.setFont(new Font("SanSarif", Font.BOLD, 45));
 			String string = "(Snake" + i + ") Score: " + level.snakes[i].getScore();
 			int width = bufferGraphics.getFontMetrics(bufferGraphics.getFont()).stringWidth(string);
-			bufferGraphics.drawString(string, (CANVAS_WIDTH - width) / 2, CANVAS_HEIGHT / 2 + i * 80);
+			bufferGraphics.drawString(string, (Constants.CANVAS_WIDTH - width) / 2, Constants.CANVAS_HEIGHT / 2 + i * 80);
 		}
 	}
 
@@ -330,7 +306,7 @@ public class GamePanel extends JPanel {
 		bufferGraphics.setFont(new Font("SanSarif", Font.BOLD, 20));
 		String string = "Click to continue";
 		int width = bufferGraphics.getFontMetrics(bufferGraphics.getFont()).stringWidth(string);
-		bufferGraphics.drawString(string, (CANVAS_WIDTH - width) / 2, CANVAS_HEIGHT - 50);
+		bufferGraphics.drawString(string, (Constants.CANVAS_WIDTH - width) / 2, Constants.CANVAS_HEIGHT - 50);
 	}
 
 	/**
