@@ -27,8 +27,6 @@ public class ChooseLevelPanel extends JPanel {
 	private JComboBox<String> comboBox;
 	private JButton accept;
 
-	private String level;
-
 	/**
 	 * Creates an instance of ChooseLevelPanel.
 	 * 
@@ -69,12 +67,5 @@ public class ChooseLevelPanel extends JPanel {
 				GameFrame.getInstance().changeComponent(Comp.GAMEPANEL);
 			}
 		});
-	}
-
-	/**
-	 * @return the chosen level
-	 */
-	public String getChosenLevel() {
-		return level;
 	}
 }
