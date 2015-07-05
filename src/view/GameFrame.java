@@ -11,10 +11,8 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import model.Level;
 import model.ScoreListEntry;
-import model.Snake;
-import model.item.Item;
-import model.static_co.StaticCellObject;
 import control.Comp;
 import control.GameThread;
 
@@ -138,10 +136,14 @@ public class GameFrame extends JFrame {
 	 *            the list of default Items
 	 * @param defaultSpeed
 	 *            the default speed
+	 * @return whether Level could be initialized
 	 */
-	public void setLevel(String level, Snake[] snakes, List<StaticCellObject> staticCellObjects, List<Item> items, int defaultSpeed) {
-		gamePanel.setLevel(level, snakes, staticCellObjects, items);
-		gameThread.start(defaultSpeed);
+	public boolean setLevel(Level level) {
+		if (level.init()) {
+			gamePanel.setLevel(level);
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -177,6 +179,16 @@ public class GameFrame extends JFrame {
 	 */
 	public void changeSpeed(int speedAddition) {
 		gameThread.changeSpeed(speedAddition);
+	}
+
+	/**
+	 * Starts the Game.
+	 * 
+	 * @param defaultSpeed
+	 *            the defaultSpeed
+	 */
+	public void start(int defaultSpeed) {
+		gameThread.start(defaultSpeed);
 	}
 
 	/**

@@ -14,12 +14,11 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import model.CellObject;
-import model.Direction;
+import model.Level;
 import model.Snake;
 import model.SnakeSegment;
 import model.item.Item;
 import model.static_co.StaticCellObject;
-import model.static_co.Wall;
 import control.Comp;
 import control.ItemSpawner;
 import control.ShiftType;
@@ -59,21 +58,15 @@ public class GamePanel extends JPanel {
 	private BufferedImage buffer;
 	private Graphics bufferGraphics;
 
-	private boolean initialized;
 	private boolean paused;
 	private boolean gameOver;
 
-	private String level;
-
-	private Snake[] snakes;
-	private List<StaticCellObject> staticCellObjects;
-	private List<Item> items;
+	private Level level;
 
 	/**
 	 * Creates a new GamePanel instance.
 	 */
 	public GamePanel() {
-		initialized = false;
 		paused = false;
 		gameOver = false;
 
@@ -87,8 +80,8 @@ public class GamePanel extends JPanel {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				if (gameOver) {
-					if (snakes.length == 1)
-						GameFrame.getInstance().addToScoreList(level, snakes[0].getScore());
+					if (level.snakes.length == 1)
+						GameFrame.getInstance().addToScoreList(level.name, level.snakes[0].getScore());
 					GameFrame.getInstance().changeComponent(Comp.GAMEMENUPANEL);
 				} else if (paused)
 					setPaused(false);
@@ -108,74 +101,20 @@ public class GamePanel extends JPanel {
 	 * @param items
 	 *            the list of default Items
 	 */
-	public void setLevel(String level, Snake[] snakes, List<StaticCellObject> staticCellObjects, List<Item> items) {
+	public void setLevel(Level level) {
 		this.level = level;
-		this.snakes = snakes;
-		this.staticCellObjects = staticCellObjects;
-		this.items = items;
 
-		// TODO
-		this.items = new ArrayList<Item>();
-		this.staticCellObjects = new ArrayList<StaticCellObject>();
-		for (int i = 0; i < LEVEL_HEIGHT; i++) {
-			if (i > 5 && i < 8)
-				continue;
-			this.staticCellObjects.add(new Wall(new Point(0, i)));
-			this.staticCellObjects.add(new Wall(new Point(LEVEL_WIDTH - 1, i)));
-		}
-		for (int i = 0; i < LEVEL_WIDTH; i++) {
-			this.staticCellObjects.add(new Wall(new Point(i, 0)));
-			this.staticCellObjects.add(new Wall(new Point(i, LEVEL_HEIGHT - 1)));
-		}
-		this.snakes = new Snake[1];
-		this.snakes[0] = new Snake(3, new Point(4, 5), Direction.DOWN);
-		// this.snakes[1] = new Snake(3, new Point(20, 5), Direction.DOWN);
-		// this.snakes[1].setPathfinder();
-		// TODO
-
-		initialized = true;
 		paused = false;
 		gameOver = false;
 	}
 
 	/**
-	 * Returns the snakes.
+	 * Returns the Level.
 	 * 
-	 * @return snakes
+	 * @return the Level
 	 */
-	public Snake[] getSnakes() {
-		return snakes;
-	}
-
-	/**
-	 * Returns all Items.
-	 * 
-	 * @return all items
-	 */
-	public List<Item> getItems() {
-		return items;
-	}
-
-	/**
-	 * Returns all Items.
-	 * 
-	 * @return all items
-	 */
-	public List<StaticCellObject> getStaticCellObjects() {
-		return staticCellObjects;
-	}
-
-	/**
-	 * Adds an Item.
-	 * 
-	 * @param item
-	 *            the Item
-	 */
-	public void addItem(Item item) {
-		items.add(item);
-		// TODO repainting
-		// Point p = item.getPosition();
-		// repaint(new Rectangle(p.x << TILE_SIZE_BW + 5, p.y << TILE_SIZE_BW + 5, TILE_SIZE, TILE_SIZE));
+	public Level getLevel() {
+		return level;
 	}
 
 	/**
@@ -214,32 +153,32 @@ public class GamePanel extends JPanel {
 	 *            the desired snake
 	 */
 	public void onMove(int index) {
-		CellObject head = snakes[index].getHead();
+		CellObject head = level.snakes[index].getHead();
 		Point sp = head.getPosition();
-		List<SnakeSegment> segments = new ArrayList<SnakeSegment>(snakes[index].getSegments());
+		List<SnakeSegment> segments = new ArrayList<SnakeSegment>(level.snakes[index].getSegments());
 
 		for (int i = 0; i < segments.size(); i++) {
 			SnakeSegment seg = segments.get(i);
 			if (seg.equals(head))
 				continue;
 			if (sp.equals(seg.getPosition())) {
-				seg.onSnakeHitCellObject(snakes[index]);
+				seg.onSnakeHitCellObject(level.snakes[index]);
 				segments.remove(i);
 			}
 		}
 
-		for (int i = 0; i < staticCellObjects.size(); i++) {
-			CellObject obj = staticCellObjects.get(i);
+		for (int i = 0; i < level.staticCellObjects.length; i++) {
+			CellObject obj = level.staticCellObjects[i];
 			if (sp.equals(obj.getPosition()))
-				obj.onSnakeHitCellObject(snakes[index]);
+				obj.onSnakeHitCellObject(level.snakes[index]);
 		}
 
-		for (int i = 0; i < items.size(); i++) {
-			Item item = items.get(i);
+		for (int i = 0; i < level.items.size(); i++) {
+			Item item = level.items.get(i);
 			if (sp.equals(item.getPosition())) {
-				item.onSnakeHitCellObject(snakes[index]);
-				items.remove(i);
-				items.add(ItemSpawner.getRandomItem());
+				item.onSnakeHitCellObject(level.snakes[index]);
+				level.items.remove(i);
+				level.addItem(ItemSpawner.getRandomItem());
 			}
 		}
 	}
@@ -252,28 +191,29 @@ public class GamePanel extends JPanel {
 	 * @return whether an item is already placed at that position
 	 */
 	public boolean checkPosition(Point position) {
-		if (items != null)
-			for (Item i : items)
+		if (level != null) {
+			for (Item i : level.items)
 				if (i.getPosition().equals(position))
 					return false;
 
-		if (staticCellObjects != null)
-			for (CellObject obj : staticCellObjects)
-				if (obj.getPosition().equals(position))
-					return false;
-
-		if (snakes != null)
-			for (Snake snake : snakes)
-				for (SnakeSegment s : snake.getSegments())
-					if (s.getPosition().equals(position))
+			if (level.staticCellObjects != null)
+				for (CellObject obj : level.staticCellObjects)
+					if (obj.getPosition().equals(position))
 						return false;
+
+			if (level.snakes != null)
+				for (Snake snake : level.snakes)
+					for (SnakeSegment s : snake.getSegments())
+						if (s.getPosition().equals(position))
+							return false;
+		}
 
 		return true;
 	}
 
 	@Override
 	public void paint(Graphics g) {
-		if (initialized) {
+		if (level != null) {
 			if (bufferGraphics == null) {
 				buffer = new BufferedImage(CANVAS_WIDTH, CANVAS_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 				bufferGraphics = buffer.getGraphics();
@@ -301,20 +241,20 @@ public class GamePanel extends JPanel {
 				bufferGraphics.drawRect(x << TILE_SIZE_BW, y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE);
 
 		// Items
-		for (Item i : items) {
+		for (Item i : level.items) {
 			Point p = i.getPosition();
 			bufferGraphics.drawImage(i.getImage(), p.x << TILE_SIZE_BW, p.y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE, null);
 		}
 
 		// Snakes
-		for (Snake snake : snakes)
+		for (Snake snake : level.snakes)
 			for (SnakeSegment s : snake.getSegments()) {
 				Point p = s.getPosition();
 				bufferGraphics.drawImage(s.getImage(), p.x << TILE_SIZE_BW, p.y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE, null);
 			}
 
 		// StaticCellObjects
-		for (StaticCellObject obj : staticCellObjects) {
+		for (StaticCellObject obj : level.staticCellObjects) {
 			Point p = obj.getPosition();
 			bufferGraphics.drawImage(obj.getImage(), p.x << TILE_SIZE_BW, p.y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE, null);
 		}
@@ -349,7 +289,7 @@ public class GamePanel extends JPanel {
 	}
 
 	private void drawScore() {
-		switch (snakes.length) {
+		switch (level.snakes.length) {
 		case 1:
 			drawScoreSP();
 			break;
@@ -363,7 +303,7 @@ public class GamePanel extends JPanel {
 		bufferGraphics.setColor(Color.BLACK);
 
 		bufferGraphics.setFont(new Font("SanSarif", Font.BOLD, 45));
-		String string = "Score: " + snakes[0].getScore();
+		String string = "Score: " + level.snakes[0].getScore();
 		int width = bufferGraphics.getFontMetrics(bufferGraphics.getFont()).stringWidth(string);
 		bufferGraphics.drawString(string, (CANVAS_WIDTH - width) / 2, CANVAS_HEIGHT / 2);
 	}
@@ -371,9 +311,9 @@ public class GamePanel extends JPanel {
 	private void drawScoreMP() {
 		bufferGraphics.setColor(Color.BLACK);
 
-		for (int i = 0; i < snakes.length; i++) {
+		for (int i = 0; i < level.snakes.length; i++) {
 			bufferGraphics.setFont(new Font("SanSarif", Font.BOLD, 45));
-			String string = "(Snake" + i + ") Score: " + snakes[i].getScore();
+			String string = "(Snake" + i + ") Score: " + level.snakes[i].getScore();
 			int width = bufferGraphics.getFontMetrics(bufferGraphics.getFont()).stringWidth(string);
 			bufferGraphics.drawString(string, (CANVAS_WIDTH - width) / 2, CANVAS_HEIGHT / 2 + i * 80);
 		}

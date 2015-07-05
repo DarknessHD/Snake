@@ -9,10 +9,9 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
-import model.Snake;
+import model.Level;
 import view.GameFrame;
 import control.Comp;
-import control.ItemSpawner;
 
 /**
  * @author Stefan Kameter
@@ -59,10 +58,7 @@ public class ChooseLevelPanel extends JPanel {
 				dialog.setVisible(false);
 
 				// TODO load, set chosen level
-				GameFrame.getInstance().setLevel("hardcoded TestLevel", null, null, null, 5);
-				Snake.setEndless(true);
-				for (int i = 0; i < 8; i++)
-					GameFrame.getInstance().getGamePanel().addItem(ItemSpawner.getRandomItem());
+				GameFrame.getInstance().setLevel(new Level("hardcoded testlevel", 30, 20, true, 5, 5, null, null));
 
 				GameFrame.getInstance().changeComponent(Comp.GAMEPANEL);
 			}

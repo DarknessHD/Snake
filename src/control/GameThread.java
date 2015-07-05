@@ -142,7 +142,7 @@ public class GameThread implements Runnable {
 					gamePanel.setPaused(true);
 
 				if (snakes == null) {
-					snakes = gamePanel.getSnakes();
+					snakes = gamePanel.getLevel().snakes;
 					dirs = new Direction[snakes.length];
 				}
 
@@ -162,7 +162,7 @@ public class GameThread implements Runnable {
 			if (System.currentTimeMillis() - timer > 1000) {
 				timer += 1000;
 				for (Snake s : snakes)
-					s.increaseScore(speed * 5);
+					s.increaseScore(speed * 2);
 			}
 
 			try {

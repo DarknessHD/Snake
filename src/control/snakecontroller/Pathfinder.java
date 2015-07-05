@@ -126,7 +126,7 @@ public class Pathfinder {
 		Item nearestItem = null;
 		Point headPosition = snake.getHead().getPosition();
 
-		for (Item item : GameFrame.getInstance().getGamePanel().getItems()) {
+		for (Item item : GameFrame.getInstance().getGamePanel().getLevel().items) {
 			Point position = item.getPosition();
 			if (nearestItem == null || position.distance(headPosition) < nearestItem.getPosition().distance(headPosition))
 				nearestItem = item;

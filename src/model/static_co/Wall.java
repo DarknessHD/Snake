@@ -24,7 +24,7 @@ public class Wall extends StaticCellObject {
 	@Override
 	public void onSnakeHitCellObject(Snake snake) {
 		GameFrame.getInstance().stop();
-		if (GameFrame.getInstance().getGamePanel().getSnakes().length != 1)
+		if (GameFrame.getInstance().getGamePanel().getLevel().snakes.length != 1)
 			snake.decreaseScore(350);
 	}
 
