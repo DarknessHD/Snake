@@ -24,3 +24,4 @@ ERIC:
 	
 ERIC && STEFAN:
 	-  PathFinder, AIControl
+	-  Use new Random() instead of Math.random()
