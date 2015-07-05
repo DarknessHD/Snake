@@ -10,7 +10,6 @@ import model.item.Booze;
 import model.item.Item;
 import model.item.Poop;
 import model.item.RottenApple;
-import view.GamePanel;
 
 /**
  * @author Eric Armbruster, Stefan Kameter
@@ -49,8 +48,8 @@ public class ItemSpawner {
 
 		Random random = new Random();
 		while (true) {
-			int x = random.nextInt(GamePanel.LEVEL_WIDTH);
-			int y = random.nextInt(GamePanel.LEVEL_HEIGHT);
+			int x = random.nextInt(Constants.LEVEL_WIDTH);
+			int y = random.nextInt(Constants.LEVEL_HEIGHT);
 
 			if (item.setPosition(new Point(x, y)))
 				break;

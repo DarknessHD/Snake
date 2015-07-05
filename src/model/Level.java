@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.item.Item;
-import model.static_co.StaticCellObject;
-import model.static_co.Wall;
+import model.staticobjects.StaticCellObject;
+import model.staticobjects.Wall;
 import view.GameFrame;
-import view.GamePanel;
+import control.Constants;
 import control.ItemSpawner;
 
 /**
@@ -101,7 +101,7 @@ public class Level {
 	 * @return whether Level can be used
 	 */
 	public boolean init() {
-		if (GamePanel.LEVEL_WIDTH != width || GamePanel.LEVEL_HEIGHT != height)
+		if (Constants.LEVEL_WIDTH != width || Constants.LEVEL_HEIGHT != height)
 			return false;
 		Snake.setEndless(endless);
 		for (int i = 0; i < itemNumber; i++)

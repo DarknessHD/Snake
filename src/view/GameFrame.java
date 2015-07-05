@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import model.Level;
 import model.ScoreListEntry;
 import control.Comp;
+import control.Constants;
 import control.GameThread;
 
 /**
@@ -22,13 +23,6 @@ import control.GameThread;
  */
 public class GameFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * The path of data.
-	 */
-	public static final String DATAPATH = "data";
-	private static final String TITLE = "Snake";
-	private static final int SCORELISTENTRIES = 10;
 
 	private static GameFrame instance;
 
@@ -53,7 +47,7 @@ public class GameFrame extends JFrame {
 	private List<ScoreListEntry> scoreList;
 
 	private GameFrame() {
-		setTitle(TITLE);
+		setTitle(Constants.TITLE);
 
 		setLayout(cardLayout = new CardLayout());
 
@@ -157,7 +151,7 @@ public class GameFrame extends JFrame {
 	public void addToScoreList(String level, int score) {
 		if (score == 0)
 			return;
-		if (scoreList.size() < SCORELISTENTRIES || isBetter(score)) {
+		if (scoreList.size() < Constants.SCORELISTENTRIES || isBetter(score)) {
 			String name = JOptionPane.showInputDialog(this, "Your name:");
 			if (name != null && !name.isEmpty())
 				scoreList.add(new ScoreListEntry(level, name, score));
