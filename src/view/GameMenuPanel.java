@@ -62,8 +62,7 @@ public class GameMenuPanel extends JPanel {
 		scoreList.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				GameFrame.getInstance().getScoreListPanel().setScoreList(GameFrame.getInstance().getScoreList());
-
+				GameFrame.getInstance().updateScoreListPanel();
 				GameFrame.getInstance().changeComponent(Comp.SCORELISTPANEL);
 			}
 		});

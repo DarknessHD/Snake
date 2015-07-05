@@ -5,11 +5,11 @@ import input.KeyBoard;
 import java.awt.CardLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import model.CellObject;
 import model.Item;
@@ -30,13 +30,14 @@ public class GameFrame extends JFrame {
 	 */
 	public static final String DATAPATH = "data";
 	private static final String TITLE = "Snake";
+	private static final int SCORELISTENTRIES = 10;
 
 	private static GameFrame instance;
 
 	/**
 	 * The Singleton.
 	 * 
-	 * @return GameFrame the instance
+	 * @return the GameFrame instance
 	 */
 	public static GameFrame getInstance() {
 		if (instance == null)
@@ -45,7 +46,7 @@ public class GameFrame extends JFrame {
 	}
 
 	private ScoreListPanel scoreListPanel;
-	private GamePanel gameCanvas;
+	private GamePanel gamePanel;
 
 	private GameThread gameThread;
 
@@ -73,7 +74,7 @@ public class GameFrame extends JFrame {
 	private void initComponents() {
 		add(new GameMenuPanel(), Comp.GAMEMENUPANEL.getString());
 		add(scoreListPanel = new ScoreListPanel(), Comp.SCORELISTPANEL.getString());
-		add(gameCanvas = new GamePanel(), Comp.GAMECANVAS.getString());
+		add(gamePanel = new GamePanel(), Comp.GAMEPANEL.getString());
 
 		changeComponent(Comp.GAMEMENUPANEL);
 	}
@@ -95,16 +96,14 @@ public class GameFrame extends JFrame {
 	 * @return GamePanel
 	 */
 	public GamePanel getGamePanel() {
-		return gameCanvas;
+		return gamePanel;
 	}
 
 	/**
-	 * Returns the ScoreListPanel.
-	 * 
-	 * @return ScoreListPanel
+	 * Updates the ScoreListPanel.
 	 */
-	public ScoreListPanel getScoreListPanel() {
-		return scoreListPanel;
+	public void updateScoreListPanel() {
+		scoreListPanel.setScoreList(scoreList);
 	}
 
 	/**
@@ -117,49 +116,57 @@ public class GameFrame extends JFrame {
 	}
 
 	/**
-	 * Returns the buffer.
-	 * 
-	 * @return buffer
-	 */
-	public BufferedImage getBuffer() {
-		return gameCanvas.getBuffer();
-	}
-
-	/**
-	 * Changes, which Component is added.
+	 * Changes, which Component is shown.
 	 * 
 	 * @param comp
-	 *            the Component, which has to be added
+	 *            the Component, which has to be shown
 	 */
 	public void changeComponent(Comp comp) {
 		cardLayout.show(getContentPane(), comp.getString());
 	}
 
 	/**
-	 * Sets a Level, and starts the GameThread.
+	 * Sets the Level.
 	 * 
+	 * @param level
+	 *            the level name
 	 * @param snakes
 	 *            the snakes
-	 * @param cellObjects
+	 * @param staticObjects
 	 *            the static CellObjects
 	 * @param items
 	 *            the list of default Items
+	 * @param defaultSpeed
+	 *            the default speed
 	 */
-	public void setLevel(Snake[] snakes, List<CellObject> cellObjects, List<Item> items) {
-		gameCanvas.setLevel(snakes, cellObjects, items);
-
-		start();
-	}
-
-	private void start() {
-		gameThread.start();
+	public void setLevel(String level, Snake[] snakes, List<CellObject> staticObjects, List<Item> items, int defaultSpeed) {
+		gamePanel.setLevel(level, snakes, staticObjects, items);
+		gameThread.start(defaultSpeed);
 	}
 
 	/**
-	 * Stops the Game.
+	 * Adds a ScoreListEntry to the scoreList if necessary.
+	 * 
+	 * @param level
+	 *            the level name
+	 * @param score
+	 *            new score
 	 */
-	public void stop() {
-		gameThread.stop();
+	public void addToScoreList(String level, int score) {
+		if (score == 0)
+			return;
+		if (scoreList.size() < SCORELISTENTRIES || isBetter(score)) {
+			String name = JOptionPane.showInputDialog(this, "Your name:");
+			if (name != null && !name.isEmpty())
+				scoreList.add(new ScoreListEntry(level, name, score));
+		}
+	}
+
+	private boolean isBetter(int score) {
+		for (ScoreListEntry e : scoreList)
+			if (e.getScore() < score)
+				return true;
+		return false;
 	}
 
 	/**
@@ -170,6 +177,13 @@ public class GameFrame extends JFrame {
 	 */
 	public void changeSpeed(int speedAddition) {
 		gameThread.changeSpeed(speedAddition);
+	}
+
+	/**
+	 * Stops the Game.
+	 */
+	public void stop() {
+		gameThread.stop();
 	}
 
 	/**

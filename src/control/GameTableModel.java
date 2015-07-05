@@ -1,5 +1,6 @@
 package control;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.table.DefaultTableModel;
@@ -24,20 +25,24 @@ public class GameTableModel extends DefaultTableModel {
 	public void setData(List<ScoreListEntry> entries) {
 		this.entries = entries;
 
+		Collections.sort(this.entries);
+
 		fireTableStructureChanged();
 	}
 
 	@Override
 	public int getColumnCount() {
-		return 2;
+		return 3;
 	}
 
 	@Override
 	public String getColumnName(int col) {
 		switch (col) {
 		case 0:
-			return "NAME";
+			return "LEVEL";
 		case 1:
+			return "NAME";
+		case 2:
 			return "SCORE";
 		default:
 			return null;
@@ -57,8 +62,10 @@ public class GameTableModel extends DefaultTableModel {
 			return null;
 		switch (col) {
 		case 0:
-			return entries.get(row).getName();
+			return entries.get(row).getLevel();
 		case 1:
+			return entries.get(row).getName();
+		case 2:
 			return entries.get(row).getScore();
 		default:
 			return null;

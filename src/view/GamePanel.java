@@ -3,10 +3,8 @@ package view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -61,7 +59,10 @@ public class GamePanel extends JPanel {
 	private Graphics bufferGraphics;
 
 	private boolean initialized;
+	private boolean paused;
 	private boolean gameOver;
+
+	private String level;
 
 	private Snake[] snakes;
 	private List<CellObject> staticObjects;
@@ -72,6 +73,7 @@ public class GamePanel extends JPanel {
 	 */
 	public GamePanel() {
 		initialized = false;
+		paused = false;
 		gameOver = false;
 
 		setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
@@ -83,7 +85,12 @@ public class GamePanel extends JPanel {
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				GameFrame.getInstance().changeComponent(Comp.GAMEMENUPANEL);
+				if (gameOver) {
+					if (snakes.length == 1)
+						GameFrame.getInstance().addToScoreList(level, snakes[0].getScore());
+					GameFrame.getInstance().changeComponent(Comp.GAMEMENUPANEL);
+				} else if (paused)
+					setPaused(false);
 			}
 		});
 	}
@@ -91,6 +98,8 @@ public class GamePanel extends JPanel {
 	/**
 	 * Sets the Level.
 	 * 
+	 * @param level
+	 *            the level name
 	 * @param snakes
 	 *            the snakes
 	 * @param staticObjects
@@ -98,29 +107,34 @@ public class GamePanel extends JPanel {
 	 * @param items
 	 *            the list of default Items
 	 */
-	public void setLevel(Snake[] snakes, List<CellObject> staticObjects, List<Item> items) {
+	public void setLevel(String level, Snake[] snakes, List<CellObject> staticObjects, List<Item> items) {
+		this.level = level;
 		this.snakes = snakes;
 		this.staticObjects = staticObjects;
 		this.items = items;
 
-		this.items = new ArrayList<Item>(); // TODO
-		this.staticObjects = new ArrayList<CellObject>(); // TODO
-		for (int i = 0; i < LEVEL_HEIGHT; i++) { // TODO
+		// TODO
+		this.items = new ArrayList<Item>();
+		this.staticObjects = new ArrayList<CellObject>();
+		for (int i = 0; i < LEVEL_HEIGHT; i++) {
 			if (i > 5 && i < 8)
 				continue;
-			this.staticObjects.add(new Wall(new Point(0, i))); // TODO
-			this.staticObjects.add(new Wall(new Point(LEVEL_WIDTH - 1, i))); // TODO
+			this.staticObjects.add(new Wall(new Point(0, i)));
+			this.staticObjects.add(new Wall(new Point(LEVEL_WIDTH - 1, i)));
 		}
-		for (int i = 0; i < LEVEL_WIDTH; i++) { // TODO
-			this.staticObjects.add(new Wall(new Point(i, 0))); // TODO
-			this.staticObjects.add(new Wall(new Point(i, LEVEL_HEIGHT - 1))); // TODO
+		for (int i = 0; i < LEVEL_WIDTH; i++) {
+			this.staticObjects.add(new Wall(new Point(i, 0)));
+			this.staticObjects.add(new Wall(new Point(i, LEVEL_HEIGHT - 1)));
 		}
-		this.snakes = new Snake[1]; // TODO
-		this.snakes[0] = new Snake(3, new Point(4, 5), Direction.DOWN); // TODO
-		// this.snakes[1] = new Snake(3, new Point(20, 5), Direction.DOWN); // TODO
-		// this.snakes[1].setPathfinder(); // TODO
+		this.snakes = new Snake[1];
+		this.snakes[0] = new Snake(3, new Point(4, 5), Direction.DOWN);
+		// this.snakes[1] = new Snake(3, new Point(20, 5), Direction.DOWN);
+		// this.snakes[1].setPathfinder();
+		// TODO
 
 		initialized = true;
+		paused = false;
+		gameOver = false;
 	}
 
 	/**
@@ -133,12 +147,21 @@ public class GamePanel extends JPanel {
 	}
 
 	/**
-	 * Returns the buffer.
+	 * Returns all Items.
 	 * 
-	 * @return buffer
+	 * @return all items
 	 */
-	public BufferedImage getBuffer() {
-		return buffer;
+	public List<Item> getItems() {
+		return items;
+	}
+
+	/**
+	 * Returns all Items.
+	 * 
+	 * @return all items
+	 */
+	public List<CellObject> getStaticObjects() {
+		return staticObjects;
 	}
 
 	/**
@@ -149,8 +172,9 @@ public class GamePanel extends JPanel {
 	 */
 	public void addItem(Item item) {
 		items.add(item);
-		Point p = item.getPosition();
-		repaint(new Rectangle(p.x << TILE_SIZE_BW + 5, p.y << TILE_SIZE_BW + 5, TILE_SIZE, TILE_SIZE));
+		// TODO repainting
+		// Point p = item.getPosition();
+		// repaint(new Rectangle(p.x << TILE_SIZE_BW + 5, p.y << TILE_SIZE_BW + 5, TILE_SIZE, TILE_SIZE));
 	}
 
 	/**
@@ -161,6 +185,25 @@ public class GamePanel extends JPanel {
 	 */
 	public void setGameOver(boolean gameOver) {
 		this.gameOver = gameOver;
+	}
+
+	/**
+	 * Sets whether game is paused.
+	 * 
+	 * @param paused
+	 *            whether game is paused
+	 */
+	public void setPaused(boolean paused) {
+		this.paused = paused;
+		if (this.paused)
+			repaint();
+	}
+
+	/**
+	 * @return whether game is paused
+	 */
+	public boolean isPaused() {
+		return paused;
 	}
 
 	/**
@@ -227,24 +270,6 @@ public class GamePanel extends JPanel {
 		return true;
 	}
 
-	/**
-	 * Returns all Items.
-	 * 
-	 * @return all items
-	 */
-	public List<Item> getItems() {
-		return items;
-	}
-
-	/**
-	 * Returns all Items.
-	 * 
-	 * @return all items
-	 */
-	public List<CellObject> getStaticObjects() {
-		return staticObjects;
-	}
-
 	@Override
 	public void paint(Graphics g) {
 		if (initialized) {
@@ -253,10 +278,12 @@ public class GamePanel extends JPanel {
 				bufferGraphics = buffer.getGraphics();
 			}
 
-			if (!gameOver)
-				drawGame();
-			else
+			if (paused)
+				drawPaused();
+			else if (gameOver)
 				drawGameOver();
+			else
+				drawGame();
 
 			g.drawImage(buffer, 5, 5, buffer.getWidth(), buffer.getHeight(), null);
 		}
@@ -292,42 +319,77 @@ public class GamePanel extends JPanel {
 		}
 	}
 
+	private void drawPaused() {
+		bufferGraphics.setColor(Color.BLACK);
+
+		bufferGraphics.setFont(new Font("SanSarif", Font.BOLD, 60));
+		String string = "Game Paused";
+		int width = bufferGraphics.getFontMetrics(bufferGraphics.getFont()).stringWidth(string);
+		bufferGraphics.drawString(string, (CANVAS_WIDTH - width) / 2, CANVAS_HEIGHT / 4);
+
+		drawScore();
+
+		drawCTC();
+	}
+
 	private void drawGameOver() {
 		bufferGraphics.setColor(Color.BLACK);
 
 		bufferGraphics.setFont(new Font("SanSarif", Font.BOLD, 60));
-		FontMetrics fm = bufferGraphics.getFontMetrics(bufferGraphics.getFont());
 		String string = "Game Over";
-		int width = fm.stringWidth(string);
-		bufferGraphics.drawString(string, (CANVAS_WIDTH - width) / 2, CANVAS_HEIGHT / 3);
+		int width = bufferGraphics.getFontMetrics(bufferGraphics.getFont()).stringWidth(string);
+		bufferGraphics.drawString(string, (CANVAS_WIDTH - width) / 2, CANVAS_HEIGHT / 4);
 
-		switch (snakes.length) {
-		case 1:
-			drawGameOverSP(snakes[0]);
-			break;
-		case 2:
-			drawGameOverMP(snakes);
-			break;
-		}
+		drawWinning();
 
-		bufferGraphics.setFont(new Font("SanSarif", Font.BOLD, 20));
-		fm = bufferGraphics.getFontMetrics(bufferGraphics.getFont());
-		string = "Click to continue";
-		width = fm.stringWidth(string);
-		bufferGraphics.drawString(string, (CANVAS_WIDTH - width) / 2, CANVAS_HEIGHT - 50);
+		drawScore();
+
+		drawCTC();
 	}
 
-	private void drawGameOverSP(Snake snake) {
+	private void drawScore() {
+		switch (snakes.length) {
+		case 1:
+			drawScoreSP();
+			break;
+		case 2:
+			drawScoreMP();
+			break;
+		}
+	}
+
+	private void drawScoreSP() {
+		bufferGraphics.setColor(Color.BLACK);
+
 		bufferGraphics.setFont(new Font("SanSarif", Font.BOLD, 45));
-		FontMetrics fm = bufferGraphics.getFontMetrics(bufferGraphics.getFont());
-		String string = "Score: " + snake.getScore();
-		int width = fm.stringWidth(string);
+		String string = "Score: " + snakes[0].getScore();
+		int width = bufferGraphics.getFontMetrics(bufferGraphics.getFont()).stringWidth(string);
 		bufferGraphics.drawString(string, (CANVAS_WIDTH - width) / 2, CANVAS_HEIGHT / 2);
 	}
 
-	private void drawGameOverMP(Snake[] snakes2) {
-		// TODO Auto-generated method stub
+	private void drawScoreMP() {
+		bufferGraphics.setColor(Color.BLACK);
 
+		for (int i = 0; i < snakes.length; i++) {
+			bufferGraphics.setFont(new Font("SanSarif", Font.BOLD, 45));
+			String string = "(Snake" + i + ") Score: " + snakes[i].getScore();
+			int width = bufferGraphics.getFontMetrics(bufferGraphics.getFont()).stringWidth(string);
+			bufferGraphics.drawString(string, (CANVAS_WIDTH - width) / 2, CANVAS_HEIGHT / 2 + i * 80);
+		}
+	}
+
+	private void drawWinning() {
+		// TODO whether you have won or lost
+		bufferGraphics.setColor(Color.ORANGE);
+	}
+
+	private void drawCTC() {
+		bufferGraphics.setColor(Color.BLACK);
+
+		bufferGraphics.setFont(new Font("SanSarif", Font.BOLD, 20));
+		String string = "Click to continue";
+		int width = bufferGraphics.getFontMetrics(bufferGraphics.getFont()).stringWidth(string);
+		bufferGraphics.drawString(string, (CANVAS_WIDTH - width) / 2, CANVAS_HEIGHT - 50);
 	}
 
 	/**

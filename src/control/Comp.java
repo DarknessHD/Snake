@@ -14,9 +14,9 @@ public enum Comp {
 	 */
 	SCORELISTPANEL,
 	/**
-	 * Refers to the GameCanvas.
+	 * Refers to the GamePanel.
 	 */
-	GAMECANVAS;
+	GAMEPANEL;
 
 	/**
 	 * Returns the convenient String of Comp.
@@ -29,8 +29,8 @@ public enum Comp {
 			return "GAMEMENUPANEL";
 		case SCORELISTPANEL:
 			return "SCORELISTPANEL";
-		case GAMECANVAS:
-			return "GAMECANVAS";
+		case GAMEPANEL:
+			return "GAMEPANEL";
 		default:
 			return null;
 		}

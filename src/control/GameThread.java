@@ -1,12 +1,12 @@
 package control;
 
-import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
 
+import input.KeyBoard;
 import model.Direction;
 import model.Snake;
-import view.GamePanel;
 import view.GameFrame;
+import view.GamePanel;
 import control.snakecontroller.AIController;
 import control.snakecontroller.PlayerController;
 import control.snakecontroller.SnakeController;
@@ -26,6 +26,8 @@ public class GameThread implements Runnable {
 
 	private GamePanel gamePanel;
 
+	private int defaultSpeed;
+
 	private double ns;
 	private int speed/* , sec */;
 	private boolean running;
@@ -37,17 +39,20 @@ public class GameThread implements Runnable {
 	 * Creates a GameThread instance.
 	 */
 	public GameThread() {
-		speed = 5;
-		ns = 1000000000.0 / speed;
 		running = false;
 	}
 
 	/**
 	 * Starts the thread.
+	 * 
+	 * @param defaultSpeed
+	 *            the default speed
 	 */
-	public void start() {
+	public void start(int defaultSpeed) {
 		if (gamePanel == null)
 			gamePanel = GameFrame.getInstance().getGamePanel();
+		this.defaultSpeed = defaultSpeed;
+		setSpeedToDefaultSpeed();
 		running = true;
 		Thread t = new Thread(this);
 		t.start();
@@ -71,6 +76,14 @@ public class GameThread implements Runnable {
 		ns = 1000000000.0 / speed;
 	}
 
+	/**
+	 * Sets the game-speed to default.
+	 */
+	public void setSpeedToDefaultSpeed() {
+		speed = defaultSpeed;
+		ns = 1000000000.0 / speed;
+	}
+
 	private void step() {
 		for (int s = 0; s < snakes.length; s++) {
 			if (dirs[s] != null)
@@ -82,15 +95,17 @@ public class GameThread implements Runnable {
 			}
 			gamePanel.onMove(s);
 
-			// painting
-			Point p = snakes[s].getHead().getPosition();
-			gamePanel.repaint(new Rectangle(p.x << GamePanel.TILE_SIZE_BW + 5, p.y << GamePanel.TILE_SIZE_BW + 5, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE));
-			p = snakes[s].getTail().getPosition();
-			gamePanel.repaint(new Rectangle(p.x << GamePanel.TILE_SIZE_BW + 5, p.y << GamePanel.TILE_SIZE_BW + 5, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE));
-			Direction opposite = snakes[s].getLookingDirection().getOpposite();
-			p = new Point();
-			p.setLocation(p.x + opposite.getXOffset(), p.y + opposite.getYOffset());
-			gamePanel.repaint(new Rectangle(p.x << GamePanel.TILE_SIZE_BW + 5, p.y << GamePanel.TILE_SIZE_BW + 5, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE));
+			// TODO painting
+			// Point hp = snakes[s].getHead().getPosition();
+			// System.out.println(hp.x << GamePanel.TILE_SIZE_BW);
+			// gamePanel.repaint(new Rectangle(hp.x << GamePanel.TILE_SIZE_BW + 5, hp.y << GamePanel.TILE_SIZE_BW + 5, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE));
+			// Point tp = snakes[s].getTail().getPosition();
+			// gamePanel.repaint(new Rectangle(tp.x << GamePanel.TILE_SIZE_BW + 5, tp.y << GamePanel.TILE_SIZE_BW + 5, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE));
+			// Direction opposite = snakes[s].getLookingDirection().getOpposite();
+			// Point lp = new Point();
+			// lp.setLocation(tp.x + opposite.getXOffset(), tp.y + opposite.getYOffset());
+			// gamePanel.repaint(new Rectangle(lp.x << GamePanel.TILE_SIZE_BW + 5, lp.y << GamePanel.TILE_SIZE_BW + 5, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE));
+			gamePanel.repaint();
 		}
 	}
 
@@ -105,32 +120,41 @@ public class GameThread implements Runnable {
 			delta += (now - lastTime) / ns;
 			lastTime = now;
 
+			boolean paused = gamePanel.isPaused();
+
 			while (delta >= 1) {
-				step();
+				if (!paused)
+					step();
 				delta--;
 			}
 
 			GameFrame.getInstance().requestFocus();
 
-			if (snakes == null) {
-				snakes = gamePanel.getSnakes();
-				dirs = new Direction[snakes.length];
-			}
+			if (!paused) {
+				if (KeyBoard.getInstance().isKeyPressed(KeyEvent.VK_ESCAPE))
+					gamePanel.setPaused(true);
 
-			for (int s = 0; s < snakes.length; s++) {
-				Direction dir = null;
+				if (snakes == null) {
+					snakes = gamePanel.getSnakes();
+					dirs = new Direction[snakes.length];
+				}
 
-				if (snakes[s].getPathfinder() == null)
-					dir = controllers[0].getDirection(s);
-				else
-					dir = controllers[1].getDirection(s);
+				for (int s = 0; s < snakes.length; s++) {
+					Direction dir = null;
 
-				if (dir != null)
-					dirs[s] = dir;
+					if (snakes[s].getPathfinder() == null)
+						dir = controllers[0].getDirection(s);
+					else
+						dir = controllers[1].getDirection(s);
+
+					if (dir != null)
+						dirs[s] = dir;
+				}
 			}
 
 			if (System.currentTimeMillis() - timer > 1000) {
 				timer += 1000;
+				// if(!paused)
 				// sec++;
 				// TODO add Score per second to snakes
 			}

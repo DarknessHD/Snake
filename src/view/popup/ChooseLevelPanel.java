@@ -61,13 +61,12 @@ public class ChooseLevelPanel extends JPanel {
 				dialog.setVisible(false);
 
 				// TODO load, set chosen level
-				GameFrame.getInstance().setLevel(null, null, null);
+				GameFrame.getInstance().setLevel("hardcoded TestLevel", null, null, null, 5);
 				Snake.setEndless(true);
 				for (int i = 0; i < 8; i++)
 					GameFrame.getInstance().getGamePanel().addItem(ItemSpawner.getRandomItem());
 
-				GameFrame.getInstance().getGamePanel().setGameOver(false);
-				GameFrame.getInstance().changeComponent(Comp.GAMECANVAS);
+				GameFrame.getInstance().changeComponent(Comp.GAMEPANEL);
 			}
 		});
 	}

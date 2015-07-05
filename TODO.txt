@@ -9,9 +9,7 @@ ALEX:
 	-  Items: onSnakeHitCellObject(), chances, more items
 
 STEFAN:
-	-  Drawing GameOverScreen (GameCanvas.buffer is the background)
-	-  Adding score to scoreList
-	-  PauseMenu (GameCanvas.buffer is the background)
+	- better drawing (RecDraw)
 	-( More features in LevelChoosePanel )
 	-( Cheats ) :) :)
 
