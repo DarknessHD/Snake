@@ -7,7 +7,6 @@ import java.util.Objects;
 import java.util.function.Predicate;
 
 import control.snakecontroller.Pathfinder;
-import model.cellobject.SnakeSegment;
 import view.GamePanel;
 import view.GameFrame;
 

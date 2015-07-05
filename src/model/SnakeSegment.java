@@ -1,11 +1,8 @@
-package model.cellobject;
+package model;
 
 import java.awt.Point;
 import java.util.Objects;
 
-import model.CellObject;
-import model.Direction;
-import model.Snake;
 import view.GamePanel;
 import view.GameFrame;
 

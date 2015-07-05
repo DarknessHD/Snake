@@ -11,10 +11,10 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import model.CellObject;
-import model.Item;
 import model.ScoreListEntry;
 import model.Snake;
+import model.item.Item;
+import model.static_co.StaticCellObject;
 import control.Comp;
 import control.GameThread;
 
@@ -132,15 +132,15 @@ public class GameFrame extends JFrame {
 	 *            the level name
 	 * @param snakes
 	 *            the snakes
-	 * @param staticObjects
-	 *            the static CellObjects
+	 * @param staticCellObjects
+	 *            the StaticCellObjects
 	 * @param items
 	 *            the list of default Items
 	 * @param defaultSpeed
 	 *            the default speed
 	 */
-	public void setLevel(String level, Snake[] snakes, List<CellObject> staticObjects, List<Item> items, int defaultSpeed) {
-		gamePanel.setLevel(level, snakes, staticObjects, items);
+	public void setLevel(String level, Snake[] snakes, List<StaticCellObject> staticCellObjects, List<Item> items, int defaultSpeed) {
+		gamePanel.setLevel(level, snakes, staticCellObjects, items);
 		gameThread.start(defaultSpeed);
 	}
 

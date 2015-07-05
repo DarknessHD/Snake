@@ -15,12 +15,13 @@ import javax.swing.JPanel;
 
 import model.CellObject;
 import model.Direction;
-import model.Item;
-import model.ItemSpawner;
 import model.Snake;
-import model.cellobject.SnakeSegment;
-import model.cellobject.Wall;
+import model.SnakeSegment;
+import model.item.Item;
+import model.static_co.StaticCellObject;
+import model.static_co.Wall;
 import control.Comp;
+import control.ItemSpawner;
 import control.ShiftType;
 
 /**
@@ -65,7 +66,7 @@ public class GamePanel extends JPanel {
 	private String level;
 
 	private Snake[] snakes;
-	private List<CellObject> staticObjects;
+	private List<StaticCellObject> staticCellObjects;
 	private List<Item> items;
 
 	/**
@@ -102,29 +103,29 @@ public class GamePanel extends JPanel {
 	 *            the level name
 	 * @param snakes
 	 *            the snakes
-	 * @param staticObjects
-	 *            the static CellObjects
+	 * @param staticCellObjects
+	 *            the StaticCellObject
 	 * @param items
 	 *            the list of default Items
 	 */
-	public void setLevel(String level, Snake[] snakes, List<CellObject> staticObjects, List<Item> items) {
+	public void setLevel(String level, Snake[] snakes, List<StaticCellObject> staticCellObjects, List<Item> items) {
 		this.level = level;
 		this.snakes = snakes;
-		this.staticObjects = staticObjects;
+		this.staticCellObjects = staticCellObjects;
 		this.items = items;
 
 		// TODO
 		this.items = new ArrayList<Item>();
-		this.staticObjects = new ArrayList<CellObject>();
+		this.staticCellObjects = new ArrayList<StaticCellObject>();
 		for (int i = 0; i < LEVEL_HEIGHT; i++) {
 			if (i > 5 && i < 8)
 				continue;
-			this.staticObjects.add(new Wall(new Point(0, i)));
-			this.staticObjects.add(new Wall(new Point(LEVEL_WIDTH - 1, i)));
+			this.staticCellObjects.add(new Wall(new Point(0, i)));
+			this.staticCellObjects.add(new Wall(new Point(LEVEL_WIDTH - 1, i)));
 		}
 		for (int i = 0; i < LEVEL_WIDTH; i++) {
-			this.staticObjects.add(new Wall(new Point(i, 0)));
-			this.staticObjects.add(new Wall(new Point(i, LEVEL_HEIGHT - 1)));
+			this.staticCellObjects.add(new Wall(new Point(i, 0)));
+			this.staticCellObjects.add(new Wall(new Point(i, LEVEL_HEIGHT - 1)));
 		}
 		this.snakes = new Snake[1];
 		this.snakes[0] = new Snake(3, new Point(4, 5), Direction.DOWN);
@@ -160,8 +161,8 @@ public class GamePanel extends JPanel {
 	 * 
 	 * @return all items
 	 */
-	public List<CellObject> getStaticObjects() {
-		return staticObjects;
+	public List<StaticCellObject> getStaticCellObjects() {
+		return staticCellObjects;
 	}
 
 	/**
@@ -227,8 +228,8 @@ public class GamePanel extends JPanel {
 			}
 		}
 
-		for (int i = 0; i < staticObjects.size(); i++) {
-			CellObject obj = staticObjects.get(i);
+		for (int i = 0; i < staticCellObjects.size(); i++) {
+			CellObject obj = staticCellObjects.get(i);
 			if (sp.equals(obj.getPosition()))
 				obj.onSnakeHitCellObject(snakes[index]);
 		}
@@ -256,8 +257,8 @@ public class GamePanel extends JPanel {
 				if (i.getPosition().equals(position))
 					return false;
 
-		if (staticObjects != null)
-			for (CellObject obj : staticObjects)
+		if (staticCellObjects != null)
+			for (CellObject obj : staticCellObjects)
 				if (obj.getPosition().equals(position))
 					return false;
 
@@ -312,8 +313,8 @@ public class GamePanel extends JPanel {
 				bufferGraphics.drawImage(s.getImage(), p.x << TILE_SIZE_BW, p.y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE, null);
 			}
 
-		// StaticObjects
-		for (CellObject obj : staticObjects) {
+		// StaticCellObjects
+		for (StaticCellObject obj : staticCellObjects) {
 			Point p = obj.getPosition();
 			bufferGraphics.drawImage(obj.getImage(), p.x << TILE_SIZE_BW, p.y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE, null);
 		}

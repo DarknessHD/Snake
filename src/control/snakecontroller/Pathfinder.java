@@ -7,8 +7,8 @@ import java.util.Random;
 
 import view.GameFrame;
 import model.Direction;
-import model.Item;
 import model.Snake;
+import model.item.Item;
 
 /**
  * @author Eric Armbruster, Stefan Kameter

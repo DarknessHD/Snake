@@ -16,6 +16,8 @@ import control.snakecontroller.SnakeController;
  * @version 02.07.2015
  */
 public class GameThread implements Runnable {
+	private static final int MIN_SPEED = 2, MAX_SPEED = 10;
+
 	private static final SnakeController[] controllers;
 
 	static {
@@ -29,7 +31,7 @@ public class GameThread implements Runnable {
 	private int defaultSpeed;
 
 	private double ns;
-	private int speed/* , sec */;
+	private int speed;
 	private boolean running;
 
 	private Snake[] snakes;
@@ -73,6 +75,11 @@ public class GameThread implements Runnable {
 	 */
 	public void changeSpeed(int speedAddition) {
 		speed += speedAddition;
+		if (speed < MIN_SPEED)
+			speed = MIN_SPEED;
+		else if (speed > MAX_SPEED)
+			speed = MAX_SPEED;
+
 		ns = 1000000000.0 / speed;
 	}
 
@@ -154,9 +161,8 @@ public class GameThread implements Runnable {
 
 			if (System.currentTimeMillis() - timer > 1000) {
 				timer += 1000;
-				// if(!paused)
-				// sec++;
-				// TODO add Score per second to snakes
+				for (Snake s : snakes)
+					s.increaseScore(speed * 5);
 			}
 
 			try {

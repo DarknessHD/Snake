@@ -9,10 +9,10 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
-import model.ItemSpawner;
 import model.Snake;
 import view.GameFrame;
 import control.Comp;
+import control.ItemSpawner;
 
 /**
  * @author Stefan Kameter

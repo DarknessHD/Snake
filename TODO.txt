@@ -3,14 +3,17 @@ TODOs
 
 ALLE:
 	-  TODOs in own classes
-	-  make everything better (no lags, better performance, better looking, 'flackern', ...)
+	-  make everything better (no lags, 'flackern', ...)
 	
 ALEX:
-	-  Items: onSnakeHitCellObject(), chances, more items
+	-  more items
+	-  better looking textures
 
 STEFAN:
 	- better drawing (RecDraw)
-	-( More features in LevelChoosePanel )
+	- advanced GameOverScreen-Drawing
+	-( showing score while game is running )
+	-( advanced LevelChoosePanel )
 	-( Cheats ) :) :)
 
 QUIRIN:

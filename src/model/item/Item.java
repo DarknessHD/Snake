@@ -1,6 +1,8 @@
-package model;
+package model.item;
 
 import java.awt.Point;
+
+import model.CellObject;
 
 /**
  * @author Eric Armbruster
