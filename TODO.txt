@@ -12,9 +12,10 @@ ALEX:
 STEFAN:
 	- better drawing (RecDraw)
 	- advanced GameOverScreen-Drawing
+	-( Help Screen, Help Overview          )
 	-( showing score while game is running )
-	-( advanced LevelChoosePanel )
-	-( Cheats ) :) :)
+	-( advanced LevelChoosePanel           )
+	-( Cheats                              ) :) :)
 
 QUIRIN:
 	- whole IO-logic, classes

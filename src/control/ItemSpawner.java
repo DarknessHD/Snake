@@ -3,6 +3,7 @@ package control;
 import java.awt.Point;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Random;
 
 import model.item.Apple;
 import model.item.Booze;
@@ -46,9 +47,10 @@ public class ItemSpawner {
 	public static Item getRandomItem() {
 		Item item = (Item) (items[getIndex()]).clone();
 
+		Random random = new Random();
 		while (true) {
-			int x = (int) (Math.random() * GamePanel.LEVEL_WIDTH);
-			int y = (int) (Math.random() * GamePanel.LEVEL_HEIGHT);
+			int x = random.nextInt(GamePanel.LEVEL_WIDTH);
+			int y = random.nextInt(GamePanel.LEVEL_HEIGHT);
 
 			if (item.setPosition(new Point(x, y)))
 				break;
