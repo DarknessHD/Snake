@@ -8,7 +8,7 @@ import java.util.function.Predicate;
 
 import control.snakecontroller.Pathfinder;
 import model.cellobject.SnakeSegment;
-import view.GameCanvas;
+import view.GamePanel;
 import view.GameFrame;
 
 /**
@@ -200,7 +200,7 @@ public class Snake {
 	 */
 	public boolean removeSegment() {
 		if (!MIN_SEGMENTS.test(segments.size() - 1)) {
-			GameFrame.getInstance().lost();
+			GameFrame.getInstance().stop();
 			return false;
 		}
 
@@ -230,7 +230,7 @@ public class Snake {
 		SnakeSegment newBody = segments.getFirst();
 		Point headPos = newBody.getPosition();
 		if (!endless)
-			if (headPos.getX() > GameCanvas.LEVEL_WIDTH - 1 || headPos.getY() > GameCanvas.LEVEL_HEIGHT - 1
+			if (headPos.getX() > GamePanel.LEVEL_WIDTH - 1 || headPos.getY() > GamePanel.LEVEL_HEIGHT - 1
 					|| headPos.getX() < 0 || headPos.getY() < 0)
 				return false;
 

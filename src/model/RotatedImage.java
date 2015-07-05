@@ -2,7 +2,8 @@ package model;
 
 import java.awt.image.BufferedImage;
 
-import view.GameCanvas;
+import control.ShiftType;
+import view.GamePanel;
 
 /**
  * @author Eric Armbruster
@@ -50,13 +51,13 @@ public final class RotatedImage {
 
 			if (lastDirection == Direction.DOWN && newDirection == Direction.RIGHT || lastDirection == Direction.LEFT
 					&& newDirection == Direction.UP)
-				curve = GameCanvas.shiftImage(curve, GameCanvas.DEGREES90);
+				curve = GamePanel.shiftImage(curve, ShiftType.DEGREES90);
 			else if (lastDirection == Direction.UP && newDirection == Direction.RIGHT
 					|| lastDirection == Direction.LEFT && newDirection == Direction.DOWN)
-				curve = GameCanvas.shiftImage(curve, GameCanvas.DEGREES180);
+				curve = GamePanel.shiftImage(curve, ShiftType.DEGREES180);
 			else if (lastDirection == Direction.UP && newDirection == Direction.LEFT
 					|| lastDirection == Direction.RIGHT && newDirection == Direction.DOWN)
-				curve = GameCanvas.shiftImage(curve, GameCanvas.DEGREES270);
+				curve = GamePanel.shiftImage(curve, ShiftType.DEGREES270);
 
 			ImageHolder.putImage(curveImage, curve);
 		}
@@ -96,13 +97,13 @@ public final class RotatedImage {
 
 						switch (i) {
 						case 1:
-							bufferedImage = GameCanvas.shiftImage(bufferedImage, GameCanvas.DEGREES90);
+							bufferedImage = GamePanel.shiftImage(bufferedImage, ShiftType.DEGREES90);
 							break;
 						case 2:
-							bufferedImage = GameCanvas.shiftImage(bufferedImage, GameCanvas.DEGREES180);
+							bufferedImage = GamePanel.shiftImage(bufferedImage, ShiftType.DEGREES180);
 							break;
 						case 3:
-							bufferedImage = GameCanvas.shiftImage(bufferedImage, GameCanvas.DEGREES270);
+							bufferedImage = GamePanel.shiftImage(bufferedImage, ShiftType.DEGREES270);
 							break;
 						}
 					}

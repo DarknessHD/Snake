@@ -24,6 +24,6 @@ public class Wall extends CellObject {
 
 	@Override
 	public void onSnakeHitCellObject(Snake snake) {
-		GameFrame.getInstance().lost();
+		GameFrame.getInstance().stop();
 	}
 }

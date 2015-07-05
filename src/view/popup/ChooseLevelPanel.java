@@ -10,6 +10,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 
 import model.ItemSpawner;
+import model.Snake;
 import view.GameFrame;
 import control.Comp;
 
@@ -61,9 +62,11 @@ public class ChooseLevelPanel extends JPanel {
 
 				// TODO load, set chosen level
 				GameFrame.getInstance().setLevel(null, null, null);
+				Snake.setEndless(true);
 				for (int i = 0; i < 8; i++)
-					GameFrame.getInstance().getGameCanvas().addItem(ItemSpawner.getRandomItem());
+					GameFrame.getInstance().getGamePanel().addItem(ItemSpawner.getRandomItem());
 
+				GameFrame.getInstance().getGamePanel().setGameOver(false);
 				GameFrame.getInstance().changeComponent(Comp.GAMECANVAS);
 			}
 		});

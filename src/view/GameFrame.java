@@ -2,9 +2,10 @@ package view;
 
 import input.KeyBoard;
 
-import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,19 +44,19 @@ public class GameFrame extends JFrame {
 		return instance;
 	}
 
-	private GameMenuPanel gameMenuPanel;
 	private ScoreListPanel scoreListPanel;
-	private GameCanvas gameCanvas;
-	private GameOverCanvas gameOverCanvas;
+	private GamePanel gameCanvas;
 
 	private GameThread gameThread;
+
+	private CardLayout cardLayout;
 
 	private List<ScoreListEntry> scoreList;
 
 	private GameFrame() {
 		setTitle(TITLE);
 
-		setLayout(new BorderLayout());
+		setLayout(cardLayout = new CardLayout());
 
 		initComponents();
 		initListener();
@@ -70,10 +71,9 @@ public class GameFrame extends JFrame {
 	}
 
 	private void initComponents() {
-		gameMenuPanel = new GameMenuPanel();
-		scoreListPanel = new ScoreListPanel();
-		gameCanvas = new GameCanvas();
-		gameOverCanvas = new GameOverCanvas();
+		add(new GameMenuPanel(), Comp.GAMEMENUPANEL.getString());
+		add(scoreListPanel = new ScoreListPanel(), Comp.SCORELISTPANEL.getString());
+		add(gameCanvas = new GamePanel(), Comp.GAMECANVAS.getString());
 
 		changeComponent(Comp.GAMEMENUPANEL);
 	}
@@ -90,11 +90,11 @@ public class GameFrame extends JFrame {
 	}
 
 	/**
-	 * Returns the GameCanvas.
+	 * Returns the GamePanel.
 	 * 
-	 * @return GameCanvas
+	 * @return GamePanel
 	 */
-	public GameCanvas getGameCanvas() {
+	public GamePanel getGamePanel() {
 		return gameCanvas;
 	}
 
@@ -116,7 +116,14 @@ public class GameFrame extends JFrame {
 		return scoreList;
 	}
 
-	private Comp lastComponent;
+	/**
+	 * Returns the buffer.
+	 * 
+	 * @return buffer
+	 */
+	public BufferedImage getBuffer() {
+		return gameCanvas.getBuffer();
+	}
 
 	/**
 	 * Changes, which Component is added.
@@ -125,47 +132,7 @@ public class GameFrame extends JFrame {
 	 *            the Component, which has to be added
 	 */
 	public void changeComponent(Comp comp) {
-		// TODO flackern, wenn vorhanden
-
-		if (lastComponent != null)
-			switch (lastComponent) {
-			case GAMEMENUPANEL:
-				gameMenuPanel.revalidate();
-				remove(gameMenuPanel);
-				break;
-			case SCORELISTPANEL:
-				scoreListPanel.revalidate();
-				remove(scoreListPanel);
-				break;
-			case GAMECANVAS:
-				gameCanvas.revalidate();
-				remove(gameCanvas);
-				break;
-			case GAMEOVERCANVAS:
-				gameOverCanvas.revalidate();
-				remove(gameOverCanvas);
-				break;
-			}
-
-		lastComponent = comp;
-
-		switch (comp) {
-		case GAMEMENUPANEL:
-			add(gameMenuPanel, BorderLayout.CENTER);
-			break;
-		case SCORELISTPANEL:
-			add(scoreListPanel, BorderLayout.CENTER);
-			break;
-		case GAMECANVAS:
-			add(gameCanvas, BorderLayout.CENTER);
-			break;
-		case GAMEOVERCANVAS:
-			add(gameOverCanvas, BorderLayout.CENTER);
-			break;
-		}
-
-		revalidate();
-		repaint();
+		cardLayout.show(getContentPane(), comp.getString());
 	}
 
 	/**
@@ -189,6 +156,13 @@ public class GameFrame extends JFrame {
 	}
 
 	/**
+	 * Stops the Game.
+	 */
+	public void stop() {
+		gameThread.stop();
+	}
+
+	/**
 	 * Increases the game-speed.
 	 * 
 	 * @param speedAddition
@@ -196,14 +170,6 @@ public class GameFrame extends JFrame {
 	 */
 	public void changeSpeed(int speedAddition) {
 		gameThread.changeSpeed(speedAddition);
-	}
-
-	/**
-	 * Method has to be called, if game is lost.
-	 */
-	public void lost() {
-		gameThread.stop();
-		GameFrame.getInstance().changeComponent(Comp.GAMEOVERCANVAS);
 	}
 
 	/**

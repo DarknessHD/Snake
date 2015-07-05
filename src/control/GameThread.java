@@ -1,7 +1,11 @@
 package control;
 
+import java.awt.Point;
+import java.awt.Rectangle;
+
 import model.Direction;
 import model.Snake;
+import view.GamePanel;
 import view.GameFrame;
 import control.snakecontroller.AIController;
 import control.snakecontroller.PlayerController;
@@ -19,6 +23,8 @@ public class GameThread implements Runnable {
 		controllers[0] = new PlayerController();
 		controllers[1] = new AIController();
 	}
+
+	private GamePanel gamePanel;
 
 	private double ns;
 	private int speed/* , sec */;
@@ -40,6 +46,8 @@ public class GameThread implements Runnable {
 	 * Starts the thread.
 	 */
 	public void start() {
+		if (gamePanel == null)
+			gamePanel = GameFrame.getInstance().getGamePanel();
 		running = true;
 		Thread t = new Thread(this);
 		t.start();
@@ -69,12 +77,21 @@ public class GameThread implements Runnable {
 				snakes[s].setLookingDirection(dirs[s]);
 
 			if (!snakes[s].move()) {
-				GameFrame.getInstance().lost();
+				stop();
 				return;
 			}
-			GameFrame.getInstance().getGameCanvas().onMove(s);
+			gamePanel.onMove(s);
+
+			// painting
+			Point p = snakes[s].getHead().getPosition();
+			gamePanel.repaint(new Rectangle(p.x << GamePanel.TILE_SIZE_BW + 5, p.y << GamePanel.TILE_SIZE_BW + 5, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE));
+			p = snakes[s].getTail().getPosition();
+			gamePanel.repaint(new Rectangle(p.x << GamePanel.TILE_SIZE_BW + 5, p.y << GamePanel.TILE_SIZE_BW + 5, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE));
+			Direction opposite = snakes[s].getLookingDirection().getOpposite();
+			p = new Point();
+			p.setLocation(p.x + opposite.getXOffset(), p.y + opposite.getYOffset());
+			gamePanel.repaint(new Rectangle(p.x << GamePanel.TILE_SIZE_BW + 5, p.y << GamePanel.TILE_SIZE_BW + 5, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE));
 		}
-		GameFrame.getInstance().getGameCanvas().repaint();
 	}
 
 	@Override
@@ -96,7 +113,7 @@ public class GameThread implements Runnable {
 			GameFrame.getInstance().requestFocus();
 
 			if (snakes == null) {
-				snakes = GameFrame.getInstance().getGameCanvas().getSnakes();
+				snakes = gamePanel.getSnakes();
 				dirs = new Direction[snakes.length];
 			}
 
@@ -127,5 +144,8 @@ public class GameThread implements Runnable {
 
 		snakes = null;
 		dirs = null;
+
+		gamePanel.setGameOver(true);
+		gamePanel.repaint();
 	}
 }

@@ -1,13 +1,19 @@
 package view;
 
-import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JPanel;
 
 import model.CellObject;
 import model.Direction;
@@ -16,16 +22,24 @@ import model.ItemSpawner;
 import model.Snake;
 import model.cellobject.SnakeSegment;
 import model.cellobject.Wall;
+import control.Comp;
+import control.ShiftType;
 
 /**
  * @author Stefan Kameter
  * @version 02.07.2015
  */
-public class GameCanvas extends Canvas {
+public class GamePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
-	private static final int TILE_SIZE = 32;
-	private static final int TILE_SIZE_BW = (int) (Math.log(TILE_SIZE) / Math.log(2));
+	/**
+	 * The pixel size of a tile.
+	 */
+	public static final int TILE_SIZE = 32;
+	/**
+	 * The size of a tile (BW).
+	 */
+	public static final int TILE_SIZE_BW = (int) (Math.log(TILE_SIZE) / Math.log(2));
 	/**
 	 * The width of tiles in the level.
 	 */
@@ -47,16 +61,18 @@ public class GameCanvas extends Canvas {
 	private Graphics bufferGraphics;
 
 	private boolean initialized;
+	private boolean gameOver;
 
 	private Snake[] snakes;
 	private List<CellObject> staticObjects;
 	private List<Item> items;
 
 	/**
-	 * Creates a new GameCanvas instance.
+	 * Creates a new GamePanel instance.
 	 */
-	public GameCanvas() {
+	public GamePanel() {
 		initialized = false;
+		gameOver = false;
 
 		setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
 
@@ -64,6 +80,12 @@ public class GameCanvas extends Canvas {
 	}
 
 	private void initListener() {
+		addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				GameFrame.getInstance().changeComponent(Comp.GAMEMENUPANEL);
+			}
+		});
 	}
 
 	/**
@@ -94,7 +116,6 @@ public class GameCanvas extends Canvas {
 			this.staticObjects.add(new Wall(new Point(i, LEVEL_HEIGHT - 1))); // TODO
 		}
 		this.snakes = new Snake[1]; // TODO
-		Snake.setEndless(true);
 		this.snakes[0] = new Snake(3, new Point(4, 5), Direction.DOWN); // TODO
 		// this.snakes[1] = new Snake(3, new Point(20, 5), Direction.DOWN); // TODO
 		// this.snakes[1].setPathfinder(); // TODO
@@ -112,6 +133,15 @@ public class GameCanvas extends Canvas {
 	}
 
 	/**
+	 * Returns the buffer.
+	 * 
+	 * @return buffer
+	 */
+	public BufferedImage getBuffer() {
+		return buffer;
+	}
+
+	/**
 	 * Adds an Item.
 	 * 
 	 * @param item
@@ -119,6 +149,18 @@ public class GameCanvas extends Canvas {
 	 */
 	public void addItem(Item item) {
 		items.add(item);
+		Point p = item.getPosition();
+		repaint(new Rectangle(p.x << TILE_SIZE_BW + 5, p.y << TILE_SIZE_BW + 5, TILE_SIZE, TILE_SIZE));
+	}
+
+	/**
+	 * Sets whether game is over.
+	 * 
+	 * @param gameOver
+	 *            whether game is over
+	 */
+	public void setGameOver(boolean gameOver) {
+		this.gameOver = gameOver;
 	}
 
 	/**
@@ -211,62 +253,82 @@ public class GameCanvas extends Canvas {
 				bufferGraphics = buffer.getGraphics();
 			}
 
-			bufferGraphics.setColor(getBackground());
-			bufferGraphics.fillRect(0, 0, getWidth(), getHeight());
-
-			bufferGraphics.setColor(Color.WHITE);
-
-			for (int y = 0; y < LEVEL_HEIGHT; y++)
-				for (int x = 0; x < LEVEL_WIDTH; x++)
-					bufferGraphics.drawRect(x << TILE_SIZE_BW, y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE);
-
-			// Items
-			for (Item i : items) {
-				Point p = i.getPosition();
-				bufferGraphics.drawImage(i.getImage(), p.x << TILE_SIZE_BW, p.y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE, null);
-			}
-
-			// Snakes
-			for (Snake snake : snakes)
-				for (SnakeSegment s : snake.getSegments()) {
-					Point p = s.getPosition();
-					bufferGraphics.drawImage(s.getImage(), p.x << TILE_SIZE_BW, p.y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE, null);
-				}
-
-			// StaticObjects
-			for (CellObject obj : staticObjects) {
-				Point p = obj.getPosition();
-				bufferGraphics.drawImage(obj.getImage(), p.x << TILE_SIZE_BW, p.y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE, null);
-			}
+			if (!gameOver)
+				drawGame();
+			else
+				drawGameOver();
 
 			g.drawImage(buffer, 5, 5, buffer.getWidth(), buffer.getHeight(), null);
 		}
 	}
 
-	/**
-	 * Rotates an image by 90 degrees angle.
-	 */
-	public static final int DEGREES90 = 1;
-	/**
-	 * Rotates an image by 180 degrees angle.
-	 */
-	public static final int DEGREES180 = 2;
-	/**
-	 * Rotates an image by 270 degrees angle.
-	 */
-	public static final int DEGREES270 = 3;
-	/**
-	 * Mirrors an image vertically.
-	 */
-	public static final int VERTICAL = 4;
-	/**
-	 * Mirrors an image horizontally.
-	 */
-	public static final int HORIZONTAL = 5;
-	/**
-	 * Mirrors an image diagonally.
-	 */
-	public static final int DIAGONAL = 6;
+	private void drawGame() {
+		bufferGraphics.setColor(getBackground());
+		bufferGraphics.fillRect(0, 0, getWidth(), getHeight());
+
+		bufferGraphics.setColor(Color.WHITE);
+
+		for (int y = 0; y < LEVEL_HEIGHT; y++)
+			for (int x = 0; x < LEVEL_WIDTH; x++)
+				bufferGraphics.drawRect(x << TILE_SIZE_BW, y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE);
+
+		// Items
+		for (Item i : items) {
+			Point p = i.getPosition();
+			bufferGraphics.drawImage(i.getImage(), p.x << TILE_SIZE_BW, p.y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE, null);
+		}
+
+		// Snakes
+		for (Snake snake : snakes)
+			for (SnakeSegment s : snake.getSegments()) {
+				Point p = s.getPosition();
+				bufferGraphics.drawImage(s.getImage(), p.x << TILE_SIZE_BW, p.y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE, null);
+			}
+
+		// StaticObjects
+		for (CellObject obj : staticObjects) {
+			Point p = obj.getPosition();
+			bufferGraphics.drawImage(obj.getImage(), p.x << TILE_SIZE_BW, p.y << TILE_SIZE_BW, TILE_SIZE, TILE_SIZE, null);
+		}
+	}
+
+	private void drawGameOver() {
+		bufferGraphics.setColor(Color.BLACK);
+
+		bufferGraphics.setFont(new Font("SanSarif", Font.BOLD, 60));
+		FontMetrics fm = bufferGraphics.getFontMetrics(bufferGraphics.getFont());
+		String string = "Game Over";
+		int width = fm.stringWidth(string);
+		bufferGraphics.drawString(string, (CANVAS_WIDTH - width) / 2, CANVAS_HEIGHT / 3);
+
+		switch (snakes.length) {
+		case 1:
+			drawGameOverSP(snakes[0]);
+			break;
+		case 2:
+			drawGameOverMP(snakes);
+			break;
+		}
+
+		bufferGraphics.setFont(new Font("SanSarif", Font.BOLD, 20));
+		fm = bufferGraphics.getFontMetrics(bufferGraphics.getFont());
+		string = "Click to continue";
+		width = fm.stringWidth(string);
+		bufferGraphics.drawString(string, (CANVAS_WIDTH - width) / 2, CANVAS_HEIGHT - 50);
+	}
+
+	private void drawGameOverSP(Snake snake) {
+		bufferGraphics.setFont(new Font("SanSarif", Font.BOLD, 45));
+		FontMetrics fm = bufferGraphics.getFontMetrics(bufferGraphics.getFont());
+		String string = "Score: " + snake.getScore();
+		int width = fm.stringWidth(string);
+		bufferGraphics.drawString(string, (CANVAS_WIDTH - width) / 2, CANVAS_HEIGHT / 2);
+	}
+
+	private void drawGameOverMP(Snake[] snakes2) {
+		// TODO Auto-generated method stub
+
+	}
 
 	/**
 	 * Shifts a BufferedImage.
@@ -277,10 +339,7 @@ public class GameCanvas extends Canvas {
 	 *            type for shift
 	 * @return rotated Image
 	 */
-	public static BufferedImage shiftImage(BufferedImage src, int shift) {
-		if (shift < 1 || shift > 6)
-			return src;
-
+	public static BufferedImage shiftImage(BufferedImage src, ShiftType shift) {
 		int size = src.getWidth();
 
 		BufferedImage rotatedImage = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
@@ -306,7 +365,7 @@ public class GameCanvas extends Canvas {
 			break;
 		default:
 			rotateClockWise(srcPixels, rotatedImage, size);
-			for (int i = 0; i < shift - 1; i++) {
+			for (int i = 0; i < shift.getNumber() - 1; i++) {
 				int[] pxs = new int[size * size];
 				for (int y = 0; y < size; y++)
 					for (int x = 0; x < size; x++)

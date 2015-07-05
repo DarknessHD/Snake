@@ -8,7 +8,7 @@ import model.cellobject.Apple;
 import model.cellobject.Booze;
 import model.cellobject.Poop;
 import model.cellobject.RottenApple;
-import view.GameCanvas;
+import view.GamePanel;
 
 /**
  * @author Eric Armbruster, Stefan Kameter
@@ -46,8 +46,8 @@ public class ItemSpawner {
 		Item item = (Item) (items[getIndex()]).clone();
 
 		while (true) {
-			int x = (int) (Math.random() * GameCanvas.LEVEL_WIDTH);
-			int y = (int) (Math.random() * GameCanvas.LEVEL_HEIGHT);
+			int x = (int) (Math.random() * GamePanel.LEVEL_WIDTH);
+			int y = (int) (Math.random() * GamePanel.LEVEL_HEIGHT);
 
 			if (item.setPosition(new Point(x, y)))
 				break;

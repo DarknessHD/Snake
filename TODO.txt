@@ -12,7 +12,6 @@ STEFAN:
 	-  Drawing GameOverScreen (GameCanvas.buffer is the background)
 	-  Adding score to scoreList
 	-  PauseMenu (GameCanvas.buffer is the background)
-	-  KeyBoard (error index out of Bounds)
 	-( More features in LevelChoosePanel )
 	-( Cheats ) :) :)
 
