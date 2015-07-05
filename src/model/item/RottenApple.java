@@ -1,8 +1,7 @@
-package model.cellobject;
+package model.item;
 
 import java.awt.Point;
 
-import model.Item;
 import model.Snake;
 
 /**
@@ -17,13 +16,13 @@ public class RottenApple extends Item {
 	 *            the position in the map
 	 */
 	public RottenApple(Point position) {
-		super("apple_rotten", position, 2);
+		super("apple_rotten", position, 4);
 	}
 
 	@Override
 	public void onSnakeHitCellObject(Snake snake) {
 		for (int i = 0; i < 2; i++)
 			snake.removeSegment();
-		snake.decreaseScore(100);
+		snake.decreaseScore(25);
 	}
 }

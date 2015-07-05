@@ -1,14 +1,16 @@
-package model;
+package control;
 
 import java.awt.Point;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Random;
 
-import model.cellobject.Apple;
-import model.cellobject.Booze;
-import model.cellobject.Poop;
-import model.cellobject.RottenApple;
-import view.GameCanvas;
+import model.item.Apple;
+import model.item.Booze;
+import model.item.Item;
+import model.item.Poop;
+import model.item.RottenApple;
+import view.GamePanel;
 
 /**
  * @author Eric Armbruster, Stefan Kameter
@@ -45,9 +47,10 @@ public class ItemSpawner {
 	public static Item getRandomItem() {
 		Item item = (Item) (items[getIndex()]).clone();
 
+		Random random = new Random();
 		while (true) {
-			int x = (int) (Math.random() * GameCanvas.LEVEL_WIDTH);
-			int y = (int) (Math.random() * GameCanvas.LEVEL_HEIGHT);
+			int x = random.nextInt(GamePanel.LEVEL_WIDTH);
+			int y = random.nextInt(GamePanel.LEVEL_HEIGHT);
 
 			if (item.setPosition(new Point(x, y)))
 				break;

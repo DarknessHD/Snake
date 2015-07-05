@@ -9,7 +9,7 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
-import model.ItemSpawner;
+import model.Level;
 import view.GameFrame;
 import control.Comp;
 
@@ -25,8 +25,6 @@ public class ChooseLevelPanel extends JPanel {
 
 	private JComboBox<String> comboBox;
 	private JButton accept;
-
-	private String level;
 
 	/**
 	 * Creates an instance of ChooseLevelPanel.
@@ -60,19 +58,10 @@ public class ChooseLevelPanel extends JPanel {
 				dialog.setVisible(false);
 
 				// TODO load, set chosen level
-				GameFrame.getInstance().setLevel(null, null, null);
-				for (int i = 0; i < 8; i++)
-					GameFrame.getInstance().getGameCanvas().addItem(ItemSpawner.getRandomItem());
+				GameFrame.getInstance().setLevel(new Level("hardcoded testlevel", 30, 20, true, 5, 5, null, null));
 
-				GameFrame.getInstance().changeComponent(Comp.GAMECANVAS);
+				GameFrame.getInstance().changeComponent(Comp.GAMEPANEL);
 			}
 		});
-	}
-
-	/**
-	 * @return the chosen level
-	 */
-	public String getChosenLevel() {
-		return level;
 	}
 }

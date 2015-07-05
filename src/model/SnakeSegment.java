@@ -1,12 +1,9 @@
-package model.cellobject;
+package model;
 
 import java.awt.Point;
 import java.util.Objects;
 
-import model.CellObject;
-import model.Direction;
-import model.Snake;
-import view.GameCanvas;
+import view.GamePanel;
 import view.GameFrame;
 
 /**
@@ -73,7 +70,7 @@ public class SnakeSegment extends CellObject {
 
 	@Override
 	public void onSnakeHitCellObject(Snake snake) {
-		GameFrame.getInstance().lost();
+		GameFrame.getInstance().stop();
 	}
 
 	private static Point getAdjacentPosition(Point startPosition, Direction direction, boolean endlessLevel) {
@@ -86,15 +83,15 @@ public class SnakeSegment extends CellObject {
 
 		if(endlessLevel) {
 			if (adjacent.getX() < -1)
-				adjacent.setLocation(GameCanvas.LEVEL_WIDTH - 1, adjacent.getY());
+				adjacent.setLocation(GamePanel.LEVEL_WIDTH - 1, adjacent.getY());
 			else if (adjacent.getY() < -1)
-				adjacent.setLocation(adjacent.getX(), GameCanvas.LEVEL_HEIGHT - 1);
-			else if (adjacent.getX() > GameCanvas.LEVEL_WIDTH - 1)
+				adjacent.setLocation(adjacent.getX(), GamePanel.LEVEL_HEIGHT - 1);
+			else if (adjacent.getX() > GamePanel.LEVEL_WIDTH - 1)
 				adjacent.setLocation(0, adjacent.getY());
-			else if (adjacent.getY() > GameCanvas.LEVEL_HEIGHT - 1)
+			else if (adjacent.getY() > GamePanel.LEVEL_HEIGHT - 1)
 				adjacent.setLocation(adjacent.getX(), 0);	
 		}
-		else if(adjacent.getX() > GameCanvas.LEVEL_WIDTH - 1 || adjacent.getY() > GameCanvas.LEVEL_HEIGHT - 1
+		else if(adjacent.getX() > GamePanel.LEVEL_WIDTH - 1 || adjacent.getY() > GamePanel.LEVEL_HEIGHT - 1
 				|| adjacent.getX() < 0 || adjacent.getY() < 0) {
 			if(count < Direction.values().length)
 				getAdjacentPosition(copyStartPosition, direction.getNext(), endlessLevel);

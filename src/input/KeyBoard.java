@@ -30,7 +30,7 @@ public class KeyBoard extends KeyAdapter {
 	/**
 	 * The Singleton.
 	 * 
-	 * @return the KeyBoard
+	 * @return the KeyBoard instance
 	 */
 	public static KeyBoard getInstance() {
 		if (instance == null)
@@ -46,12 +46,14 @@ public class KeyBoard extends KeyAdapter {
 
 	@Override
 	public void keyPressed(KeyEvent ke) {
-		keys[ke.getKeyCode()] = true;
+		if (ke.getKeyCode() < keys.length)
+			keys[ke.getKeyCode()] = true;
 	}
 
 	@Override
 	public void keyReleased(KeyEvent ke) {
-		keys[ke.getKeyCode()] = false;
+		if (ke.getKeyCode() < keys.length)
+			keys[ke.getKeyCode()] = false;
 	}
 
 	/**

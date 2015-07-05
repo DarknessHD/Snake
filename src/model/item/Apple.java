@@ -1,8 +1,7 @@
-package model.cellobject;
+package model.item;
 
 import java.awt.Point;
 
-import model.Item;
 import model.Snake;
 
 /**
@@ -18,12 +17,12 @@ public class Apple extends Item {
 	 *            the position in the map
 	 */
 	public Apple(Point position) {
-		super("apple", position, 15);
+		super("apple", position, 10);
 	}
 
 	@Override
 	public void onSnakeHitCellObject(Snake snake) {
 		snake.addSegment();
-		snake.increaseScore(50);
+		snake.increaseScore(75);
 	}
 }

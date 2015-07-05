@@ -14,11 +14,25 @@ public enum Comp {
 	 */
 	SCORELISTPANEL,
 	/**
-	 * Refers to the GameCanvas.
+	 * Refers to the GamePanel.
 	 */
-	GAMECANVAS,
+	GAMEPANEL;
+
 	/**
-	 * Refers to the GameOverCanvas
+	 * Returns the convenient String of Comp.
+	 * 
+	 * @return the convenient String
 	 */
-	GAMEOVERCANVAS;
+	public String getString() {
+		switch (this) {
+		case GAMEMENUPANEL:
+			return "GAMEMENUPANEL";
+		case SCORELISTPANEL:
+			return "SCORELISTPANEL";
+		case GAMEPANEL:
+			return "GAMEPANEL";
+		default:
+			return null;
+		}
+	}
 }

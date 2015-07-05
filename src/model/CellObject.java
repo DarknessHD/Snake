@@ -63,7 +63,7 @@ public abstract class CellObject implements Cloneable {
 	 * @return true when the position was set, false otherwise
 	 */
 	public boolean setPosition(Point position) {
-		if (GameFrame.getInstance().getGameCanvas().checkPosition(position)) {
+		if (GameFrame.getInstance().getGamePanel().checkPosition(position)) {
 			this.position = position;
 			return true;
 		} else

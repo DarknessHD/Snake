@@ -2,18 +2,17 @@ package view;
 
 import input.KeyBoard;
 
-import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
-import model.CellObject;
-import model.Item;
+import model.Level;
 import model.ScoreListEntry;
-import model.Snake;
 import control.Comp;
 import control.GameThread;
 
@@ -29,13 +28,14 @@ public class GameFrame extends JFrame {
 	 */
 	public static final String DATAPATH = "data";
 	private static final String TITLE = "Snake";
+	private static final int SCORELISTENTRIES = 10;
 
 	private static GameFrame instance;
 
 	/**
 	 * The Singleton.
 	 * 
-	 * @return GameFrame the instance
+	 * @return the GameFrame instance
 	 */
 	public static GameFrame getInstance() {
 		if (instance == null)
@@ -43,19 +43,19 @@ public class GameFrame extends JFrame {
 		return instance;
 	}
 
-	private GameMenuPanel gameMenuPanel;
 	private ScoreListPanel scoreListPanel;
-	private GameCanvas gameCanvas;
-	private GameOverCanvas gameOverCanvas;
+	private GamePanel gamePanel;
 
 	private GameThread gameThread;
+
+	private CardLayout cardLayout;
 
 	private List<ScoreListEntry> scoreList;
 
 	private GameFrame() {
 		setTitle(TITLE);
 
-		setLayout(new BorderLayout());
+		setLayout(cardLayout = new CardLayout());
 
 		initComponents();
 		initListener();
@@ -70,10 +70,9 @@ public class GameFrame extends JFrame {
 	}
 
 	private void initComponents() {
-		gameMenuPanel = new GameMenuPanel();
-		scoreListPanel = new ScoreListPanel();
-		gameCanvas = new GameCanvas();
-		gameOverCanvas = new GameOverCanvas();
+		add(new GameMenuPanel(), Comp.GAMEMENUPANEL.getString());
+		add(scoreListPanel = new ScoreListPanel(), Comp.SCORELISTPANEL.getString());
+		add(gamePanel = new GamePanel(), Comp.GAMEPANEL.getString());
 
 		changeComponent(Comp.GAMEMENUPANEL);
 	}
@@ -90,21 +89,19 @@ public class GameFrame extends JFrame {
 	}
 
 	/**
-	 * Returns the GameCanvas.
+	 * Returns the GamePanel.
 	 * 
-	 * @return GameCanvas
+	 * @return GamePanel
 	 */
-	public GameCanvas getGameCanvas() {
-		return gameCanvas;
+	public GamePanel getGamePanel() {
+		return gamePanel;
 	}
 
 	/**
-	 * Returns the ScoreListPanel.
-	 * 
-	 * @return ScoreListPanel
+	 * Updates the ScoreListPanel.
 	 */
-	public ScoreListPanel getScoreListPanel() {
-		return scoreListPanel;
+	public void updateScoreListPanel() {
+		scoreListPanel.setScoreList(scoreList);
 	}
 
 	/**
@@ -116,76 +113,62 @@ public class GameFrame extends JFrame {
 		return scoreList;
 	}
 
-	private Comp lastComponent;
-
 	/**
-	 * Changes, which Component is added.
+	 * Changes, which Component is shown.
 	 * 
 	 * @param comp
-	 *            the Component, which has to be added
+	 *            the Component, which has to be shown
 	 */
 	public void changeComponent(Comp comp) {
-		// TODO flackern, wenn vorhanden
-
-		if (lastComponent != null)
-			switch (lastComponent) {
-			case GAMEMENUPANEL:
-				gameMenuPanel.revalidate();
-				remove(gameMenuPanel);
-				break;
-			case SCORELISTPANEL:
-				scoreListPanel.revalidate();
-				remove(scoreListPanel);
-				break;
-			case GAMECANVAS:
-				gameCanvas.revalidate();
-				remove(gameCanvas);
-				break;
-			case GAMEOVERCANVAS:
-				gameOverCanvas.revalidate();
-				remove(gameOverCanvas);
-				break;
-			}
-
-		lastComponent = comp;
-
-		switch (comp) {
-		case GAMEMENUPANEL:
-			add(gameMenuPanel, BorderLayout.CENTER);
-			break;
-		case SCORELISTPANEL:
-			add(scoreListPanel, BorderLayout.CENTER);
-			break;
-		case GAMECANVAS:
-			add(gameCanvas, BorderLayout.CENTER);
-			break;
-		case GAMEOVERCANVAS:
-			add(gameOverCanvas, BorderLayout.CENTER);
-			break;
-		}
-
-		revalidate();
-		repaint();
+		cardLayout.show(getContentPane(), comp.getString());
 	}
 
 	/**
-	 * Sets a Level, and starts the GameThread.
+	 * Sets the Level.
 	 * 
+	 * @param level
+	 *            the level name
 	 * @param snakes
 	 *            the snakes
-	 * @param cellObjects
-	 *            the static CellObjects
+	 * @param staticCellObjects
+	 *            the StaticCellObjects
 	 * @param items
 	 *            the list of default Items
+	 * @param defaultSpeed
+	 *            the default speed
+	 * @return whether Level could be initialized
 	 */
-	public void setLevel(Snake[] snakes, List<CellObject> cellObjects, List<Item> items) {
-		gameCanvas.setLevel(snakes, cellObjects, items);
-
-		start();
+	public boolean setLevel(Level level) {
+		if (level.init()) {
+			gamePanel.setLevel(level);
+			return true;
+		}
+		return false;
 	}
 
-	private void start() {
-		gameThread.start();
+	/**
+	 * Adds a ScoreListEntry to the scoreList if necessary.
+	 * 
+	 * @param level
+	 *            the level name
+	 * @param score
+	 *            new score
+	 */
+	public void addToScoreList(String level, int score) {
+		if (score == 0)
+			return;
+		if (scoreList.size() < SCORELISTENTRIES || isBetter(score)) {
+			String name = JOptionPane.showInputDialog(this, "Your name:");
+			if (name != null && !name.isEmpty())
+				scoreList.add(new ScoreListEntry(level, name, score));
+		}
+	}
+
+	private boolean isBetter(int score) {
+		for (ScoreListEntry e : scoreList)
+			if (e.getScore() < score)
+				return true;
+		return false;
 	}
 
 	/**
@@ -199,11 +182,20 @@ public class GameFrame extends JFrame {
 	}
 
 	/**
-	 * Method has to be called, if game is lost.
+	 * Starts the Game.
+	 * 
+	 * @param defaultSpeed
+	 *            the defaultSpeed
 	 */
-	public void lost() {
+	public void start(int defaultSpeed) {
+		gameThread.start(defaultSpeed);
+	}
+
+	/**
+	 * Stops the Game.
+	 */
+	public void stop() {
 		gameThread.stop();
-		GameFrame.getInstance().changeComponent(Comp.GAMEOVERCANVAS);
 	}
 
 	/**

@@ -7,8 +7,8 @@ import java.util.Random;
 
 import view.GameFrame;
 import model.Direction;
-import model.Item;
 import model.Snake;
+import model.item.Item;
 
 /**
  * @author Eric Armbruster, Stefan Kameter
@@ -126,7 +126,7 @@ public class Pathfinder {
 		Item nearestItem = null;
 		Point headPosition = snake.getHead().getPosition();
 
-		for (Item item : GameFrame.getInstance().getGameCanvas().getItems()) {
+		for (Item item : GameFrame.getInstance().getGamePanel().getLevel().items) {
 			Point position = item.getPosition();
 			if (nearestItem == null || position.distance(headPosition) < nearestItem.getPosition().distance(headPosition))
 				nearestItem = item;
