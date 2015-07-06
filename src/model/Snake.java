@@ -146,8 +146,7 @@ public class Snake {
 	 * Sets the Pathfinder for this snake.
 	 */
 	public void setPathfinder() {
-		if (pathfinder != null)
-			pathfinder = new Pathfinder(this);
+		pathfinder = new Pathfinder(this);
 	}
 
 	/**

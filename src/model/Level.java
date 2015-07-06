@@ -90,8 +90,8 @@ public class Level {
 		}
 		this.snakes = new Snake[1];
 		this.snakes[0] = new Snake(3, new Point(4, 5), Direction.DOWN);
-		// this.snakes[1] = new Snake(3, new Point(20, 5), Direction.DOWN);
-		// this.snakes[1].setPathfinder();
+		//this.snakes[1] = new Snake(3, new Point(20, 5), Direction.DOWN);
+		//this.snakes[1].setPathfinder();
 		// TODO
 	}
 
