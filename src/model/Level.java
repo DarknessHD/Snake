@@ -89,10 +89,10 @@ public class Level {
 			this.staticCellObjects[id] = new Wall(new Point(i, height - 1));
 			id++;
 		}
-		this.snakes = new Snake[1];
+		this.snakes = new Snake[2];
 		this.snakes[0] = new Snake(3, new Point(4, 5), Direction.DOWN);
-		// this.snakes[1] = new Snake(3, new Point(20, 5), Direction.DOWN);
-		// this.snakes[1].setPathfinder();
+		this.snakes[1] = new Snake(3, new Point(20, 5), Direction.DOWN);
+		this.snakes[1].setPathfinder();
 		// TODO
 	}
 

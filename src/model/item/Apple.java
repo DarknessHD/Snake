@@ -17,7 +17,7 @@ public class Apple extends Item {
 	 *            the position in the map
 	 */
 	public Apple(Point position) {
-		super("apple", position, 10);
+		super("apple", position, 10, 3);
 	}
 
 	@Override
