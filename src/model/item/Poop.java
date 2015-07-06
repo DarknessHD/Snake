@@ -18,7 +18,7 @@ public class Poop extends Item {
 	 *            the position in the map
 	 */
 	public Poop(Point position) {
-		super("poop", position, 2);
+		super("poop", position, 2, 1);
 	}
 
 	@Override

@@ -8,9 +8,8 @@ import model.CellObject;
  * @author Stefan Kameter
  * @version 05.07.2015
  */
-public abstract class StaticCellObject extends CellObject { // TODO if not favoured, then list-index.
+public abstract class StaticCellObject extends CellObject { 
 	
-	//TODO Why do we have an ID here?
 	private int id;
 
 	/**
