@@ -13,9 +13,6 @@ public class AIController implements SnakeController {
 	@Override
 	public Direction getDirection(int index) {
 		Snake snake = GameFrame.getInstance().getGamePanel().getLevel().snakes[index];
-		Pathfinder pathfinder = snake.getPathfinder();
-		if (pathfinder.getPath() == null)
-			pathfinder.findPath();
-		return pathfinder.getNextDirection();
+		return snake.getPathfinder().getNextDirection();
 	}
 }

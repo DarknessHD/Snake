@@ -36,6 +36,10 @@ public class Pathfinder {
 	 * @return the next Direction
 	 */
 	public Direction getNextDirection() {
+		if(path == null) {
+			findPath();
+			return getNextDirection();
+		}
 		Direction next = path.get(0);
 		if(next == null) {
 			findPath();
@@ -66,8 +70,8 @@ public class Pathfinder {
 		Point targetPosition = target.getPosition();
 		List<Direction> path = new ArrayList<Direction>();
 
-		Direction targetDirectionHorizontal = null;
-		Direction targetDirectionVertical = null;
+		Direction targetDirectionHorizontal;
+		Direction targetDirectionVertical;
 		int xDistance;
 		int yDistance;
 
@@ -75,6 +79,9 @@ public class Pathfinder {
 			// TODO Are there any objects on the Path?
 
 			// Find the target directions
+			targetDirectionHorizontal = null;
+			targetDirectionVertical = null;
+			
 			xDistance = (int) (currentPosition.getX() - targetPosition.getX());
 			yDistance = (int) (currentPosition.getY() - targetPosition.getY());
 
@@ -94,13 +101,11 @@ public class Pathfinder {
 				targetDirection = targetDirectionVertical;
 			else if (targetDirectionVertical == null)
 				targetDirection = targetDirectionHorizontal;
-			else
-				targetDirection = (new Random().nextBoolean()) ? targetDirectionHorizontal : targetDirectionVertical;
-
-			// Check if the snake can move into that direction
-			if (targetDirection.getOpposite() == snake.getLookingDirection()) {
-				// For now just take a random next directioon
-				targetDirection = snake.getLookingDirection().getNext(new Random().nextBoolean());
+			else {
+				if(new Random().nextBoolean())
+					targetDirection = (targetDirectionHorizontal.getOpposite() == snake.getLookingDirection()) ? targetDirectionVertical : targetDirectionHorizontal;
+				else
+					targetDirection = (targetDirectionHorizontal.getOpposite() == snake.getLookingDirection()) ? targetDirectionVertical : targetDirectionHorizontal;
 			}
 
 			// Get a new Point and get the next Position
@@ -126,11 +131,9 @@ public class Pathfinder {
 		Point headPosition = snake.getHead().getPosition();
 		
 		for (Item item : GameFrame.getInstance().getGamePanel().getLevel().items) {
-			if(item != null) {
-				Point position = item.getPosition();
-				if (nearestItem == null || position.distance(headPosition) < nearestItem.getPosition().distance(headPosition))
-					nearestItem = item;	
-			}
+			Point position = item.getPosition();
+			if (nearestItem == null || position.distance(headPosition) < nearestItem.getPosition().distance(headPosition))
+				nearestItem = item;	
 		}
 			
 

@@ -9,6 +9,8 @@ import model.CellObject;
  * @version 05.07.2015
  */
 public abstract class StaticCellObject extends CellObject { // TODO if not favoured, then list-index.
+	
+	//TODO Why do we have an ID here?
 	private int id;
 
 	/**
@@ -33,5 +35,10 @@ public abstract class StaticCellObject extends CellObject { // TODO if not favou
 	 */
 	public int getId() {
 		return id;
+	}
+	
+	@Override
+	public boolean setPosition(Point position) {
+		throw new UnsupportedOperationException();
 	}
 }
