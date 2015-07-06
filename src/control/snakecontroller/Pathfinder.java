@@ -28,7 +28,6 @@ public class Pathfinder {
 	 */
 	public Pathfinder(Snake snake) {
 		this.snake = snake;
-		findPath();
 	}
 	
 	/**

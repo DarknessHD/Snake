@@ -137,12 +137,13 @@ public class GamePanel extends JPanel {
 				seg.onSnakeHitCellObject(level.snakes[index]);
 		}
 
-		for (SnakeSegment seg : level.snakes[(index + 1) % 2].getSegments()) {
-			if (seg.equals(head))
-				continue;
-			if (hp.equals(seg.getPosition()))
-				seg.onSnakeHitCellObject(level.snakes[index]);
-		}
+		if (level.snakes.length != 1)
+			for (SnakeSegment seg : level.snakes[(index + 1) % 2].getSegments()) {
+				if (seg.equals(head))
+					continue;
+				if (hp.equals(seg.getPosition()))
+					seg.onSnakeHitCellObject(level.snakes[index]);
+			}
 
 		for (int i = 0; i < level.staticCellObjects.length; i++) {
 			CellObject obj = level.staticCellObjects[i];
