@@ -10,7 +10,6 @@ ALEX:
 	-  better looking textures
 
 STEFAN:
-	- ERROR by painting gameCanvas (upper left corner)
 	- better drawing (RecDraw)
 	- advanced GameOverScreen-Drawing
 	-( Strings from Language-Properties    )

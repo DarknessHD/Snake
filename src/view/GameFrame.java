@@ -2,7 +2,7 @@ package view;
 
 import input.KeyBoard;
 
-import java.awt.CardLayout;
+import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -10,7 +10,6 @@ import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.UIManager;
 
 import model.Level;
 import model.ScoreListEntry;
@@ -41,19 +40,18 @@ public class GameFrame extends JFrame {
 		return instance;
 	}
 
+	private GameMenuPanel gameMenuPanel;
 	private ScoreListPanel scoreListPanel;
 	private GamePanel gamePanel;
 
 	private GameThread gameThread;
-
-	private CardLayout cardLayout;
 
 	private List<ScoreListEntry> scoreList;
 
 	private GameFrame() {
 		setTitle(STR_TITLE);
 
-		setLayout(cardLayout = new CardLayout());
+		setLayout(new BorderLayout());
 
 		initComponents();
 		initListener();
@@ -62,17 +60,15 @@ public class GameFrame extends JFrame {
 		setLocationRelativeTo(null);
 		setResizable(false);
 
-		UIManager.put("swing.boldMetal", true);
-
 		gameThread = new GameThread();
 
 		scoreList = new ArrayList<ScoreListEntry>();// TODO load (scoreList, ...)
 	}
 
 	private void initComponents() {
-		add(new GameMenuPanel(), Comp.GAMEMENUPANEL.getString());
-		add(scoreListPanel = new ScoreListPanel(), Comp.SCORELISTPANEL.getString());
-		add(gamePanel = new GamePanel(), Comp.GAMEPANEL.getString());
+		gameMenuPanel = new GameMenuPanel();
+		scoreListPanel = new ScoreListPanel();
+		gamePanel = new GamePanel();
 
 		changeComponent(Comp.GAMEMENUPANEL);
 	}
@@ -120,7 +116,24 @@ public class GameFrame extends JFrame {
 	 *            the Component, which has to be shown
 	 */
 	public void changeComponent(Comp comp) {
-		cardLayout.show(getContentPane(), comp.getString());
+		remove(gameMenuPanel);
+		remove(scoreListPanel);
+		remove(gamePanel);
+
+		switch (comp) {
+		case GAMEMENUPANEL:
+			add(gameMenuPanel, BorderLayout.CENTER);
+			break;
+		case SCORELISTPANEL:
+			add(scoreListPanel, BorderLayout.CENTER);
+			break;
+		case GAMEPANEL:
+			add(gamePanel, BorderLayout.CENTER);
+			break;
+		}
+
+		revalidate();
+		repaint();
 	}
 
 	/**
