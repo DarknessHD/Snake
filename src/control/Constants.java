@@ -15,9 +15,9 @@ public class Constants {
 	 */
 	public static final String DATAPATH;
 	/**
-	 * Game title.
+	 * Game version.
 	 */
-	public static final String TITLE;
+	public static final String VERSION;
 	/**
 	 * Max number of entries in scoreList.
 	 */
@@ -46,13 +46,13 @@ public class Constants {
 		}
 
 		DATAPATH = props.getProperty("datapath");
-		TITLE = props.getProperty("title");
+		VERSION = props.getProperty("version");
 		SCORELISTENTRIES = Integer.parseInt(props.getProperty("scorelistentries"));
 		TILE_SIZE = Integer.parseInt(props.getProperty("tile_size"));
 		LEVEL_WIDTH = Integer.parseInt(props.getProperty("level_width"));
 		LEVEL_HEIGHT = Integer.parseInt(props.getProperty("level_height"));
 
-		if (DATAPATH == null || TITLE == null)
+		if (DATAPATH == null || VERSION == null)
 			System.exit(1);
 	}
 

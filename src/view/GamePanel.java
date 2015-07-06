@@ -31,13 +31,19 @@ import control.ShiftType;
 public class GamePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
+	private static final String STR_PAUSED = "Game Paused";
+	private static final String STR_GAMEOVER = "Game Over";
+	private static final String STR_SCORESP = "Score: ";
+	private static final String STR_SCOREMP = "(Snake <index>) Score: ";
+	private static final String STR_CTC = "Click To Continue";
+
+	private Level level;
+
 	private BufferedImage buffer;
 	private Graphics bufferGraphics;
 
 	private boolean paused;
 	private boolean gameOver;
-
-	private Level level;
 
 	/**
 	 * Creates a new GamePanel instance.
@@ -69,13 +75,7 @@ public class GamePanel extends JPanel {
 	 * Sets the Level.
 	 * 
 	 * @param level
-	 *            the level name
-	 * @param snakes
-	 *            the snakes
-	 * @param staticCellObjects
-	 *            the StaticCellObject
-	 * @param items
-	 *            the list of default Items
+	 *            the new Level
 	 */
 	public void setLevel(Level level) {
 		this.level = level;
@@ -239,10 +239,7 @@ public class GamePanel extends JPanel {
 	private void drawPaused() {
 		bufferGraphics.setColor(Color.BLACK);
 
-		bufferGraphics.setFont(new Font("SanSarif", Font.BOLD, 60));
-		String string = "Game Paused";
-		int width = bufferGraphics.getFontMetrics(bufferGraphics.getFont()).stringWidth(string);
-		bufferGraphics.drawString(string, (Constants.CANVAS_WIDTH - width) / 2, Constants.CANVAS_HEIGHT / 4);
+		bufferGraphics.drawString(STR_PAUSED, (Constants.CANVAS_WIDTH - getFontWidth(STR_PAUSED, 60)) / 2, Constants.CANVAS_HEIGHT / 4);
 
 		drawScore();
 
@@ -252,10 +249,7 @@ public class GamePanel extends JPanel {
 	private void drawGameOver() {
 		bufferGraphics.setColor(Color.BLACK);
 
-		bufferGraphics.setFont(new Font("SanSarif", Font.BOLD, 60));
-		String string = "Game Over";
-		int width = bufferGraphics.getFontMetrics(bufferGraphics.getFont()).stringWidth(string);
-		bufferGraphics.drawString(string, (Constants.CANVAS_WIDTH - width) / 2, Constants.CANVAS_HEIGHT / 4);
+		bufferGraphics.drawString(STR_GAMEOVER, (Constants.CANVAS_WIDTH - getFontWidth(STR_GAMEOVER, 60)) / 2, Constants.CANVAS_HEIGHT / 4);
 
 		drawWinning();
 
@@ -278,20 +272,16 @@ public class GamePanel extends JPanel {
 	private void drawScoreSP() {
 		bufferGraphics.setColor(Color.BLACK);
 
-		bufferGraphics.setFont(new Font("SanSarif", Font.BOLD, 45));
-		String string = "Score: " + level.snakes[0].getScore();
-		int width = bufferGraphics.getFontMetrics(bufferGraphics.getFont()).stringWidth(string);
-		bufferGraphics.drawString(string, (Constants.CANVAS_WIDTH - width) / 2, Constants.CANVAS_HEIGHT / 2);
+		String string = STR_SCORESP + level.snakes[0].getScore();
+		bufferGraphics.drawString(string, (Constants.CANVAS_WIDTH - getFontWidth(string, 45)) / 2, Constants.CANVAS_HEIGHT / 2);
 	}
 
 	private void drawScoreMP() {
 		bufferGraphics.setColor(Color.BLACK);
 
 		for (int i = 0; i < level.snakes.length; i++) {
-			bufferGraphics.setFont(new Font("SanSarif", Font.BOLD, 45));
-			String string = "(Snake" + i + ") Score: " + level.snakes[i].getScore();
-			int width = bufferGraphics.getFontMetrics(bufferGraphics.getFont()).stringWidth(string);
-			bufferGraphics.drawString(string, (Constants.CANVAS_WIDTH - width) / 2, Constants.CANVAS_HEIGHT / 2 + i * 80);
+			String string = STR_SCOREMP.replace("<index>", i + "") + level.snakes[i].getScore();
+			bufferGraphics.drawString(string, (Constants.CANVAS_WIDTH - getFontWidth(string, 45)) / 2, Constants.CANVAS_HEIGHT / 2 + i * 80);
 		}
 	}
 
@@ -303,10 +293,15 @@ public class GamePanel extends JPanel {
 	private void drawCTC() {
 		bufferGraphics.setColor(Color.BLACK);
 
-		bufferGraphics.setFont(new Font("SanSarif", Font.BOLD, 20));
-		String string = "Click to continue";
-		int width = bufferGraphics.getFontMetrics(bufferGraphics.getFont()).stringWidth(string);
-		bufferGraphics.drawString(string, (Constants.CANVAS_WIDTH - width) / 2, Constants.CANVAS_HEIGHT - 50);
+		bufferGraphics.drawString(STR_CTC, (Constants.CANVAS_WIDTH - getFontWidth(STR_CTC, 20)) / 2, Constants.CANVAS_HEIGHT - 50);
+	}
+
+	private int getFontWidth(String label, int newSize) {
+		Font font = new Font("SanSarif", Font.BOLD, newSize);
+		bufferGraphics.setFont(font);
+
+		// int height = (int) font.getLineMetrics(label, ((Graphics2D) bufferGraphics).getFontRenderContext()).getHeight()
+		return bufferGraphics.getFontMetrics(font).stringWidth(label);
 	}
 
 	/**
