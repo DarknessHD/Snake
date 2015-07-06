@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 import model.Level;
 import model.ScoreListEntry;
@@ -23,6 +24,9 @@ import control.GameThread;
  */
 public class GameFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
+
+	private static final String STR_TITLE = "Snake " + Constants.VERSION.trim();
+	private static final Object STR_YOURNAME = "Your name:";
 
 	private static GameFrame instance;
 
@@ -47,7 +51,7 @@ public class GameFrame extends JFrame {
 	private List<ScoreListEntry> scoreList;
 
 	private GameFrame() {
-		setTitle(Constants.TITLE);
+		setTitle(STR_TITLE);
 
 		setLayout(cardLayout = new CardLayout());
 
@@ -57,6 +61,8 @@ public class GameFrame extends JFrame {
 		pack();
 		setLocationRelativeTo(null);
 		setResizable(false);
+
+		UIManager.put("swing.boldMetal", true);
 
 		gameThread = new GameThread();
 
@@ -133,10 +139,10 @@ public class GameFrame extends JFrame {
 	 * @return whether Level could be initialized
 	 */
 	public boolean setLevel(Level level) {
-		if (level.init()) {
-			gamePanel.setLevel(level);
+		gamePanel.setLevel(level);
+		if (level.init())
 			return true;
-		}
+		gamePanel.setLevel(null);
 		return false;
 	}
 
@@ -152,9 +158,9 @@ public class GameFrame extends JFrame {
 		if (score == 0)
 			return;
 		if (scoreList.size() < Constants.SCORELISTENTRIES || isBetter(score)) {
-			String name = JOptionPane.showInputDialog(this, "Your name:");
-			if (name != null && !name.isEmpty())
-				scoreList.add(new ScoreListEntry(level, name, score));
+			String name = JOptionPane.showInputDialog(this, STR_YOURNAME);
+			if (name != null && !name.trim().isEmpty())
+				scoreList.add(new ScoreListEntry(level, name.trim(), score));
 		}
 	}
 

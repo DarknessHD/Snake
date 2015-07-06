@@ -8,6 +8,7 @@ import model.item.Item;
 import model.staticobjects.StaticCellObject;
 import model.staticobjects.Wall;
 import view.GameFrame;
+import control.Comp;
 import control.Constants;
 import control.ItemSpawner;
 
@@ -107,6 +108,7 @@ public class Level {
 		for (int i = 0; i < itemNumber; i++)
 			addItem(ItemSpawner.getRandomItem());
 		GameFrame.getInstance().start(defaultSpeed);
+		GameFrame.getInstance().changeComponent(Comp.GAMEPANEL);
 		return true;
 	}
 

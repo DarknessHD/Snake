@@ -11,7 +11,6 @@ import javax.swing.JPanel;
 
 import model.Level;
 import view.GameFrame;
-import control.Comp;
 
 /**
  * @author Stefan Kameter
@@ -57,10 +56,8 @@ public class ChooseLevelPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				dialog.setVisible(false);
 
-				// TODO load, set chosen level
+				// TODO load chosen level
 				GameFrame.getInstance().setLevel(new Level("hardcoded testlevel", 30, 20, true, 5, 5, null, null));
-
-				GameFrame.getInstance().changeComponent(Comp.GAMEPANEL);
 			}
 		});
 	}

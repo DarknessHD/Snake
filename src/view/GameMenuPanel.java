@@ -19,6 +19,11 @@ import control.Constants;
 public class GameMenuPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
+	private static final String STR_START = "Start Game";
+	private static final String STR_SCORELIST = "Score List";
+	private static final String STR_EXIT = "Exit Game";
+	private static final String STR_CHOOSELEVEL = "Choose Level";
+
 	private JButton start;
 	private JButton scoreList;
 	private JButton exit;
@@ -36,13 +41,13 @@ public class GameMenuPanel extends JPanel {
 	}
 
 	private void initComponents() {
-		add(start = new JButton("Start Game"));
+		add(start = new JButton(STR_START));
 		start.setBounds((Constants.CANVAS_WIDTH - 200) / 2, Constants.CANVAS_HEIGHT / 4 - 15, 200, 30);
 
-		add(scoreList = new JButton("Score List"));
+		add(scoreList = new JButton(STR_SCORELIST));
 		scoreList.setBounds((Constants.CANVAS_WIDTH - 200) / 2, (Constants.CANVAS_HEIGHT / 4) * 2 - 15, 200, 30);
 
-		add(exit = new JButton("Exit Game"));
+		add(exit = new JButton(STR_EXIT));
 		exit.setBounds((Constants.CANVAS_WIDTH - 200) / 2, (Constants.CANVAS_HEIGHT / 4) * 3 - 15, 200, 30);
 	}
 
@@ -50,10 +55,9 @@ public class GameMenuPanel extends JPanel {
 		start.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JDialog dialog = new JDialog(GameFrame.getInstance(), "Choose Level", true);
+				JDialog dialog = new JDialog(GameFrame.getInstance(), STR_CHOOSELEVEL, true);
 				dialog.setResizable(false);
-				ChooseLevelPanel cLP = new ChooseLevelPanel(dialog);
-				dialog.add(cLP);
+				dialog.add(new ChooseLevelPanel(dialog));
 				dialog.pack();
 				dialog.setLocationRelativeTo(GameFrame.getInstance());
 				dialog.setVisible(true);

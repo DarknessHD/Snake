@@ -10,8 +10,10 @@ ALEX:
 	-  better looking textures
 
 STEFAN:
+	- ERROR by painting gameCanvas (upper left corner)
 	- better drawing (RecDraw)
 	- advanced GameOverScreen-Drawing
+	-( Strings from Language-Properties    )
 	-( Help Screen, Help Overview          )
 	-( showing score while game is running )
 	-( advanced LevelChoosePanel           )
@@ -21,7 +23,7 @@ QUIRIN:
 	- whole IO-logic, classes
 
 ERIC:
-	-  addSegment() (tail spawns for example in body) (does not work perfectly)
+	-( remove all segements (without two), if snake dies (because it gets to small)  )
 	
 ERIC && STEFAN:
 	-  PathFinder, AIControl
