@@ -1,8 +1,6 @@
 package control;
 
 import java.awt.Point;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.Random;
 
 import model.item.Apple;
@@ -24,18 +22,8 @@ public class ItemSpawner {
 		items[1] = new Apple(null);
 		items[2] = new RottenApple(null);
 		items[3] = new Booze(null);
-
-		Comparator<Item> comp = new Comparator<Item>() {
-			@Override
-			public int compare(Item i0, Item i1) {
-				if (i0.getChance() < i1.getChance())
-					return -1;
-				else if (i0.getChance() > i1.getChance())
-					return 1;
-				return 0;
-			}
-		};
-		Arrays.sort(items, comp);
+		
+		Items.sortByChance(items);
 	}
 
 	/**

@@ -8,7 +8,8 @@ import model.CellObject;
  * @author Eric Armbruster
  * @version 02.07.2015
  */
-public abstract class Item extends CellObject implements Comparable<Item> {
+public abstract class Item extends CellObject {
+	
 	private final int chance;
 	private final int usefulness;
 
@@ -42,14 +43,5 @@ public abstract class Item extends CellObject implements Comparable<Item> {
 	 */
 	public int getUsefulness() {
 		return usefulness;
-	}
-
-	@Override
-	public int compareTo(Item i) {
-		if (usefulness > i.getUsefulness())
-			return 1;
-		else if (usefulness < i.getUsefulness())
-			return -1;
-		return 0;
 	}
 }

@@ -2,7 +2,6 @@ package control.snakecontroller;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -10,6 +9,7 @@ import model.Direction;
 import model.Snake;
 import model.item.Item;
 import view.GameFrame;
+import control.Items;
 
 /**
  * @author Eric Armbruster, Stefan Kameter
@@ -18,7 +18,8 @@ import view.GameFrame;
 public class Pathfinder {
 
 	/*
-	 * TODO - intelligent Item-searching - Are there any objects on the Path? (dont bite yourself, dont run into walls)
+	 * TODO - intelligent Item-searching - Are there any objects on the Path?
+	 * (dont bite yourself, dont run into walls)
 	 */
 
 	private Item target;
@@ -69,7 +70,7 @@ public class Pathfinder {
 	 */
 	public void findPath() {
 		if (target == null)
-			findNearestItem();
+			findTargetItem();
 
 		Point currentPosition = (Point) snake.getHead().getPosition().clone();
 		Point targetPosition = target.getPosition();
@@ -107,19 +108,22 @@ public class Pathfinder {
 				targetDirection = targetDirectionHorizontal;
 			else {
 				if (new Random().nextBoolean())
-					targetDirection = (targetDirectionHorizontal.getOpposite() == snake.getLookingDirection()) ? targetDirectionVertical : targetDirectionHorizontal;
+					targetDirection = (targetDirectionHorizontal.getOpposite() == snake.getLookingDirection()) ? targetDirectionVertical
+							: targetDirectionHorizontal;
 				else
-					targetDirection = (targetDirectionHorizontal.getOpposite() == snake.getLookingDirection()) ? targetDirectionVertical : targetDirectionHorizontal;
+					targetDirection = (targetDirectionHorizontal.getOpposite() == snake.getLookingDirection()) ? targetDirectionVertical
+							: targetDirectionHorizontal;
 			}
 			if (targetDirection == null) {
-				findNearestItem();
+				findTargetItem();
 				return;
 			}
 
 			// Get a new Point and get the next Position
 			Point nextPosition = (Point) currentPosition.clone();
 
-			nextPosition.setLocation(nextPosition.getX() + targetDirection.getXOffset(), nextPosition.getY() + targetDirection.getYOffset());
+			nextPosition.setLocation(nextPosition.getX() + targetDirection.getXOffset(), nextPosition.getY()
+					+ targetDirection.getYOffset());
 			path.add(targetDirection);
 
 			currentPosition = nextPosition;
@@ -129,64 +133,23 @@ public class Pathfinder {
 	}
 
 	/**
-	 * Finds the nearest Items from the current position of the snake's head and sets it.
-	 * 
-	 * @return the nearest item
+	 * Finds the most useful item and the one with the shortest distance to.
 	 */
-	public List<Item> findNearestItems() {
-		List<Item> nearestItems = new ArrayList<Item>();
-
-		Item nearestItem = null;
-		Point headPosition = snake.getHead().getPosition();
-
-		for (Item item : GameFrame.getInstance().getGamePanel().getLevel().items) {
-			Point position = item.getPosition();
-			if (nearestItem == null || position.distance(headPosition) < nearestItem.getPosition().distance(headPosition))
-				nearestItem = item;
-		}
-
-		return nearestItem;
-	}
-
-	/**
-	 * Finds the most useful Items from the current position of the snake's head and sets it.
-	 * 
-	 * @return the nearest item
-	 */
-	public List<Item> findMostUsefulItems() {
-		List<Item> mostUsefulItems = new ArrayList<Item>();
-
-		Item nearestItem = null;
-		Point headPosition = snake.getHead().getPosition();
+	public void findTargetItem() {
 		List<Item> items = GameFrame.getInstance().getGamePanel().getLevel().items;
-		Collections.sort(items);
+		Items.sortByUsefulness(items);
 
-		for (Item item : items) {
-			Point position = item.getPosition();
-			if (nearestItem == null || position.distance(headPosition) < nearestItem.getPosition().distance(headPosition))
-				nearestItem = item;
+		int highestUsefulness = items.get(0).getUsefulness();
+		int i = 0;
+		for (; i < items.size(); i++) {
+			if (i == 0)
+				highestUsefulness = items.get(i).getUsefulness();
+			else if (items.get(i).getUsefulness() < highestUsefulness)
+				break;
 		}
 
-		return target = nearestItem;
-	}
+		List<? extends Item> bestItems = Items.sortByDistance(items.subList(0, i), snake.getHead());
 
-	/**
-	 * Finds the most useful Item from the current position of the snake's head and sets it.
-	 * 
-	 * @return the nearest item
-	 */
-	public Item findBestItem() {
-		Item nearestItem = null;
-		Point headPosition = snake.getHead().getPosition();
-		List<Item> items = GameFrame.getInstance().getGamePanel().getLevel().items;
-		Collections.sort(items);
-
-		for (Item item : items) {
-			Point position = item.getPosition();
-			if (nearestItem == null || position.distance(headPosition) < nearestItem.getPosition().distance(headPosition))
-				nearestItem = item;
-		}
-
-		return target = nearestItem;
+		target = bestItems.get(0);
 	}
 }
