@@ -1,8 +1,0 @@
-# Stefan Kameter
-# 05.07.2015
-datapath=data
-version=v0.5
-scorelistentries=10
-tile_size=32
-level_width=30
-level_height=20
