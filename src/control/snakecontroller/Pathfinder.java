@@ -20,6 +20,7 @@ public class Pathfinder {
 	/*
 	 * TODO - intelligent Item-searching - Are there any objects on the Path?
 	 * (dont bite yourself, dont run into walls)
+	 * end path if item was removed!
 	 */
 
 	private Item target;

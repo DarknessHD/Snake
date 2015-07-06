@@ -9,7 +9,7 @@ import model.SnakeSegment;
 import model.item.Item;
 
 /**
- * @author Eric Armbruster, Stefan Kameter
+ * @author Eric Armbruster
  * @version 06.07.2015
  */
 public class Items {
@@ -29,16 +29,8 @@ public class Items {
 	 */
 	public static List<? extends Item> sortByDistance(List<? extends Item> items, SnakeSegment distanceTo) {
 		Point headPosition = distanceTo.getPosition();
-
-		Collections.sort(items, (i0, i1) -> {
-			if (i0.getPosition().distance(headPosition) > i1.getPosition().distance(headPosition))
-				return 1;
-			else if (i0.getPosition().distance(headPosition) < i1.getPosition().distance(headPosition))
-				return -1;
-
-			return 0;
-		});
-
+		Collections.sort(items, (i0, i1) -> Double.compare(i0.getPosition().distance(headPosition), i1.getPosition().distance(headPosition)));
+		
 		return items;
 	}
 
@@ -50,14 +42,7 @@ public class Items {
 	 * @return the sorted list of items
 	 */
 	public static List<? extends Item> sortByUsefulness(List<? extends Item> items) {
-		Collections.sort(items, (i0, i1) -> {
-			if (i0.getUsefulness() > i1.getUsefulness())
-				return 1;
-			else if (i0.getUsefulness() < i1.getUsefulness())
-				return -1;
-
-			return 0;
-		});
+		Collections.sort(items, (i0, i1) -> Integer.compare(i0.getUsefulness(), i1.getUsefulness()));
 
 		return items;
 	}
@@ -70,14 +55,7 @@ public class Items {
 	 * @return the sorted list of items
 	 */
 	public static Item[] sortByChance(Item[] items) {
-		Arrays.sort(items, (i0, i1) -> {
-			if (i0.getChance() < i1.getChance())
-				return -1;
-			else if (i0.getChance() > i1.getChance())
-				return 1;
-
-			return 0;
-		});
+		Arrays.sort(items, (i0, i1) -> Integer.compare(i0.getChance(), i1.getChance()));
 
 		return items;
 	}
