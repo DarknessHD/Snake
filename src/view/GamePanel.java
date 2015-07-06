@@ -8,8 +8,6 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -130,28 +128,31 @@ public class GamePanel extends JPanel {
 	 */
 	public void onMove(int index) {
 		CellObject head = level.snakes[index].getHead();
-		Point sp = head.getPosition();
-		List<SnakeSegment> segments = new ArrayList<SnakeSegment>(level.snakes[index].getSegments());
+		Point hp = head.getPosition();
 
-		for (int i = 0; i < segments.size(); i++) {
-			SnakeSegment seg = segments.get(i);
+		for (SnakeSegment seg : level.snakes[index].getSegments()) {
 			if (seg.equals(head))
 				continue;
-			if (sp.equals(seg.getPosition())) {
+			if (hp.equals(seg.getPosition()))
 				seg.onSnakeHitCellObject(level.snakes[index]);
-				segments.remove(i);
-			}
+		}
+
+		for (SnakeSegment seg : level.snakes[(index + 1) % 2].getSegments()) {
+			if (seg.equals(head))
+				continue;
+			if (hp.equals(seg.getPosition()))
+				seg.onSnakeHitCellObject(level.snakes[index]);
 		}
 
 		for (int i = 0; i < level.staticCellObjects.length; i++) {
 			CellObject obj = level.staticCellObjects[i];
-			if (sp.equals(obj.getPosition()))
+			if (hp.equals(obj.getPosition()))
 				obj.onSnakeHitCellObject(level.snakes[index]);
 		}
 
 		for (int i = 0; i < level.items.size(); i++) {
 			Item item = level.items.get(i);
-			if (sp.equals(item.getPosition())) {
+			if (hp.equals(item.getPosition())) {
 				item.onSnakeHitCellObject(level.snakes[index]);
 				level.items.remove(i);
 				level.addItem(ItemSpawner.getRandomItem());
