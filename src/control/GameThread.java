@@ -151,7 +151,7 @@ public class GameThread implements Runnable {
 
 					if (snakes[s].getPathfinder() == null)
 						dir = controllers[0].getDirection(s);
-					else
+					else 
 						dir = controllers[1].getDirection(s);
 
 					if (dir != null)

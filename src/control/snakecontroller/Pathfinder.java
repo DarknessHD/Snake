@@ -62,7 +62,7 @@ public class Pathfinder {
 	public void findPath() {
 		if (target == null)
 			findNearestItem();
-
+		
 		Point currentPosition = (Point) snake.getHead().getPosition().clone();
 		Point targetPosition = target.getPosition();
 		List<Direction> path = new ArrayList<Direction>();
