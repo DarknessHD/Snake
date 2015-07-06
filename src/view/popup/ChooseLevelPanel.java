@@ -9,9 +9,6 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
-import model.Level;
-import view.GameFrame;
-
 /**
  * @author Stefan Kameter
  * @version 01.07.2015
@@ -56,8 +53,7 @@ public class ChooseLevelPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				dialog.setVisible(false);
 
-				// TODO load chosen level
-				GameFrame.getInstance().setLevel(new Level("hardcoded testlevel", 30, 20, true, 5, 5, null, null));
+				// TODO load, set chosen level
 			}
 		});
 	}
