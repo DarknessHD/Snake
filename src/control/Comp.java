@@ -19,20 +19,20 @@ public enum Comp {
 	GAMEPANEL;
 
 	/**
-	 * Returns the convenient String of Comp.
+	 * Returns the index of Comp.
 	 * 
-	 * @return the convenient String
+	 * @return the index
 	 */
-	public String getString() {
+	public int getIndex() {
 		switch (this) {
 		case GAMEMENUPANEL:
-			return "GAMEMENUPANEL";
+			return 0;
 		case SCORELISTPANEL:
-			return "SCORELISTPANEL";
+			return 1;
 		case GAMEPANEL:
-			return "GAMEPANEL";
+			return 2;
 		default:
-			return null;
+			return -1;
 		}
 	}
 }

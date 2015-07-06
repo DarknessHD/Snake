@@ -5,11 +5,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JPanel;
 
 import model.Level;
-import view.popup.ChooseLevelPanel;
 import control.Comp;
 import control.Constants;
 
@@ -23,7 +21,7 @@ public class GameMenuPanel extends JPanel {
 	private static final String STR_START = "Start Game";
 	private static final String STR_SCORELIST = "Score List";
 	private static final String STR_EXIT = "Exit Game";
-	private static final String STR_CHOOSELEVEL = "Choose Level";
+	// private static final String STR_CHOOSELEVEL = "Choose Level";
 
 	private JButton start;
 	private JButton scoreList;
