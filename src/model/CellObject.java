@@ -72,13 +72,15 @@ public abstract class CellObject implements Cloneable {
 
 	@Override
 	public CellObject clone() {
-		try {
-			return (CellObject) super.clone();
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-			System.exit(1);
-			return null;
-		}
+		// try {
+		// return (CellObject) super.clone();
+		// } catch (CloneNotSupportedException e) {
+		// e.printStackTrace();
+		// System.exit(1);
+		// return null;
+		// }
+		// TODO
+		return this;
 	}
 
 	/**

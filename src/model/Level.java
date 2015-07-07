@@ -72,30 +72,6 @@ public class Level implements Cloneable {
 		this.snakes = snakes;
 		this.staticCellObjects = staticCellObjects;
 		this.items = new ArrayList<Item>();
-
-		// // TODO
-		// this.items = new ArrayList<Item>();
-		// this.staticCellObjects = new StaticCellObject[(width - 2) * 2 + (height - 2) * 2];
-		// int id = 0;
-		// for (int i = 0; i < height; i++) {
-		// if (i > 5 && i < 8)
-		// continue;
-		// this.staticCellObjects[id] = new Wall(new Point(0, i));
-		// id++;
-		// this.staticCellObjects[id] = new Wall(new Point(width - 1, i));
-		// id++;
-		// }
-		// for (int i = 1; i < width - 1; i++) {
-		// this.staticCellObjects[id] = new Wall(new Point(i, 0));
-		// id++;
-		// this.staticCellObjects[id] = new Wall(new Point(i, height - 1));
-		// id++;
-		// }
-		// this.snakes = new Snake[1];
-		// this.snakes[0] = new Snake(3, new Point(4, 5), Direction.DOWN);
-		// // this.snakes[1] = new Snake(3, new Point(20, 5), Direction.DOWN);
-		// // this.snakes[1].setPathfinder();
-		// // TODO
 	}
 
 	/**
@@ -150,12 +126,7 @@ public class Level implements Cloneable {
 
 	@Override
 	public Level clone() {
-		try {
-			return (Level) super.clone();
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-			System.exit(1);
-			return null;
-		}
+		// TODO
+		return this;
 	}
 }

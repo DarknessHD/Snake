@@ -94,8 +94,8 @@ public class GameThread implements Runnable {
 
 	private void step() {
 		for (int s = 0; s < snakes.length; s++) {
-			Point lastHeadPosition = (Point) snakes[s].getHead().getPosition().clone();
-			Point lastTailPosition = (Point) snakes[s].getTail().getPosition().clone();
+			Point lastHeadPosition = (Point) snakes[s].getHead().getPosition().clone();// TODO
+			Point lastTailPosition = (Point) snakes[s].getTail().getPosition().clone();// TODO
 
 			if (dirs[s] != null)
 				snakes[s].setLookingDirection(dirs[s]);
