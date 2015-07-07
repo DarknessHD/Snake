@@ -35,6 +35,14 @@ public class Constants {
 	 * The height of tiles in the level.
 	 */
 	public static final int LEVEL_HEIGHT;
+	/**
+	 * The minimal speed.
+	 */
+	public static final int MIN_SPEED;
+	/**
+	 * The maximal speed.
+	 */
+	public static final int MAX_SPEED;
 
 	static {
 		Properties props = new Properties();
@@ -51,6 +59,8 @@ public class Constants {
 		TILE_SIZE = Integer.parseInt(props.getProperty("tile_size"));
 		LEVEL_WIDTH = Integer.parseInt(props.getProperty("level_width"));
 		LEVEL_HEIGHT = Integer.parseInt(props.getProperty("level_height"));
+		MIN_SPEED = Integer.parseInt(props.getProperty("speed_min"));
+		MAX_SPEED = Integer.parseInt(props.getProperty("speed_max"));
 
 		if (DATAPATH == null || VERSION == null)
 			System.exit(1);

@@ -5,9 +5,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JPanel;
 
-import model.Level;
+import view.popup.ChooseLevelPanel;
 import control.Comp;
 import control.Constants;
 
@@ -21,7 +22,7 @@ public class GameMenuPanel extends JPanel {
 	private static final String STR_START = "Start Game";
 	private static final String STR_SCORELIST = "Score List";
 	private static final String STR_EXIT = "Exit Game";
-	// private static final String STR_CHOOSELEVEL = "Choose Level";
+	private static final String STR_CHOOSELEVEL = "Choose Level";
 
 	private JButton start;
 	private JButton scoreList;
@@ -54,13 +55,13 @@ public class GameMenuPanel extends JPanel {
 		start.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// JDialog dialog = new JDialog(GameFrame.getInstance(), STR_CHOOSELEVEL, true);
-				// dialog.setResizable(false);
-				// dialog.add(new ChooseLevelPanel(dialog));
-				// dialog.pack();
-				// dialog.setLocationRelativeTo(GameFrame.getInstance());
-				// dialog.setVisible(true);
-				GameFrame.getInstance().setLevel(new Level("hardcoded testlevel", 30, 20, true, 5, 5, null, null));
+				JDialog dialog = new JDialog(GameFrame.getInstance(), STR_CHOOSELEVEL, true);
+				dialog.setResizable(false);
+				dialog.add(new ChooseLevelPanel(dialog));
+				dialog.pack();
+				dialog.setLocationRelativeTo(GameFrame.getInstance());
+				dialog.setVisible(true);
+				// GameFrame.getInstance().setLevel(new Level("hardcoded testlevel", 30, 20, true, 5, 5, null, null));
 			}
 		});
 

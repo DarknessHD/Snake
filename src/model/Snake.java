@@ -196,8 +196,9 @@ public class Snake {
 			return false;
 		}
 
-		segments.removeLast();
+		Point position = segments.removeLast().getPosition();
 		segments.getLast().setImage(RotatedImage.get(segments.getLast().getDirection().getOpposite(), RotatedImage.TAIL_IMAGE));
+		GameFrame.getInstance().getGamePanel().doRepaint(position);
 		return true;
 	}
 
@@ -208,6 +209,7 @@ public class Snake {
 		SnakeSegment newBody = segments.getLast();
 		newBody.setImage(RotatedImage.get(newBody.getDirection(), RotatedImage.BODY_IMAGE));
 		segments.addLast(new SnakeSegment(RotatedImage.get(newBody.getDirection().getOpposite(), RotatedImage.TAIL_IMAGE), new Point(newBody.getPosition()), newBody.getDirection(), true, endless));
+		GameFrame.getInstance().getGamePanel().doRepaint(newBody.getPosition());
 	}
 
 	/**
