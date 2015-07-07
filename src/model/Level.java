@@ -14,13 +14,12 @@ import control.ItemSpawner;
  * @author Stefan Kameter
  * @version 05.07.2015
  */
-public class Level implements Cloneable {
+public class Level {
 	/**
 	 * The level-name.
 	 */
 	public final String name;
 	private final int width, height;
-	private final int speedMin, speedMax;
 	private final boolean endless;
 	private final int defaultSpeed;
 
@@ -45,10 +44,6 @@ public class Level implements Cloneable {
 	 *            the level-tile-width
 	 * @param height
 	 *            the level-tile-height
-	 * @param speedMin
-	 *            the minimal speed
-	 * @param speedMax
-	 *            the maximal speed
 	 * @param endless
 	 *            whether map is endless
 	 * @param defaultSpeed
@@ -60,12 +55,10 @@ public class Level implements Cloneable {
 	 * @param staticCellObjects
 	 *            the staticCellObjects
 	 */
-	public Level(String name, int width, int height, int speedMin, int speedMax, boolean endless, int defaultSpeed, int itemNumber, Snake[] snakes, StaticCellObject[] staticCellObjects) {
+	public Level(String name, int width, int height, boolean endless, int defaultSpeed, int itemNumber, Snake[] snakes, StaticCellObject[] staticCellObjects) {
 		this.name = name;
 		this.width = width;
 		this.height = height;
-		this.speedMin = speedMin;
-		this.speedMax = speedMax;
 		this.endless = endless;
 		this.defaultSpeed = defaultSpeed;
 		this.itemNumber = itemNumber;
@@ -99,7 +92,7 @@ public class Level implements Cloneable {
 	 * @return whether the Level is allowed
 	 */
 	public boolean isAllowed() {
-		if (Constants.LEVEL_WIDTH != width || Constants.LEVEL_HEIGHT != height || Constants.MIN_SPEED != speedMin || Constants.MAX_SPEED != speedMax)
+		if (Constants.LEVEL_WIDTH != width || Constants.LEVEL_HEIGHT != height)
 			return false;
 		return true;
 	}
@@ -126,7 +119,14 @@ public class Level implements Cloneable {
 
 	@Override
 	public Level clone() {
-		// TODO
-		return this;
+		Snake[] snakes = new Snake[this.snakes.length];
+		for (int i = 0; i < snakes.length; i++)
+			snakes[i] = (Snake) this.snakes[i].clone();
+
+		StaticCellObject[] staticCellObjects = new StaticCellObject[this.staticCellObjects.length];
+		for (int i = 0; i < staticCellObjects.length; i++)
+			staticCellObjects[i] = (StaticCellObject) this.staticCellObjects[i].clone();
+
+		return new Level(name, this.width, this.height, this.endless, this.defaultSpeed, this.itemNumber, snakes, staticCellObjects);
 	}
 }

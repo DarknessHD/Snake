@@ -73,9 +73,9 @@ public class Constants {
 	/**
 	 * Component width.
 	 */
-	public static final int CANVAS_WIDTH = LEVEL_WIDTH * TILE_SIZE + 1;
+	public static final int CANVAS_WIDTH = LEVEL_WIDTH * TILE_SIZE;
 	/**
 	 * Component height.
 	 */
-	public static final int CANVAS_HEIGHT = LEVEL_HEIGHT * TILE_SIZE + 1;
+	public static final int CANVAS_HEIGHT = LEVEL_HEIGHT * TILE_SIZE;
 }

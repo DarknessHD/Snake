@@ -37,12 +37,12 @@ public class IOSimulator {
 			staticCellObjects0[id] = new Wall(new Point(x, 19));
 			id++;
 		}
-		levels.put(name0, new Level(name0, 30, 20, 2, 10, true, 5, 3, snakes0, staticCellObjects0));
+		levels.put(name0, new Level(name0, 30, 20, true, 5, 3, snakes0, staticCellObjects0));
 
 		String name1 = "normal_endless_sp2_easy";
 		Snake[] snakes1 = { new Snake(3, new Point(5, 3), Direction.RIGHT), new Snake(3, new Point(24, 3), Direction.LEFT) };
 		snakes1[1].setPathfinder();
-		levels.put(name1, new Level(name1, 30, 20, 2, 10, true, 5, 3, snakes1, staticCellObjects0));
+		levels.put(name1, new Level(name1, 30, 20, true, 5, 3, snakes1, staticCellObjects0));
 
 		String name2 = "very_big_mp_hard";
 		Snake[] snakes2 = { new Snake(3, new Point(2, 35), Direction.UP), new Snake(3, new Point(57, 35), Direction.UP) };
@@ -66,7 +66,7 @@ public class IOSimulator {
 					staticCellObjects2[id] = new Wall(new Point(x, y));
 					id++;
 				}
-		levels.put(name2, new Level(name2, 60, 40, 2, 10, false, 5, 6, snakes2, staticCellObjects2));
+		levels.put(name2, new Level(name2, 60, 40, false, 5, 6, snakes2, staticCellObjects2));
 	}
 
 	public static Vector<String> getLevelNames() {
