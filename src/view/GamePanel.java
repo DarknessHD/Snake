@@ -8,6 +8,8 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -40,6 +42,8 @@ public class GamePanel extends JPanel {
 	private BufferedImage buffer;
 	private Graphics bufferGraphics;
 
+	private boolean first;
+
 	private boolean paused;
 	private boolean gameOver;
 
@@ -47,6 +51,8 @@ public class GamePanel extends JPanel {
 	 * Creates a new GamePanel instance.
 	 */
 	public GamePanel() {
+		first = true;
+
 		paused = false;
 		gameOver = false;
 
@@ -63,8 +69,9 @@ public class GamePanel extends JPanel {
 					if (level.snakes.length == 1)
 						GameFrame.getInstance().addToScoreList(level.name, level.snakes[0].getScore());
 					GameFrame.getInstance().changeComponent(Comp.GAMEMENUPANEL);
-				} else if (paused)
+				} else if (paused) {
 					setPaused(false);
+				}
 			}
 		});
 	}
@@ -77,6 +84,8 @@ public class GamePanel extends JPanel {
 	 */
 	public void setLevel(Level level) {
 		this.level = level;
+
+		first = true;
 
 		paused = false;
 		gameOver = false;
@@ -99,6 +108,7 @@ public class GamePanel extends JPanel {
 	 */
 	public void setGameOver(boolean gameOver) {
 		this.gameOver = gameOver;
+		repaint();
 	}
 
 	/**
@@ -109,8 +119,11 @@ public class GamePanel extends JPanel {
 	 */
 	public void setPaused(boolean paused) {
 		this.paused = paused;
-		if (this.paused)
-			repaint();
+
+		if (!this.paused)
+			first = true;
+
+		repaint();
 	}
 
 	/**
@@ -151,11 +164,12 @@ public class GamePanel extends JPanel {
 				obj.onSnakeHitCellObject(level.snakes[index]);
 		}
 
-		for (int i = 0; i < level.items.size(); i++) {
-			Item item = level.items.get(i);
+		List<Item> items = level.getItems();
+		for (int i = 0; i < items.size(); i++) {
+			Item item = items.get(i);
 			if (hp.equals(item.getPosition())) {
 				item.onSnakeHitCellObject(level.snakes[index]);
-				level.items.remove(i);
+				items.remove(i);
 				level.addItem(ItemSpawner.getRandomItem());
 			}
 		}
@@ -170,7 +184,7 @@ public class GamePanel extends JPanel {
 	 */
 	public boolean checkPosition(Point position) {
 		if (level != null) {
-			for (Item i : level.items)
+			for (Item i : level.getItems())
 				if (i.getPosition().equals(position))
 					return false;
 
@@ -189,6 +203,47 @@ public class GamePanel extends JPanel {
 		return true;
 	}
 
+	/**
+	 * Repaints only one tile.
+	 * 
+	 * @param position
+	 *            the tile position
+	 */
+	public void doRepaint(Point position) {
+		if (bufferGraphics == null)
+			return;
+
+		List<CellObject> objs = new ArrayList<CellObject>();
+
+		back: for (Snake s : level.snakes)
+			for (SnakeSegment seg : s.getSegments())
+				if (seg.getPosition().equals(position)) {
+					objs.add(seg);
+					break back;
+				}
+		for (StaticCellObject sco : level.staticCellObjects)
+			if (sco.getPosition().equals(position)) {
+				objs.add(sco);
+				break;
+			}
+		for (Item i : level.getItems())
+			if (i.getPosition().equals(position)) {
+				objs.add(i);
+				break;
+			}
+		bufferGraphics.setColor(getBackground());
+		bufferGraphics.fillRect(position.x << Constants.TILE_SIZE_BW, position.y << Constants.TILE_SIZE_BW, Constants.TILE_SIZE, Constants.TILE_SIZE);
+
+		drawCellObjects(objs);
+
+		if (objs.isEmpty()) {
+			bufferGraphics.setColor(Color.WHITE);
+			bufferGraphics.drawRect(position.x << Constants.TILE_SIZE_BW, (position.y << Constants.TILE_SIZE_BW) + 1, Constants.TILE_SIZE, Constants.TILE_SIZE);
+		}
+
+		repaint();
+	}
+
 	@Override
 	public void paint(Graphics g) {
 		if (level != null) {
@@ -201,7 +256,8 @@ public class GamePanel extends JPanel {
 				drawPaused();
 			else if (gameOver)
 				drawGameOver();
-			else
+
+			if (first)
 				drawGame();
 
 			g.drawImage(buffer, 5, 5, buffer.getWidth(), buffer.getHeight(), null);
@@ -209,6 +265,8 @@ public class GamePanel extends JPanel {
 	}
 
 	private void drawGame() {
+		first = false;
+
 		bufferGraphics.setColor(getBackground());
 		bufferGraphics.fillRect(0, 0, getWidth(), getHeight());
 
@@ -219,20 +277,25 @@ public class GamePanel extends JPanel {
 				bufferGraphics.drawRect(x << Constants.TILE_SIZE_BW, y << Constants.TILE_SIZE_BW, Constants.TILE_SIZE, Constants.TILE_SIZE);
 
 		// Items
-		for (Item i : level.items) {
-			Point p = i.getPosition();
-			bufferGraphics.drawImage(i.getImage(), p.x << Constants.TILE_SIZE_BW, p.y << Constants.TILE_SIZE_BW, Constants.TILE_SIZE, Constants.TILE_SIZE, null);
-		}
+		drawCellObjects(level.getItems());
 
 		// Snakes
 		for (Snake snake : level.snakes)
-			for (SnakeSegment s : snake.getSegments()) {
-				Point p = s.getPosition();
-				bufferGraphics.drawImage(s.getImage(), p.x << Constants.TILE_SIZE_BW, p.y << Constants.TILE_SIZE_BW, Constants.TILE_SIZE, Constants.TILE_SIZE, null);
-			}
+			drawCellObjects(snake.getSegments());
 
 		// StaticCellObjects
-		for (StaticCellObject obj : level.staticCellObjects) {
+		drawCellObjects(level.staticCellObjects);
+	}
+
+	private void drawCellObjects(CellObject[] objects) {
+		for (CellObject obj : objects) {
+			Point p = obj.getPosition();
+			bufferGraphics.drawImage(obj.getImage(), p.x << Constants.TILE_SIZE_BW, p.y << Constants.TILE_SIZE_BW, Constants.TILE_SIZE, Constants.TILE_SIZE, null);
+		}
+	}
+
+	private void drawCellObjects(Iterable<? extends CellObject> objects) {
+		for (CellObject obj : objects) {
 			Point p = obj.getPosition();
 			bufferGraphics.drawImage(obj.getImage(), p.x << Constants.TILE_SIZE_BW, p.y << Constants.TILE_SIZE_BW, Constants.TILE_SIZE, Constants.TILE_SIZE, null);
 		}

@@ -1,5 +1,7 @@
 package view.popup;
 
+import io.IOSimulator;
+
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,17 +11,18 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
+import view.GameFrame;
+
 /**
  * @author Stefan Kameter
  * @version 01.07.2015
- *
  */
 public class ChooseLevelPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	private JDialog dialog;
 
-	private JComboBox<String> comboBox;
+	private JComboBox<String> levels;
 	private JButton accept;
 
 	/**
@@ -40,8 +43,8 @@ public class ChooseLevelPanel extends JPanel {
 	}
 
 	private void initComponents() {
-		add(comboBox = new JComboBox<String>(/* TODO loadLevelNames() */));
-		comboBox.setBounds(25, 10, 200, 30);
+		add(levels = new JComboBox<String>(/* TODO */IOSimulator.getLevelNames()));
+		levels.setBounds(25, 10, 200, 30);
 
 		add(accept = new JButton("Accept"));
 		accept.setBounds(65, 65, 120, 25);
@@ -54,6 +57,7 @@ public class ChooseLevelPanel extends JPanel {
 				dialog.setVisible(false);
 
 				// TODO load, set chosen level
+				GameFrame.getInstance().setLevel(IOSimulator.getLevel(levels.getSelectedItem().toString()));
 			}
 		});
 	}

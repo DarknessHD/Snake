@@ -139,7 +139,7 @@ public class Pathfinder {
 	 * Finds the most useful item and the one with the shortest distance to.
 	 */
 	public void findTargetItem() {
-		List<Item> items = GameFrame.getInstance().getGamePanel().getLevel().items;
+		List<Item> items = GameFrame.getInstance().getGamePanel().getLevel().getItems();
 		Items.sortByUsefulness(items);
 
 		int highestUsefulness = items.get(0).getUsefulness();
