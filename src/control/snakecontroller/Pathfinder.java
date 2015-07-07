@@ -132,6 +132,8 @@ public class Pathfinder {
 
 		this.path = path;
 	}
+	
+	//TODO Eventually recall this method always when changes are made to the item list, so the snake will always head to the closest
 
 	/**
 	 * Finds the most useful item and the one with the shortest distance to.
