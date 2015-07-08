@@ -16,8 +16,6 @@ import control.snakecontroller.Pathfinder;
  */
 public class Snake {
 
-	// TODO Check if there is something, when adding a segment
-
 	private static final int MIN_SEGMENTS_VALUE = 3, MIN_SCORE_VALUE = 0;
 
 	private static final Predicate<Integer> MIN_SEGMENTS = t -> t >= MIN_SEGMENTS_VALUE;
