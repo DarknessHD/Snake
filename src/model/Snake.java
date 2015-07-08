@@ -257,6 +257,9 @@ public class Snake {
 
 	@Override
 	public Snake clone() {
-		return new Snake(segments.size(), new Point(getHead().position), getHead().getDirection());
+		Snake snake = new Snake(segments.size(), new Point(getHead().position), getHead().getDirection());
+		if(this.pathfinder != null)
+			snake.setPathfinder();
+		return snake;
 	}
 }

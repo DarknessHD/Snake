@@ -15,14 +15,13 @@ import view.GameFrame;
 import control.Items;
 
 /**
- * @author Eric Armbruster, Stefan Kameter
+ * @author Eric Armbruster
  * @version 04.07.2015
  */
 public class Pathfinder {
 
 	/*
-	 * TODO - intelligent Item-searching - Are there any objects on the Path?
-	 * (dont bite yourself, dont run into walls) end path if item was removed!
+	 *TODO  Fix walking into the wall
 	 */
 
 	private Item target;
@@ -48,7 +47,9 @@ public class Pathfinder {
 		if (nextDirection == null)
 			findNextDirection();
 
-		return nextDirection;
+		Direction next = nextDirection;
+		nextDirection = null;
+		return next;
 	}
 
 	/**
@@ -63,17 +64,11 @@ public class Pathfinder {
 		Point currentPosition = (Point) new Point(aiSnake.getHead().getPosition());
 		Point targetPosition = target.getPosition();
 
-		Direction targetDirectionHorizontal;
-		Direction targetDirectionVertical;
-		int xDistance;
-		int yDistance;
-		
 		// Find the target directions
-		targetDirectionHorizontal = null;
-		targetDirectionVertical = null;
-
-		xDistance = (int) (currentPosition.getX() - targetPosition.getX());
-		yDistance = (int) (currentPosition.getY() - targetPosition.getY());
+		Direction targetDirectionHorizontal = null;
+		Direction targetDirectionVertical = null;
+		int xDistance = (int) (currentPosition.getX() - targetPosition.getX());
+		int yDistance = (int) (currentPosition.getY() - targetPosition.getY());
 
 		if (xDistance > 0)
 			targetDirectionHorizontal = Direction.LEFT;
@@ -99,13 +94,8 @@ public class Pathfinder {
 				targetDirection = (targetDirectionHorizontal.getOpposite() == aiSnake.getLookingDirection()) ? targetDirectionVertical
 						: targetDirectionHorizontal;
 		}
-		if (targetDirection == null) {
-			findTargetItem();
-			return;
-		}
 
 		// Get the next position
-
 		currentPosition.setLocation(currentPosition.getX() + targetDirection.getXOffset(), currentPosition.getY()
 				+ targetDirection.getYOffset());
 
@@ -115,10 +105,13 @@ public class Pathfinder {
 		cellObjects.addAll(Arrays.asList(level.staticCellObjects));
 		cellObjects.addAll(4, aiSnake.getSegments());
 		cellObjects.addAll(GameFrame.getInstance().getGamePanel().getLevel().snakes[0].getSegments());
-
+		cellObjects.remove(target);
+		
 		for (CellObject cellObject : cellObjects) {
 			if (cellObject.getPosition().equals(currentPosition)) {
 				targetDirection = targetDirection.getNext(new Random().nextBoolean());
+				//TODO Target direction checks
+				//Recall this method to make sure the new target direction works
 				break;
 			}
 		}
@@ -130,20 +123,9 @@ public class Pathfinder {
 	 * Finds the most useful item and the one with the shortest distance to.
 	 */
 	public void findTargetItem() {
-		List<Item> items = GameFrame.getInstance().getGamePanel().getLevel().getItems();
-		Items.sortByUsefulness(items);
+		List<Item> items = Items.sortByUsefulness(GameFrame.getInstance().getGamePanel().getLevel().getItems());
+		items.removeIf((Item item) -> item.getUsefulness() != items.get(items.size()-1).getUsefulness());
 
-		int highestUsefulness = items.get(0).getUsefulness();
-		int i = 0;
-		for (; i < items.size(); i++) {
-			if (i == 0)
-				highestUsefulness = items.get(i).getUsefulness();
-			else if (items.get(i).getUsefulness() < highestUsefulness)
-				break;
-		}
-
-		List<? extends Item> bestItems = Items.sortByDistance(items.subList(0, i), aiSnake.getHead());
-
-		target = bestItems.get(0);
+		target = Items.sortByDistance(items, aiSnake.getHead()).get(0);
 	}
 }

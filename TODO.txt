@@ -9,4 +9,4 @@ QUIRIN or ERIC:
 	- LevelIO, ScoreListIO
 
 ERIC:
-	- PathFinder, AIControl
+	- PathFinder

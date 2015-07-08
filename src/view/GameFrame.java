@@ -1,6 +1,7 @@
 package view;
 
 import input.KeyBoard;
+import io.IOSimulator;
 
 import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
@@ -225,6 +226,8 @@ public class GameFrame extends JFrame {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		IOSimulator.init();// TODO
+		
 		getInstance().setVisible(true);
 	}
 }

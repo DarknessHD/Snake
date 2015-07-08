@@ -12,11 +12,9 @@ import model.staticobjects.Wall;
 
 @SuppressWarnings("javadoc")
 public class IOSimulator {
-	private static final Hashtable<String, Level> levels;
+	private static final Hashtable<String, Level> levels=new Hashtable<String, Level>();
 
-	static {
-		levels = new Hashtable<String, Level>();
-
+	public static void init(){
 		String name0 = "normal_endless_sp1_easy";
 		Snake[] snakes0 = { new Snake(3, new Point(5, 3), Direction.RIGHT) };
 		StaticCellObject[] staticCellObjects0 = new StaticCellObject[88];
@@ -40,7 +38,7 @@ public class IOSimulator {
 		levels.put(name0, new Level(name0, 30, 20, true, 5, 3, snakes0, staticCellObjects0));
 
 		String name1 = "normal_endless_sp2_easy";
-		Snake[] snakes1 = { new Snake(3, new Point(5, 3), Direction.RIGHT), new Snake(3, new Point(24, 3), Direction.LEFT) };
+		Snake[] snakes1 = { new Snake(3, new Point(5, 3), Direction.RIGHT),	new Snake(3, new Point(24, 3), Direction.LEFT) };
 		snakes1[1].setPathfinder();
 		levels.put(name1, new Level(name1, 30, 20, true, 5, 3, snakes1, staticCellObjects0));
 

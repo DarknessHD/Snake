@@ -27,7 +27,7 @@ public class Items {
 	 *            the SnakeSegment that is used for the distance
 	 * @return the sorted list of items
 	 */
-	public static List<? extends Item> sortByDistance(List<? extends Item> items, SnakeSegment distanceTo) {
+	public static List<Item> sortByDistance(List<Item> items, SnakeSegment distanceTo) {
 		Point headPosition = distanceTo.getPosition();
 		Collections.sort(items, (i0, i1) -> Double.compare(i0.getPosition().distance(headPosition), i1.getPosition().distance(headPosition)));
 		
@@ -41,7 +41,7 @@ public class Items {
 	 *            the list of items to sort
 	 * @return the sorted list of items
 	 */
-	public static List<? extends Item> sortByUsefulness(List<? extends Item> items) {
+	public static List<Item> sortByUsefulness(List<Item> items) {
 		Collections.sort(items, (i0, i1) -> Integer.compare(i0.getUsefulness(), i1.getUsefulness()));
 
 		return items;
