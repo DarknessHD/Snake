@@ -21,7 +21,7 @@ public class Constants {
 	/**
 	 * Max number of entries in scoreList.
 	 */
-	public static final int SCORELISTENTRIES;
+	public static final int SCORELIST_ENTRIES_MAX;
 
 	/**
 	 * The pixel size of a tile.
@@ -57,15 +57,15 @@ public class Constants {
 			System.exit(1);
 		}
 
-		DATAPATH = props.getProperty("datapath");
+		DATAPATH = props.getProperty("datapath") + "/";
 		VERSION = props.getProperty("version");
-		SCORELISTENTRIES = Integer.parseInt(props.getProperty("scorelistentries"));
+		SCORELIST_ENTRIES_MAX = Integer.parseInt(props.getProperty("scorelist_entries_max"));
 		TILE_SIZE = Integer.parseInt(props.getProperty("tile_size"));
 		LEVEL_WIDTH = Integer.parseInt(props.getProperty("level_width"));
 		LEVEL_HEIGHT = Integer.parseInt(props.getProperty("level_height"));
 		MIN_SPEED = Integer.parseInt(props.getProperty("speed_min"));
 		MAX_SPEED = Integer.parseInt(props.getProperty("speed_max"));
-		MIN_SEGMENTS = Integer.parseInt(props.getProperty("snake_segments_min"));
+		MIN_SEGMENTS = Integer.parseInt(props.getProperty("segments_min"));
 
 		if (DATAPATH == null || VERSION == null)
 			System.exit(1);

@@ -171,7 +171,7 @@ public class GameFrame extends JFrame {
 	public void addToScoreList(String level, int score) {
 		if (score == 0)
 			return;
-		if (scoreList.size() < Constants.SCORELISTENTRIES || isBetter(score)) {
+		if (scoreList.size() < Constants.SCORELIST_ENTRIES_MAX || isBetter(score)) {
 			String name = JOptionPane.showInputDialog(this, STR_YOURNAME);
 			if (name != null && !name.trim().isEmpty())
 				scoreList.add(new ScoreListEntry(level, name.trim(), score));
