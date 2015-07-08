@@ -14,7 +14,7 @@ import control.Constants;
 
 /**
  * @author Stefan Kameter
- * @version 04.07.2015
+ * @version 08.07.2015
  */
 public class GameMenuPanel extends JPanel {
 	private static final long serialVersionUID = 1L;

@@ -15,7 +15,7 @@ import control.snakecontroller.SnakeController;
 
 /**
  * @author Stefan Kameter
- * @version 02.07.2015
+ * @version 08.07.2015
  */
 public class GameThread implements Runnable {
 
@@ -94,8 +94,8 @@ public class GameThread implements Runnable {
 
 	private void step() {
 		for (int s = 0; s < snakes.length; s++) {
-			Point lastHeadPosition = (Point) snakes[s].getHead().getPosition().clone();// TODO
-			Point lastTailPosition = (Point) snakes[s].getTail().getPosition().clone();// TODO
+			Point lastHeadPosition = (Point) snakes[s].getHead().getPosition().clone();
+			Point lastTailPosition = (Point) snakes[s].getTail().getPosition().clone();
 
 			if (dirs[s] != null)
 				snakes[s].setLookingDirection(dirs[s]);

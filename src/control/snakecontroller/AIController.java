@@ -6,7 +6,7 @@ import view.GameFrame;
 
 /**
  * @author Stefan Kameter, Eric Armbruster
- * @version 03.07.2015
+ * @version 08.07.2015
  */
 public class AIController implements SnakeController {
 

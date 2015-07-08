@@ -9,7 +9,7 @@ import model.ScoreListEntry;
 
 /**
  * @author Stefan Kameter
- * @version 04.07.2015
+ * @version 08.07.2015
  */
 public class GameTableModel extends DefaultTableModel {
 	private static final long serialVersionUID = 1L;

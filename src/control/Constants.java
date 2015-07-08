@@ -6,7 +6,7 @@ import java.util.Properties;
 
 /**
  * @author Stefan Kameter
- * @version 05.07.2015
+ * @version 08.07.2015
  */
 public class Constants {
 

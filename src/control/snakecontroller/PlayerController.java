@@ -5,7 +5,7 @@ import model.Direction;
 
 /**
  * @author Stefan Kameter
- * @version 01.07.2015
+ * @version 08.07.2015
  */
 public class PlayerController implements SnakeController {
 	@Override

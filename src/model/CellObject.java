@@ -7,7 +7,7 @@ import view.GameFrame;
 
 /**
  * @author Stefan Kameter, Eric Armbruster
- * @version 22.06.2015
+ * @version 08.07.2015
  */
 public abstract class CellObject implements Cloneable {
 

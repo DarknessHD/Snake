@@ -26,7 +26,7 @@ import control.ShiftType;
 
 /**
  * @author Stefan Kameter
- * @version 02.07.2015
+ * @version 08.07.2015
  */
 public class GamePanel extends JPanel {
 	private static final long serialVersionUID = 1L;

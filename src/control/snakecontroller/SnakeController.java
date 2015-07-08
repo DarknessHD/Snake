@@ -4,7 +4,7 @@ import model.Direction;
 
 /**
  * @author Stefan Kameter
- * @version 02.07.2015
+ * @version 08.07.2015
  */
 public interface SnakeController {
 	/**

@@ -8,13 +8,15 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import control.Constants;
+
 /**
  * @author Stefan Kameter, Eric Armbruster
- * @version 24.06.2015
+ * @version 08.07.2015
  */
 public class ImageHolder {
 
-	private static String IMG_PATH = "data/img/";
+	private static String IMG_PATH = Constants.DATAPATH + "img/";
 
 	private static Map<String, BufferedImage> imageHolder = new HashMap<>();
 

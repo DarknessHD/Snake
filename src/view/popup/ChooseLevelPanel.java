@@ -15,7 +15,7 @@ import view.GameFrame;
 
 /**
  * @author Stefan Kameter
- * @version 01.07.2015
+ * @version 08.07.2015
  */
 public class ChooseLevelPanel extends JPanel {
 	private static final long serialVersionUID = 1L;

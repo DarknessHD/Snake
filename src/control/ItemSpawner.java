@@ -11,7 +11,7 @@ import model.item.RottenApple;
 
 /**
  * @author Eric Armbruster, Stefan Kameter
- * @version 02.07.2015
+ * @version 08.07.2015
  */
 public class ItemSpawner {
 	private static final Item[] items;
@@ -22,7 +22,7 @@ public class ItemSpawner {
 		items[1] = new Apple(null);
 		items[2] = new RottenApple(null);
 		items[3] = new Booze(null);
-		
+
 		Items.sortByChance(items);
 	}
 
