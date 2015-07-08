@@ -26,7 +26,7 @@ import control.ShiftType;
 
 /**
  * @author Stefan Kameter
- * @version 02.07.2015
+ * @version 08.07.2015
  */
 public class GamePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -236,11 +236,6 @@ public class GamePanel extends JPanel {
 
 		drawCellObjects(objs);
 
-		if (objs.isEmpty()) {
-			bufferGraphics.setColor(Color.WHITE);
-			bufferGraphics.drawRect(position.x << Constants.TILE_SIZE_BW, (position.y << Constants.TILE_SIZE_BW) + 1, Constants.TILE_SIZE, Constants.TILE_SIZE);
-		}
-
 		repaint();
 	}
 
@@ -269,12 +264,6 @@ public class GamePanel extends JPanel {
 
 		bufferGraphics.setColor(getBackground());
 		bufferGraphics.fillRect(0, 0, getWidth(), getHeight());
-
-		bufferGraphics.setColor(Color.WHITE);
-
-		for (int y = 0; y < Constants.LEVEL_HEIGHT; y++)
-			for (int x = 0; x < Constants.LEVEL_WIDTH; x++)
-				bufferGraphics.drawRect(x << Constants.TILE_SIZE_BW, y << Constants.TILE_SIZE_BW, Constants.TILE_SIZE, Constants.TILE_SIZE);
 
 		// Items
 		drawCellObjects(level.getItems());

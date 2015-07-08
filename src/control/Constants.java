@@ -6,7 +6,7 @@ import java.util.Properties;
 
 /**
  * @author Stefan Kameter
- * @version 05.07.2015
+ * @version 08.07.2015
  */
 public class Constants {
 
@@ -73,9 +73,9 @@ public class Constants {
 	/**
 	 * Component width.
 	 */
-	public static final int CANVAS_WIDTH = LEVEL_WIDTH * TILE_SIZE + 1;
+	public static final int CANVAS_WIDTH = LEVEL_WIDTH * TILE_SIZE;
 	/**
 	 * Component height.
 	 */
-	public static final int CANVAS_HEIGHT = LEVEL_HEIGHT * TILE_SIZE + 1;
+	public static final int CANVAS_HEIGHT = LEVEL_HEIGHT * TILE_SIZE;
 }

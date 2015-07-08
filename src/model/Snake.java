@@ -254,4 +254,9 @@ public class Snake {
 	public static boolean isEndless() {
 		return endless;
 	}
+
+	@Override
+	public Snake clone() {
+		return new Snake(segments.size(), new Point(getHead().position), getHead().getDirection());
+	}
 }

@@ -6,10 +6,10 @@ import model.CellObject;
 
 /**
  * @author Stefan Kameter
- * @version 05.07.2015
+ * @version 08.07.2015
  */
-public abstract class StaticCellObject extends CellObject { 
-	
+public abstract class StaticCellObject extends CellObject {
+
 	private int id;
 
 	/**
@@ -35,7 +35,7 @@ public abstract class StaticCellObject extends CellObject {
 	public int getId() {
 		return id;
 	}
-	
+
 	@Override
 	public boolean setPosition(Point position) {
 		throw new UnsupportedOperationException();

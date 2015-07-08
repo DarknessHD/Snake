@@ -1,29 +1,12 @@
 TODOs
 -----
-
-ALLE:
-	-  TODOs in own classes
-	-  make everything better (no lags, 'flackern', ...)
 	
 ALEX:
 	-  more items
-	-  better looking textures
+	-  better looking walls
 
-STEFAN:
-	- better drawing (RecDraw)
-	- advanced GameOverScreen-Drawing
-	-( Strings from Language-Properties    )
-	-( Help Screen, Help Overview          )
-	-( showing score while game is running )
-	-( advanced LevelChoosePanel           )
-	-( Cheats                              ) :) :)
-
-QUIRIN:
-	- whole IO-logic, classes
+QUIRIN or ERIC:
+	- LevelIO, ScoreListIO
 
 ERIC:
-	-( remove all segements (without two), if snake dies (because it gets to small)  )
-	
-ERIC && STEFAN:
-	-  PathFinder, AIControl
-	-  Use new Random() instead of Math.random()
+	- PathFinder, AIControl

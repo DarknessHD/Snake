@@ -2,7 +2,7 @@ package control;
 
 /**
  * @author Stefan Kameter
- * @version 05.07.2015
+ * @version 08.07.2015
  */
 public enum ShiftType {
 	/**

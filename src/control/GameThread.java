@@ -15,7 +15,7 @@ import control.snakecontroller.SnakeController;
 
 /**
  * @author Stefan Kameter
- * @version 02.07.2015
+ * @version 08.07.2015
  */
 public class GameThread implements Runnable {
 

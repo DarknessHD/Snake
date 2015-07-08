@@ -2,7 +2,7 @@ package model;
 
 /**
  * @author Stefan Kameter
- * @version 04.07.2015
+ * @version 08.07.2015
  */
 public class ScoreListEntry implements Comparable<ScoreListEntry> {
 	private final String level;

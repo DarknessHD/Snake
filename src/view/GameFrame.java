@@ -19,12 +19,12 @@ import control.GameThread;
 
 /**
  * @author Stefan Kameter
- * @version 02.07.2015
+ * @version 08.07.2015
  */
 public class GameFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 
-	private static final String STR_TITLE = "Snake " + Constants.VERSION.trim();
+	private static final String STR_TITLE = ("Snake " + Constants.VERSION).trim();
 	private static final Object STR_YOURNAME = "Your name:";
 
 	private static GameFrame instance;
