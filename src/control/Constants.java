@@ -43,6 +43,10 @@ public class Constants {
 	 * The maximal speed.
 	 */
 	public static final int MAX_SPEED;
+	/**
+	 * The minimal number of segments a snake must have.
+	 */
+	public static final int MIN_SEGMENTS;
 
 	static {
 		Properties props = new Properties();
@@ -61,6 +65,7 @@ public class Constants {
 		LEVEL_HEIGHT = Integer.parseInt(props.getProperty("level_height"));
 		MIN_SPEED = Integer.parseInt(props.getProperty("speed_min"));
 		MAX_SPEED = Integer.parseInt(props.getProperty("speed_max"));
+		MIN_SEGMENTS = Integer.parseInt(props.getProperty("snake_segments_min"));
 
 		if (DATAPATH == null || VERSION == null)
 			System.exit(1);

@@ -16,9 +16,8 @@ import control.Constants;
  */
 public class ImageHolder {
 
-	private static String IMG_PATH = Constants.DATAPATH + "img/";
-
-	private static Map<String, BufferedImage> imageHolder = new HashMap<>();
+	private static final String IMG_PATH = Constants.DATAPATH + "img/";
+	private static final Map<String, BufferedImage> imageHolder = new HashMap<>();
 
 	/**
 	 * Returns the BufferedImage under the key in the HashMap if available, otherwise tries to load it.

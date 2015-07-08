@@ -16,9 +16,9 @@ import control.snakecontroller.Pathfinder;
  */
 public class Snake {
 
-	private static final int MIN_SEGMENTS_VALUE = 3, MIN_SCORE_VALUE = 0;
+	private static final int MIN_SCORE_VALUE = 0;
 
-	private static final Predicate<Integer> MIN_SEGMENTS = t -> t >= MIN_SEGMENTS_VALUE;
+	private static final Predicate<Integer> MIN_SEGMENTS = t -> t >= Constants.MIN_SEGMENTS;
 	private static final Predicate<Integer> MIN_SCORE = t -> t >= MIN_SCORE_VALUE;
 	private static boolean endless = false;
 
@@ -42,7 +42,7 @@ public class Snake {
 	 */
 	public Snake(int startSegments, Point startPosition, Direction startDirection) {
 		if (!MIN_SEGMENTS.test(startSegments))
-			startSegments = MIN_SEGMENTS_VALUE;
+			startSegments = Constants.MIN_SEGMENTS;
 
 		this.lastDirection = Objects.requireNonNull(startDirection);
 
