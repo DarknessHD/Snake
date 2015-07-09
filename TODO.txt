@@ -1,5 +1,9 @@
 TODOs
------
+----
+
+All:
+	- Not enough items spawned
+	- Never have three rotten apples at the same time
 	
 ALEX:
 	-  more items
