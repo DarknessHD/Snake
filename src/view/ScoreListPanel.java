@@ -31,7 +31,7 @@ public class ScoreListPanel extends JPanel {
 	public ScoreListPanel() {
 		setLayout(null);
 
-		setPreferredSize(new Dimension(Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT));
+		setPreferredSize(new Dimension(Constants.CONTENT_WIDTH, Constants.CONTENT_HEIGHT));
 
 		initComponents();
 		initListener();
@@ -40,10 +40,10 @@ public class ScoreListPanel extends JPanel {
 	private void initComponents() {
 		JScrollPane scroll = null;
 		add(scroll = new JScrollPane(table = new JTable(new GameTableModel())));
-		scroll.setBounds((Constants.CANVAS_WIDTH - 500) / 2, (Constants.CANVAS_HEIGHT - 50 - 183) / 2, 500, 183);
+		scroll.setBounds((Constants.CONTENT_WIDTH - 500) / 2, (Constants.CONTENT_HEIGHT - 50 - 183) / 2, 500, 183);
 
 		add(back = new JButton("Back"));
-		back.setBounds((Constants.CANVAS_WIDTH - 200) / 2, Constants.CANVAS_HEIGHT - 40, 200, 30);
+		back.setBounds((Constants.CONTENT_WIDTH - 200) / 2, Constants.CONTENT_HEIGHT - 40, 200, 30);
 	}
 
 	private void initListener() {

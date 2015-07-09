@@ -76,10 +76,10 @@ public class GameThread implements Runnable {
 	 */
 	public void changeSpeed(int speedAddition) {
 		speed += speedAddition;
-		if (speed < Constants.MIN_SPEED)
-			speed = Constants.MIN_SPEED;
-		else if (speed > Constants.MAX_SPEED)
-			speed = Constants.MAX_SPEED;
+		if (speed < Constants.SPEED_MIN)
+			speed = Constants.SPEED_MIN;
+		else if (speed > Constants.SPEED_MAX)
+			speed = Constants.SPEED_MAX;
 
 		ns = 1000000000.0 / speed;
 	}

@@ -92,7 +92,7 @@ public class Level {
 	 * @return whether the Level is allowed
 	 */
 	public boolean isAllowed() {
-		if (Constants.LEVEL_WIDTH != width || Constants.LEVEL_HEIGHT != height)
+		if (Constants.LEVEL_WIDTH != width || Constants.LEVEL_HEIGHT != height || Constants.SPEED_MIN > defaultSpeed || Constants.SPEED_MAX < defaultSpeed)
 			return false;
 		return true;
 	}

@@ -34,7 +34,7 @@ public class GameMenuPanel extends JPanel {
 	public GameMenuPanel() {
 		setLayout(null);
 
-		setPreferredSize(new Dimension(Constants.CANVAS_WIDTH, Constants.CANVAS_HEIGHT));
+		setPreferredSize(new Dimension(Constants.CONTENT_WIDTH, Constants.CONTENT_HEIGHT));
 
 		initComponents();
 		initListener();
@@ -42,13 +42,13 @@ public class GameMenuPanel extends JPanel {
 
 	private void initComponents() {
 		add(start = new JButton(STR_START));
-		start.setBounds((Constants.CANVAS_WIDTH - 200) / 2, Constants.CANVAS_HEIGHT / 4 - 15, 200, 30);
+		start.setBounds((Constants.CONTENT_WIDTH - 200) / 2, Constants.CONTENT_HEIGHT / 4 - 15, 200, 30);
 
 		add(scoreList = new JButton(STR_SCORELIST));
-		scoreList.setBounds((Constants.CANVAS_WIDTH - 200) / 2, (Constants.CANVAS_HEIGHT / 4) * 2 - 15, 200, 30);
+		scoreList.setBounds((Constants.CONTENT_WIDTH - 200) / 2, (Constants.CONTENT_HEIGHT / 4) * 2 - 15, 200, 30);
 
 		add(exit = new JButton(STR_EXIT));
-		exit.setBounds((Constants.CANVAS_WIDTH - 200) / 2, (Constants.CANVAS_HEIGHT / 4) * 3 - 15, 200, 30);
+		exit.setBounds((Constants.CONTENT_WIDTH - 200) / 2, (Constants.CONTENT_HEIGHT / 4) * 3 - 15, 200, 30);
 	}
 
 	private void initListener() {

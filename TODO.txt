@@ -4,13 +4,22 @@ TODOs
 All:
 	- Not enough items spawned
 	- Never have three rotten apples at the same time
+
+STEFAN AND ERIC:
+	- Item-spawn-bug
 	
 ALEX:
-	-  more items
-	-  better looking walls
+	- more items
+	- better looking walls
 
-QUIRIN or ERIC:
-	- LevelIO, ScoreListIO
+QUIRIN
+	-LevelIO, ScoreListIO
 
 ERIC:
-	- PathFinder
+	-PathFinder
+
+OTHERs
+------
+
+- load CellObjects from files
+- Level-/CellObjecteditor

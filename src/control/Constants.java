@@ -21,7 +21,7 @@ public class Constants {
 	/**
 	 * Max number of entries in scoreList.
 	 */
-	public static final int SCORELISTENTRIES;
+	public static final int SCORELIST_ENTRIES_MAX;
 
 	/**
 	 * The pixel size of a tile.
@@ -38,11 +38,11 @@ public class Constants {
 	/**
 	 * The minimal speed.
 	 */
-	public static final int MIN_SPEED;
+	public static final int SPEED_MIN;
 	/**
 	 * The maximal speed.
 	 */
-	public static final int MAX_SPEED;
+	public static final int SPEED_MAX;
 	/**
 	 * The minimal number of segments a snake must have.
 	 */
@@ -57,15 +57,15 @@ public class Constants {
 			System.exit(1);
 		}
 
-		DATAPATH = props.getProperty("datapath");
+		DATAPATH = props.getProperty("datapath") + "/";
 		VERSION = props.getProperty("version");
-		SCORELISTENTRIES = Integer.parseInt(props.getProperty("scorelistentries"));
+		SCORELIST_ENTRIES_MAX = Integer.parseInt(props.getProperty("scorelist_entries_max"));
 		TILE_SIZE = Integer.parseInt(props.getProperty("tile_size"));
 		LEVEL_WIDTH = Integer.parseInt(props.getProperty("level_width"));
 		LEVEL_HEIGHT = Integer.parseInt(props.getProperty("level_height"));
-		MIN_SPEED = Integer.parseInt(props.getProperty("speed_min"));
-		MAX_SPEED = Integer.parseInt(props.getProperty("speed_max"));
-		MIN_SEGMENTS = Integer.parseInt(props.getProperty("snake_segments_min"));
+		SPEED_MIN = Integer.parseInt(props.getProperty("speed_min"));
+		SPEED_MAX = Integer.parseInt(props.getProperty("speed_max"));
+		MIN_SEGMENTS = Integer.parseInt(props.getProperty("segments_min"));
 
 		if (DATAPATH == null || VERSION == null)
 			System.exit(1);
@@ -78,9 +78,9 @@ public class Constants {
 	/**
 	 * Component width.
 	 */
-	public static final int CANVAS_WIDTH = LEVEL_WIDTH * TILE_SIZE;
+	public static final int CONTENT_WIDTH = LEVEL_WIDTH * TILE_SIZE;
 	/**
 	 * Component height.
 	 */
-	public static final int CANVAS_HEIGHT = LEVEL_HEIGHT * TILE_SIZE;
+	public static final int CONTENT_HEIGHT = LEVEL_HEIGHT * TILE_SIZE;
 }
