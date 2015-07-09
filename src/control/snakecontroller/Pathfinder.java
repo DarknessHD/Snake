@@ -101,7 +101,7 @@ public class Pathfinder {
 
 		// Check if there are any CellObjects on the path, then move into
 		// the next (last) direction
-		List<CellObject> cellObjects = new ArrayList<>(items);
+		List<CellObject> cellObjects = new ArrayList<CellObject>(items);
 		cellObjects.addAll(Arrays.asList(level.staticCellObjects));
 		cellObjects.addAll(4, aiSnake.getSegments());
 		cellObjects.addAll(GameFrame.getInstance().getGamePanel().getLevel().snakes[0].getSegments());
@@ -124,7 +124,12 @@ public class Pathfinder {
 	 */
 	public void findTargetItem() {
 		List<Item> items = Items.sortByUsefulness(GameFrame.getInstance().getGamePanel().getLevel().getItems());
-		items.removeIf((Item item) -> item.getUsefulness() != items.get(items.size()-1).getUsefulness());
+		/* #java8 */ // items.removeIf((Item item) -> item.getUsefulness() != items.get(items.size()-1).getUsefulness()); // ORIGINAL
+		
+		/* #java7 */ int mostUsefulItem = items.get(items.size()-1).getUsefulness();
+		/* #java7 */ for(int i=0;i<items.size();i++)
+		/* #java7 */ 	if(items.get(i).getUsefulness() < mostUsefulItem)
+		/* #java7 */ 		items.remove(i);
 
 		target = Items.sortByDistance(items, aiSnake.getHead()).get(0);
 	}

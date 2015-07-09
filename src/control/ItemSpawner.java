@@ -22,8 +22,6 @@ public class ItemSpawner {
 		items[1] = new Apple(null);
 		items[2] = new RottenApple(null);
 		items[3] = new Booze(null);
-
-		Items.sortByChance(items);
 	}
 
 	/**
