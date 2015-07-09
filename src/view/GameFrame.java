@@ -226,7 +226,7 @@ public class GameFrame extends JFrame {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		IOSimulator.init();// TODO
+		IOSimulator.load();// TODO
 		
 		getInstance().setVisible(true);
 	}
