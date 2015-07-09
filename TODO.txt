@@ -1,15 +1,18 @@
 TODOs
 -----
+
+STEFAN AND ERIC:
+	- Item-spawn-bug
 	
 ALEX:
-	-  more items
-	-  better looking walls
+	- more items
+	- better looking walls
 
 QUIRIN
-	- LevelIO, ScoreListIO
+	-LevelIO, ScoreListIO
 
 ERIC:
-	- PathFinder
+	-PathFinder
 
 OTHERs
 ------
