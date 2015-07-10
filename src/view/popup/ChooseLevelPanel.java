@@ -1,6 +1,6 @@
 package view.popup;
 
-import io.IOSimulator;
+import io.LevelIO;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -43,7 +43,7 @@ public class ChooseLevelPanel extends JPanel {
 	}
 
 	private void initComponents() {
-		add(levels = new JComboBox<String>(/* TODO */IOSimulator.getLevelNames()));
+		add(levels = new JComboBox<String>(LevelIO.getLevelNames()));
 		levels.setBounds(25, 10, 200, 30);
 
 		add(accept = new JButton("Accept"));
@@ -56,8 +56,10 @@ public class ChooseLevelPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				dialog.setVisible(false);
 
-				// TODO load, set chosen level
-				GameFrame.getInstance().setLevel(IOSimulator.getLevel(levels.getSelectedItem().toString()));
+				Object name = levels.getSelectedItem();
+
+				if (name != null)
+					GameFrame.getInstance().setLevel(LevelIO.getLevel(name.toString()));
 			}
 		});
 	}

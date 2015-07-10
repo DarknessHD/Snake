@@ -1,12 +1,12 @@
 package view;
 
 import input.KeyBoard;
-import io.IOSimulator;
+import io.LevelIO;
+import io.ScoreListIO;
 
 import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -63,7 +63,7 @@ public class GameFrame extends JFrame {
 
 		gameThread = new GameThread();
 
-		scoreList = new ArrayList<ScoreListEntry>();// TODO load (scoreList, ...)
+		scoreList = ScoreListIO.load();
 	}
 
 	private void initComponents() {
@@ -216,7 +216,7 @@ public class GameFrame extends JFrame {
 	 * Has to be called, if game will be exited.
 	 */
 	public void exit() {
-		// TODO save (scoreList, ...)
+		ScoreListIO.save(scoreList);
 		System.exit(0);
 	}
 
@@ -226,8 +226,8 @@ public class GameFrame extends JFrame {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		IOSimulator.load();// TODO
-		
+		LevelIO.load();
+
 		getInstance().setVisible(true);
 	}
 }

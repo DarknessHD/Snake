@@ -69,8 +69,8 @@ public enum Direction {
 	/**
 	 * Returns the next direction going clockwise or counterclockwise.
 	 * 
-	 * @param clockwise 
-	 * 				clockwise or counterclockwise
+	 * @param clockwise
+	 *            clockwise or counterclockwise
 	 * @return the next direction
 	 */
 	public Direction getNext(boolean clockwise) {
@@ -87,7 +87,7 @@ public enum Direction {
 
 		return this;
 	}
-	
+
 	/**
 	 * Returns the next direction going clockwise.
 	 *
@@ -96,7 +96,7 @@ public enum Direction {
 	public Direction getNext() {
 		return getNext(true);
 	}
-	
+
 	/**
 	 * Returns the next direction going counterclockwise.
 	 * 
@@ -105,4 +105,26 @@ public enum Direction {
 	public Direction getLast() {
 		return getNext(false);
 	}
+
+	/**
+	 * Parses a String to a Direction.
+	 * 
+	 * @param name
+	 *            the Direction-String
+	 * @return the Direction
+	 */
+	public static Direction parseDirection(String name) {
+		switch (name) {
+		case "UP":
+			return UP;
+		case "DOWN":
+			return DOWN;
+		case "LEFT":
+			return LEFT;
+		case "RIGHT":
+			return RIGHT;
+		default:
+			return null;
+		}
+	};
 }

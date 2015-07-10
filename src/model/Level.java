@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.item.Item;
-import model.staticobjects.StaticCellObject;
 import view.GameFrame;
 import control.Comp;
 import control.Constants;
