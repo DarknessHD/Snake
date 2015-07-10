@@ -13,27 +13,27 @@ import model.item.Item;
  * @version 06.07.2015
  */
 public class Items {
-	/* #java7 */ private static Point headPosition;
+	/* #java1.7 */ private static Point headPosition;
 	
-	/* #java7 */ private static final Comparator<Item> distance = new Comparator<Item>() {
-	/* #java7 */ 	public int compare(Item i1, Item i2) {
-	/* #java7 */ 		if (i1.getPosition().distance(headPosition) < i2.getPosition().distance(headPosition))
-	/* #java7 */ 			return -1;
-	/* #java7 */ 		else if (i1.getPosition().distance(headPosition) > i2.getPosition().distance(headPosition))
-	/* #java7 */ 			return 1;
-	/* #java7 */ 		return 0;
-	/* #java7 */	};
-	/* #java7 */ };
+	/* #java1.7 */ private static final Comparator<Item> distance = new Comparator<Item>() {
+	/* #java1.7 */ 	public int compare(Item i1, Item i2) {
+	/* #java1.7 */ 		if (i1.getPosition().distance(headPosition) < i2.getPosition().distance(headPosition))
+	/* #java1.7 */ 			return -1;
+	/* #java1.7 */ 		else if (i1.getPosition().distance(headPosition) > i2.getPosition().distance(headPosition))
+	/* #java1.7 */ 			return 1;
+	/* #java1.7 */ 		return 0;
+	/* #java1.7 */	};
+	/* #java1.7 */ };
 	
-	/* #java7 */ private static final Comparator<Item> usefulness = new Comparator<Item>() {
-	/* #java7 */ 	public int compare(Item i1, Item i2) {
-	/* #java7 */ 		if (i1.getUsefulness() < i2.getUsefulness())
-	/* #java7 */ 			return -1;
-	/* #java7 */ 		else if (i1.getUsefulness() > i2.getUsefulness())
-	/* #java7 */ 			return 1;
-	/* #java7 */ 		return 0;
-	/* #java7 */	};
-	/* #java7 */ };
+	/* #java1.7 */ private static final Comparator<Item> usefulness = new Comparator<Item>() {
+	/* #java1.7 */ 	public int compare(Item i1, Item i2) {
+	/* #java1.7 */ 		if (i1.getUsefulness() < i2.getUsefulness())
+	/* #java1.7 */ 			return -1;
+	/* #java1.7 */ 		else if (i1.getUsefulness() > i2.getUsefulness())
+	/* #java1.7 */ 			return 1;
+	/* #java1.7 */ 		return 0;
+	/* #java1.7 */	};
+	/* #java1.7 */ };
 
 	private Items() {
 
@@ -50,8 +50,8 @@ public class Items {
 	 */
 	public static List<Item> sortByDistance(List<Item> items, SnakeSegment distanceTo) {
 		headPosition = distanceTo.getPosition();
-		/* #java8 */ // Collections.sort(items, (i0, i1) -> Double.compare(i0.getPosition().distance(headPosition), i1.getPosition().distance(headPosition))); // ORIGINAL
-		/* #java7 */ Collections.sort(items, distance);
+		/* #java1.8 */ // Collections.sort(items, (i0, i1) -> Double.compare(i0.getPosition().distance(headPosition), i1.getPosition().distance(headPosition))); // ORIGINAL
+		/* #java1.7 */ Collections.sort(items, distance);
 
 		return items;
 	}
@@ -64,8 +64,8 @@ public class Items {
 	 * @return the sorted list of items
 	 */
 	public static List<Item> sortByUsefulness(List<Item> items) {
-		/* #java8 */ // Collections.sort(items, (i0, i1) -> Integer.compare(i0.getUsefulness(), i1.getUsefulness())); // ORIGINAL
-		/* #java7 */ Collections.sort(items, usefulness);
+		/* #java1.8 */ // Collections.sort(items, (i0, i1) -> Integer.compare(i0.getUsefulness(), i1.getUsefulness())); // ORIGINAL
+		/* #java1.7 */ Collections.sort(items, usefulness);
 
 		return items;
 	}

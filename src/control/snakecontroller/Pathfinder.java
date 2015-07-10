@@ -137,12 +137,12 @@ public class Pathfinder {
 
 	private void findTargetItem() {
 		List<Item> items = Items.sortByUsefulness(GameFrame.getInstance().getGamePanel().getLevel().getItems());
-		/* #java8 */ // items.removeIf((Item item) -> item.getUsefulness() != items.get(items.size()-1).getUsefulness()); // ORIGINAL
+		/* #java1.8 */ // items.removeIf((Item item) -> item.getUsefulness() != items.get(items.size()-1).getUsefulness()); // ORIGINAL
 		
-		/* #java7 */ int mostUsefulItem = items.get(items.size()-1).getUsefulness();
-		/* #java7 */ for(int i=0;i<items.size();i++)
-		/* #java7 */ 	if(items.get(i).getUsefulness() < mostUsefulItem)
-		/* #java7 */ 		items.remove(i);
+		/* #java1.7 */ int mostUsefulItem = items.get(items.size()-1).getUsefulness();
+		/* #java1.7 */ for(int i=0;i<items.size();i++)
+		/* #java1.7 */ 	if(items.get(i).getUsefulness() < mostUsefulItem)
+		/* #java1.7 */ 		items.remove(i);
 
 		target = Items.sortByDistance(items, aiSnake.getHead()).get(0);
 	}
