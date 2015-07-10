@@ -142,14 +142,6 @@ public class GameFrame extends JFrame {
 	 * 
 	 * @param level
 	 *            the level name
-	 * @param snakes
-	 *            the snakes
-	 * @param staticCellObjects
-	 *            the StaticCellObjects
-	 * @param items
-	 *            the list of default Items
-	 * @param defaultSpeed
-	 *            the default speed
 	 * @return whether Level could be initialized
 	 */
 	public boolean setLevel(Level level) {
@@ -224,6 +216,7 @@ public class GameFrame extends JFrame {
 	 * Starts the game.
 	 * 
 	 * @param args
+	 *            start arguments
 	 */
 	public static void main(String[] args) {
 		LevelIO.load();

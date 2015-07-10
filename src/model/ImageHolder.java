@@ -24,8 +24,6 @@ public class ImageHolder {
 	 * 
 	 * @param file
 	 *            the path to the file of the image you want to load
-	 * @param key
-	 *            the key under which the image gets saved
 	 * @return the image
 	 */
 	public static BufferedImage getImage(String file) {

@@ -35,7 +35,7 @@ public class SnakeSegment extends CellObject {
 	 * 
 	 * @param image
 	 *            the image of the snake segment
-	 * @param startPosition
+	 * @param startPosition sP
 	 * @param direction
 	 *            the direction of the snake segment
 	 * @param opposite

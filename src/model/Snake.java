@@ -36,8 +36,6 @@ public class Snake {
 	 *            the start position of the snake
 	 * @param startDirection
 	 *            the direction the snake is looking into
-	 * @param endless
-	 *            whether or not the level is endless
 	 */
 	public Snake(int startSegments, Point startPosition, Direction startDirection) {
 		 /* #java1.8 */ // if (!MIN_SEGMENTS.test(startSegments)) // ORIGINAL
