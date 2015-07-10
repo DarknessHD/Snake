@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.item.Item;
+import model.item.RottenApple;
 import view.GameFrame;
 import control.Comp;
 import control.Constants;
@@ -76,8 +77,23 @@ public class Level {
 			return false;
 
 		Snake.setEndless(endless);
-		for (int i = 0; i < itemNumber; i++)
-			items.add(ItemSpawner.getRandomItem());
+		int rottenApples = 0;
+		Item item = null;
+		for (int i = 0; i < itemNumber; i++) {
+			item = ItemSpawner.getRandomItem();
+			items.add(item);
+			if(item instanceof RottenApple)
+				rottenApples++;
+		}
+		if(rottenApples == itemNumber) {
+			items.remove(item);
+			do {
+				item = ItemSpawner.getRandomItem();
+				
+			} while(item instanceof RottenApple);
+			items.add(item);
+		}
+		
 		GameFrame.getInstance().changeComponent(Comp.GAMEPANEL);
 		GameFrame.getInstance().getGamePanel().repaint();
 		GameFrame.getInstance().start(defaultSpeed);

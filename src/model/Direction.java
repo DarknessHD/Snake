@@ -114,7 +114,7 @@ public enum Direction {
 	 * @return the Direction
 	 */
 	public static Direction parseDirection(String name) {
-		switch (name) {
+		switch (name.toUpperCase()) {
 		case "UP":
 			return UP;
 		case "DOWN":
