@@ -10,8 +10,8 @@ ERIC:
 BUGs
 ----
 
-	- false drawing, if snake hits snake
-	- sometimes there are no StaticCellObjects
+	- false drawing, if one snake hits the other snake
+	- sometimes there are no StaticCellObjects (maybe fixed)
 	- sometimes you cannot see, that the snakes hits each other, but then the game is over
 
 OTHERs
