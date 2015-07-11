@@ -10,6 +10,8 @@ import model.CellObject;
 import model.Direction;
 import model.Level;
 import model.Snake;
+import model.SnakeSegment;
+import model.StaticCellObject;
 import model.item.Item;
 import view.GameFrame;
 import control.Items;
@@ -45,7 +47,7 @@ public class Pathfinder {
 	 */
 	public Direction getNextDirection() {
 		if (nextDirection == null)
-			findNextDirection();
+			findNextDirection(null, null);
 
 		Direction next = nextDirection;
 		nextDirection = null;
@@ -66,18 +68,16 @@ public class Pathfinder {
 		return target;
 	}
 
-	private void findNextDirection() {
+	private void findNextDirection(Direction targetDirectionHorizontal, Direction targetDirectionVertical) {
 		Level level = GameFrame.getInstance().getGamePanel().getLevel();
 		List<Item> items = level.getItems();
 
 		findTargetItem();
 
-		Point currentPosition = (Point) new Point(aiSnake.getHead().getPosition());
+		Point currentPosition = new Point(aiSnake.getHead().getPosition());
 		Point targetPosition = target.getPosition();
 
 		// Find the target directions
-		Direction targetDirectionHorizontal = null;
-		Direction targetDirectionVertical = null;
 		int xDistance = (int) (currentPosition.getX() - targetPosition.getX());
 		int yDistance = (int) (currentPosition.getY() - targetPosition.getY());
 
@@ -90,22 +90,24 @@ public class Pathfinder {
 			targetDirectionVertical = Direction.UP;
 		else if (yDistance < 0)
 			targetDirectionVertical = Direction.DOWN;
-
+		
 		// Get the resulting target direction
-		Direction targetDirection;
-		if (targetDirectionHorizontal == null)
-			targetDirection = isSameAsLookingDirection(targetDirectionVertical) ? targetDirectionVertical
-					.getNext(new Random().nextBoolean()) : targetDirectionVertical;
-		else if (targetDirectionVertical == null)
-			targetDirection = isSameAsLookingDirection(targetDirectionHorizontal) ? targetDirectionHorizontal
-					.getNext(new Random().nextBoolean()) : targetDirectionHorizontal;
-		else {
-			if (new Random().nextBoolean())
-				targetDirection = isSameAsLookingDirection(targetDirectionVertical) ? targetDirectionVertical
-						: targetDirectionHorizontal;
+		Direction targetDirection = null;
+		
+		if(isSameAsOppositeOfLookingDirection(targetDirectionVertical) && targetDirectionHorizontal != null)
+			targetDirection = targetDirectionHorizontal;
+		else if(isSameAsOppositeOfLookingDirection(targetDirectionHorizontal) && targetDirectionVertical != null)
+			targetDirection = targetDirectionVertical;
+		
+		if(targetDirection == null) {
+			if (targetDirectionHorizontal == null)
+				targetDirection = targetDirectionVertical;
+			else if (targetDirectionVertical == null)
+				targetDirection = targetDirectionHorizontal;
+			else if (new Random().nextBoolean())
+				targetDirection = targetDirectionHorizontal;
 			else
-				targetDirection = isSameAsLookingDirection(targetDirectionHorizontal) ? targetDirectionVertical
-						: targetDirectionHorizontal;
+				targetDirection = targetDirectionVertical;
 		}
 
 		// Get the next position
@@ -122,28 +124,58 @@ public class Pathfinder {
 
 		for (CellObject cellObject : cellObjects) {
 			if (cellObject.getPosition().equals(currentPosition)) {
-				targetDirection = targetDirection.getNext(new Random().nextBoolean());
-				// TODO Target direction checks -> Rekursiv
-				break;
+				if(cellObject instanceof SnakeSegment || cellObject instanceof StaticCellObject) {
+					Direction safeDirection = findSafeDirection(targetDirection);
+					if(safeDirection != null)
+						targetDirection = safeDirection;
+					else {
+						//NO SAFE DIRECTION! Snake will die!
+						System.out.println("Dead!");
+					}
+				}
 			}
 		}
 
 		this.nextDirection = targetDirection;
 	}
 
-	private boolean isSameAsLookingDirection(Direction checkDirection) {
-		return checkDirection.getOpposite() == aiSnake.getLookingDirection();
+	private boolean isSameAsOppositeOfLookingDirection(Direction checkDirection) {
+		if(checkDirection != null) 
+			return checkDirection.getOpposite() == aiSnake.getLookingDirection();
+		return false;
 	}
 
 	private void findTargetItem() {
 		List<Item> items = new ArrayList<>(Items.sortByUsefulness(GameFrame.getInstance().getGamePanel().getLevel().getItems()));
 		/* #java1.8 */ // items.removeIf((Item item) -> item.getUsefulness() != items.get(items.size()-1).getUsefulness()); // ORIGINAL
 		
+		/* #java1.7 */ List<Integer> indices = new ArrayList<Integer>();
 		/* #java1.7 */ int mostUsefulItem = items.get(items.size()-1).getUsefulness();
 		/* #java1.7 */ for(int i=0;i<items.size();i++)
 		/* #java1.7 */ 	if(items.get(i).getUsefulness() < mostUsefulItem)
-		/* #java1.7 */ 		items.remove(i);
+		/* #java1.7 */ 		indices.add(i);
+		/* #java1.7 */ for(Integer i:indices)
+		/* #java1.7 */	items.remove(i);
 
 		target = Items.sortByDistance(items, aiSnake.getHead()).get(0);
+	}
+	
+	private Direction findSafeDirection(Direction unsafe) {
+		Point currentPosition = new Point(aiSnake.getHead().getPosition());
+		List<CellObject> cellObjects = new ArrayList<CellObject>(Arrays.asList(GameFrame.getInstance().getGamePanel().getLevel().staticCellObjects));
+		cellObjects.addAll(4, aiSnake.getSegments());
+		
+		Direction looking = aiSnake.getLookingDirection();
+		for(Direction direction : Direction.values()) {
+			if(direction != unsafe && direction != aiSnake.getLookingDirection().getOpposite()) {
+				for(CellObject cellObject : cellObjects) {
+					Point next = new Point((int) currentPosition.getX() + direction.getXOffset(), (int) currentPosition.getY() + direction.getYOffset());
+					if(!cellObject.getPosition().equals(next))
+						return direction;
+				}
+			}
+		}
+		
+		return null;
 	}
 }
