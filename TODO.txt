@@ -1,15 +1,16 @@
 TODOs
 ----
 
-STEFAN AND ERIC:
-	- Item-spawn-bug
-	- Never have three rotten apples at the same time
+STEFAN:
+	- rework ScoreListPanel-JTable code
+	- drawing, if snake hits snake
 
 ERIC:
-	-PathFinder
+	- PathFinder
 
 OTHERs
 ------
 
+- INI-change-launcher
 - load Items from files
 - Level-/ItemEditor

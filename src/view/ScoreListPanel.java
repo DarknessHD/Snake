@@ -38,9 +38,15 @@ public class ScoreListPanel extends JPanel {
 	}
 
 	private void initComponents() {
+		// rework
+
+		int w = 500;
+		if (Constants.TILE_SIZE < 32)
+			w = 470;
+
 		JScrollPane scroll = null;
 		add(scroll = new JScrollPane(table = new JTable(new GameTableModel())));
-		scroll.setBounds((Constants.CONTENT_WIDTH - 500) / 2, (Constants.CONTENT_HEIGHT - 50 - 183) / 2, 500, 183);
+		scroll.setBounds((Constants.CONTENT_WIDTH - w + 10) / 2, (Constants.CONTENT_HEIGHT - 50 - 183) / 2, w, 183);
 
 		add(back = new JButton("Back"));
 		back.setBounds((Constants.CONTENT_WIDTH - 200) / 2, Constants.CONTENT_HEIGHT - 40, 200, 30);
