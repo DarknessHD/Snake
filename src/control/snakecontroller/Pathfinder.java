@@ -136,7 +136,7 @@ public class Pathfinder {
 	}
 
 	private void findTargetItem() {
-		List<Item> items = Items.sortByUsefulness(GameFrame.getInstance().getGamePanel().getLevel().getItems());
+		List<Item> items = new ArrayList<>(Items.sortByUsefulness(GameFrame.getInstance().getGamePanel().getLevel().getItems()));
 		/* #java1.8 */ // items.removeIf((Item item) -> item.getUsefulness() != items.get(items.size()-1).getUsefulness()); // ORIGINAL
 		
 		/* #java1.7 */ int mostUsefulItem = items.get(items.size()-1).getUsefulness();

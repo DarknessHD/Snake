@@ -77,23 +77,24 @@ public class Level {
 			return false;
 
 		Snake.setEndless(endless);
+
 		int rottenApples = 0;
 		Item item = null;
 		for (int i = 0; i < itemNumber; i++) {
 			item = ItemSpawner.getRandomItem();
 			items.add(item);
-			if(item instanceof RottenApple)
+			if (item instanceof RottenApple)
 				rottenApples++;
 		}
-		if(rottenApples == itemNumber) {
+		if (rottenApples == itemNumber) {
 			items.remove(item);
 			do {
 				item = ItemSpawner.getRandomItem();
-				
-			} while(item instanceof RottenApple);
+
+			} while (item instanceof RottenApple);
 			items.add(item);
 		}
-		
+
 		GameFrame.getInstance().changeComponent(Comp.GAMEPANEL);
 		GameFrame.getInstance().getGamePanel().repaint();
 		GameFrame.getInstance().start(defaultSpeed);
@@ -129,6 +130,7 @@ public class Level {
 	 */
 	public void addItem(Item item) {
 		items.add(item);
+
 		GameFrame.getInstance().getGamePanel().doRepaint(item.getPosition());
 	}
 
