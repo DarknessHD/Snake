@@ -4,6 +4,7 @@ import input.KeyBoard;
 import io.ScoreListIO;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
@@ -64,6 +65,8 @@ public class GameFrame extends JFrame {
 
 		scoreList = ScoreListIO.load();
 		scoreListPanel.setScoreList(scoreList);
+		
+		setBackground(Color.LIGHT_GRAY);
 	}
 
 	private void initComponents() {

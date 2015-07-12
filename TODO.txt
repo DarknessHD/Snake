@@ -12,8 +12,7 @@ ERIC:
 BUGs
 ----
 
-	- not best drawing, if one snake hits the other snake
-	- level_3 - game is hanging
+	- ?
 
 OTHERs
 ------
