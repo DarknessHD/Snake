@@ -1,7 +1,6 @@
 package model;
 
 import java.awt.Point;
-import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -22,7 +21,7 @@ public class Snake {
 	 /* #java1.8 */ private static final Predicate<Integer> MIN_SCORE = t -> t >= MIN_SCORE_VALUE; // ORIGINAL
 	private static boolean endless = false;
 
-	private Deque<SnakeSegment> segments;
+	private LinkedList<SnakeSegment> segments;
 	private Direction lastDirection;
 	private boolean directionChange = false;
 	private int score = 0;
@@ -125,8 +124,8 @@ public class Snake {
 	 * 
 	 * @return the body parts of the snake
 	 */
-	public Deque<SnakeSegment> getBodyParts() {
-		Deque<SnakeSegment> segments = getSegments();
+	public LinkedList<SnakeSegment> getBodyParts() {
+		LinkedList<SnakeSegment> segments = getSegments();
 		segments.removeFirst();
 		segments.removeLast();
 		return segments;
@@ -137,7 +136,7 @@ public class Snake {
 	 * 
 	 * @return the segments of the snake
 	 */
-	public Deque<SnakeSegment> getSegments() {
+	public LinkedList<SnakeSegment> getSegments() {
 		return new LinkedList<SnakeSegment>(segments);
 	}
 
