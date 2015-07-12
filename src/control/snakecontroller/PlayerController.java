@@ -8,15 +8,20 @@ import model.Direction;
  * @version 08.07.2015
  */
 public class PlayerController implements SnakeController {
+	private static KeyBoard keyBoard;
+	
 	@Override
 	public Direction getDirection(int index) {
-		if (KeyBoard.getInstance().isKeyPressed(KeyBoard.UP[index]))
+		if (keyBoard == null)
+			keyBoard = KeyBoard.getInstance();
+
+		if (keyBoard.isKeyPressed(KeyBoard.UP[index]))
 			return Direction.UP;
-		else if (KeyBoard.getInstance().isKeyPressed(KeyBoard.RIGHT[index]))
+		else if (keyBoard.isKeyPressed(KeyBoard.RIGHT[index]))
 			return Direction.RIGHT;
-		else if (KeyBoard.getInstance().isKeyPressed(KeyBoard.DOWN[index]))
+		else if (keyBoard.isKeyPressed(KeyBoard.DOWN[index]))
 			return Direction.DOWN;
-		else if (KeyBoard.getInstance().isKeyPressed(KeyBoard.LEFT[index]))
+		else if (keyBoard.isKeyPressed(KeyBoard.LEFT[index]))
 			return Direction.LEFT;
 		return null;
 	}

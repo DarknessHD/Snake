@@ -64,6 +64,8 @@ public class KeyBoard extends KeyAdapter {
 	 * @return whether the desired key is pressed
 	 */
 	public boolean isKeyPressed(int keyCode) {
-		return keys[keyCode];
+		if (keyCode < keys.length)
+			return keys[keyCode];
+		return false;
 	}
 }

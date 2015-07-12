@@ -1,7 +1,6 @@
 package view;
 
 import input.KeyBoard;
-import io.LevelIO;
 import io.ScoreListIO;
 
 import java.awt.BorderLayout;
@@ -214,13 +213,8 @@ public class GameFrame extends JFrame {
 
 	/**
 	 * Starts the game.
-	 * 
-	 * @param args
-	 *            start arguments
 	 */
-	public static void main(String[] args) {
-		LevelIO.load();
-
+	public static void start() {
 		getInstance().setVisible(true);
 	}
 }
