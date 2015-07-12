@@ -89,6 +89,15 @@ public class LevelIO {
 	}
 
 	/**
+	 * Returns the total number of Levels.
+	 * 
+	 * @return the total number of Levels
+	 */
+	public static int getLevelNumber() {
+		return levels.size();
+	}
+
+	/**
 	 * Returns the names of all the levels.
 	 * 
 	 * @return the names of all the levels

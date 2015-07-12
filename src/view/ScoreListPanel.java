@@ -22,6 +22,8 @@ import control.GameTableModel;
 public class ScoreListPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
+	private static final String STR_BACK = "Back";
+
 	private JTable table;
 	private JButton back;
 
@@ -48,7 +50,7 @@ public class ScoreListPanel extends JPanel {
 		add(scroll = new JScrollPane(table = new JTable(new GameTableModel())));
 		scroll.setBounds((Constants.CONTENT_WIDTH - w + 10) / 2, (Constants.CONTENT_HEIGHT - 50 - 183) / 2, w, 183);
 
-		add(back = new JButton("Back"));
+		add(back = new JButton(STR_BACK));
 		back.setBounds((Constants.CONTENT_WIDTH - 200) / 2, Constants.CONTENT_HEIGHT - 40, 200, 30);
 	}
 

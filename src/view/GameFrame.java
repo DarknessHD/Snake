@@ -63,6 +63,7 @@ public class GameFrame extends JFrame {
 		gameThread = new GameThread();
 
 		scoreList = ScoreListIO.load();
+		scoreListPanel.setScoreList(scoreList);
 	}
 
 	private void initComponents() {
@@ -91,13 +92,6 @@ public class GameFrame extends JFrame {
 	 */
 	public GamePanel getGamePanel() {
 		return gamePanel;
-	}
-
-	/**
-	 * Updates the ScoreListPanel.
-	 */
-	public void updateScoreListPanel() {
-		scoreListPanel.setScoreList(scoreList);
 	}
 
 	/**
@@ -162,18 +156,31 @@ public class GameFrame extends JFrame {
 	public void addToScoreList(String level, int score) {
 		if (score == 0)
 			return;
-		if (scoreList.size() < Constants.SCORELIST_ENTRIES_MAX || isBetter(score)) {
-			String name = JOptionPane.showInputDialog(this, STR_YOURNAME);
-			if (name != null && !name.trim().isEmpty())
-				scoreList.add(new ScoreListEntry(level, name.trim(), score));
+		if (scoreList.size() >= Constants.SCORELIST_ENTRIES_MAX) {
+			ScoreListEntry entry = null;
+			if ((entry = isBetter(score)) != null)
+				scoreList.remove(entry);
+			else
+				return;
 		}
+
+		String name = JOptionPane.showInputDialog(this, STR_YOURNAME);
+		if (name != null && !name.trim().isEmpty())
+			scoreList.add(new ScoreListEntry(level, name.trim(), score));
+		scoreListPanel.setScoreList(scoreList);
 	}
 
-	private boolean isBetter(int score) {
-		for (ScoreListEntry e : scoreList)
-			if (e.getScore() < score)
-				return true;
-		return false;
+	private ScoreListEntry isBetter(int score) {
+		ScoreListEntry entry = null;
+		int lastScore = score;
+		for (ScoreListEntry e : scoreList) {
+			int sc = e.getScore();
+			if (sc < score && sc < lastScore) {
+				entry = e;
+				lastScore = sc;
+			}
+		}
+		return entry;
 	}
 
 	/**

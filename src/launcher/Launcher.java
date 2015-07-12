@@ -28,16 +28,15 @@ public class Launcher extends JPanel {
 	private static final String STR_TITLE = "Snake - Launcher";
 	private static final String STR_START = "Start Game";
 	private static final String STR_CHECK = "Search Levels";
+	private static final String STR_LEVELNUMBER = "Total number of Levels:   <number>";
 	private static final String[] STR_LABELS = { "Tile Size:", "Speed Minimum:", "Level Height:", "Despawntime:", "Level Width:", "Speed Maximum:" };
-	/**
-	 * The original contents.
-	 */
-	public static int[] CONTENTS;
+	private static int[] CONTENTS;
 
 	private static JFrame frame;
 
 	private JLabel[] labels;
 	private JTextField[] contents;
+	private JLabel levelNumber;
 	private JComboBox<String> levels;
 	private JButton check;
 	private JButton start;
@@ -64,7 +63,11 @@ public class Launcher extends JPanel {
 			contents[i].setBounds(120 + (i % 2) * 200, 10 + (i % 3) * 35, 50, 25);
 		}
 
+		add(levelNumber = new JLabel(STR_LEVELNUMBER.replace("<number>", LevelIO.getLevelNumber() + "")));
+		levelNumber.setBounds(10, 112, 200, 20);
+
 		add(levels = new JComboBox<String>(new GameComboBoxModel()));
+		((GameComboBoxModel) levels.getModel()).setData(LevelIO.getLevelNames());
 		levels.setBounds(10, 137, 250, 30);
 
 		add(check = new JButton(STR_CHECK));
@@ -91,26 +94,9 @@ public class Launcher extends JPanel {
 				if (!save())
 					return;
 
-				GameFrame.start();
-				frame.setVisible(false);
+				start();
 			}
 		});
-	}
-
-	protected boolean save() {
-		try {
-			Constants.TILE_SIZE = Integer.parseInt(contents[0].getText());
-			Constants.SPEED_MIN = Integer.parseInt(contents[1].getText());
-			Constants.LEVEL_HEIGHT = Integer.parseInt(contents[2].getText());
-			Constants.DESPAWNTIME = Integer.parseInt(contents[3].getText());
-			Constants.LEVEL_WIDTH = Integer.parseInt(contents[4].getText());
-			Constants.SPEED_MAX = Integer.parseInt(contents[5].getText());
-		} catch (Exception exc) {
-			return false;
-		}
-		Constants.calc();
-		Constants.save();
-		return true;
 	}
 
 	/**
@@ -124,6 +110,28 @@ public class Launcher extends JPanel {
 		return contents[index];
 	}
 
+	private boolean save() {
+		try {
+			Constants.TILE_SIZE = Integer.parseInt(contents[0].getText());
+			Constants.SPEED_MIN = Integer.parseInt(contents[1].getText());
+			Constants.LEVEL_HEIGHT = Integer.parseInt(contents[2].getText());
+			Constants.DESPAWNTIME = Integer.parseInt(contents[3].getText());
+			Constants.LEVEL_WIDTH = Integer.parseInt(contents[4].getText());
+			Constants.SPEED_MAX = Integer.parseInt(contents[5].getText());
+		} catch (Exception exc) {
+			return false;
+		}
+		Constants.save();
+		return true;
+	}
+
+	private static void start() {
+		if (frame != null)
+			frame.setVisible(false);
+		Constants.calc();
+		GameFrame.start();
+	}
+
 	/**
 	 * Starts the program.
 	 * 
@@ -132,6 +140,12 @@ public class Launcher extends JPanel {
 	 */
 	public static void main(String[] args) {
 		Constants.load();
+		LevelIO.load();
+		if (!Constants.LAUNCHER) {
+			start();
+			return;
+		}
+
 		CONTENTS = new int[STR_LABELS.length];
 		CONTENTS[0] = Constants.TILE_SIZE;
 		CONTENTS[1] = Constants.SPEED_MIN;
@@ -139,7 +153,6 @@ public class Launcher extends JPanel {
 		CONTENTS[3] = Constants.DESPAWNTIME;
 		CONTENTS[4] = Constants.LEVEL_WIDTH;
 		CONTENTS[5] = Constants.SPEED_MAX;
-		LevelIO.load();
 
 		frame = new JFrame(STR_TITLE);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -161,9 +174,10 @@ public class Launcher extends JPanel {
 			this.names = names;
 			selectedItem = null;
 
-			setSelectedItem(names.get(0));
-			revalidate();
-			repaint();
+			if (names.size() > 0) {
+				setSelectedItem(names.get(0));
+				repaint();
+			}
 		}
 
 		@Override
