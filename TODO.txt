@@ -3,10 +3,16 @@ TODOs
 
 STEFAN:
 	- rework ScoreListPanel-JTable code
-	- drawing, if snake hits snake
 
 ERIC:
 	- PathFinder
+	
+BUGs
+----
+
+	- false drawing, if one snake hits the other snake
+	- sometimes there are no StaticCellObjects (maybe fixed)
+	- sometimes you cannot see, that the snakes hits each other, but then the game is over
 
 OTHERs
 ------
