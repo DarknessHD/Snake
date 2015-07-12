@@ -24,6 +24,7 @@ public class Pathfinder {
 
 	/*
 	 * TODO Fix walking into the wall
+	 * TODO Fix walking into other items (again)
 	 */
 
 	private final Snake aiSnake;
@@ -117,7 +118,8 @@ public class Pathfinder {
 		// Check if there are any CellObjects on the path
 		List<CellObject> cellObjects = new ArrayList<CellObject>(items);
 		cellObjects.addAll(Arrays.asList(level.staticCellObjects));
-		cellObjects.addAll(4, aiSnake.getSegments());
+		if(aiSnake.getSegments().size() >= 5) 
+			cellObjects.addAll(aiSnake.getSegments().subList(5, aiSnake.getSegments().size()));
 		cellObjects.addAll(GameFrame.getInstance().getGamePanel().getLevel().snakes[0].getSegments());
 		cellObjects.remove(target);
 
@@ -157,8 +159,8 @@ public class Pathfinder {
 	private Direction findSafeDirection(Direction unsafe) {
 		Point currentPosition = new Point(aiSnake.getHead().getPosition());
 		List<CellObject> cellObjects = new ArrayList<CellObject>(Arrays.asList(GameFrame.getInstance().getGamePanel().getLevel().staticCellObjects));
-		if(aiSnake.getSegments().size() > 4)
-			cellObjects.addAll(4, aiSnake.getSegments());
+		if(aiSnake.getSegments().size() >= 5) 
+			cellObjects.addAll(aiSnake.getSegments().subList(5, aiSnake.getSegments().size()));
 		
 		for(Direction direction : Direction.values()) {
 			if(direction != unsafe && direction != aiSnake.getLookingDirection().getOpposite()) {
