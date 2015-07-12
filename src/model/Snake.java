@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 import view.GameFrame;
 import control.Constants;
@@ -17,8 +18,8 @@ public class Snake {
 
 	private static final int MIN_SCORE_VALUE = 0;
 
-	 /* #java1.8 */ // private static final Predicate<Integer> MIN_SEGMENTS = t -> t >= Constants.MIN_SEGMENTS; // ORIGINAL
-	 /* #java1.8 */ // private static final Predicate<Integer> MIN_SCORE = t -> t >= MIN_SCORE_VALUE; // ORIGINAL
+	 /* #java1.8 */ private static final Predicate<Integer> MIN_SEGMENTS = t -> t >= Constants.MIN_SEGMENTS; // ORIGINAL
+	 /* #java1.8 */ private static final Predicate<Integer> MIN_SCORE = t -> t >= MIN_SCORE_VALUE; // ORIGINAL
 	private static boolean endless = false;
 
 	private Deque<SnakeSegment> segments;
@@ -38,8 +39,8 @@ public class Snake {
 	 *            the direction the snake is looking into
 	 */
 	public Snake(int startSegments, Point startPosition, Direction startDirection) {
-		 /* #java1.8 */ // if (!MIN_SEGMENTS.test(startSegments)) // ORIGINAL
-		 /* #java1.7 */ if(startSegments < Constants.MIN_SEGMENTS)
+		 /* #java1.8 */ if (!MIN_SEGMENTS.test(startSegments)) // ORIGINAL
+		 /* #java1.7 */ // if(startSegments < Constants.MIN_SEGMENTS)
 			startSegments = Constants.MIN_SEGMENTS;
 
 		this.lastDirection = Objects.requireNonNull(startDirection);
@@ -70,8 +71,8 @@ public class Snake {
 	 *            the new score
 	 */
 	public void setScore(int score) {
-		 /* #java1.8 */ // if (!MIN_SCORE.test(score)) // ORIGINAL
-		 /* #java1.7 */ if(this.score < MIN_SCORE_VALUE)
+		 /* #java1.8 */ if (!MIN_SCORE.test(score)) // ORIGINAL
+		 /* #java1.7 */ // if(this.score < MIN_SCORE_VALUE)
 			this.score = MIN_SCORE_VALUE;
 		else
 			this.score = score;
@@ -94,8 +95,8 @@ public class Snake {
 	 *            the value by that the score gets decreased
 	 */
 	public void decreaseScore(int decreaseBy) {
-		 /* #java1.8 */ // if (MIN_SCORE.test(score - decreaseBy)) // ORIGINAL
-		 /* #java1.7 */ if(!(score-decreaseBy < MIN_SCORE_VALUE))
+		 /* #java1.8 */ if (MIN_SCORE.test(score - decreaseBy)) // ORIGINAL
+		 /* #java1.7 */ // if(!(score-decreaseBy < MIN_SCORE_VALUE))
 			score -= decreaseBy;
 		else
 			score = MIN_SCORE_VALUE;
@@ -189,8 +190,8 @@ public class Snake {
 	 * @return true, when the last segment was removed and false otherwise, when there are not enough segments left to remove one more.
 	 */
 	public boolean removeSegment() {
-		 /* #java1.8 */ // if (!MIN_SEGMENTS.test(segments.size() - 1)) { // ORIGINAL
-		 /* #java1.7 */ if(segments.size()-1 < Constants.MIN_SEGMENTS) {
+		 /* #java1.8 */ if (!MIN_SEGMENTS.test(segments.size() - 1)) { // ORIGINAL
+		 /* #java1.7 */ // if(segments.size()-1 < Constants.MIN_SEGMENTS) {
 			GameFrame.getInstance().stop();
 			return false;
 		}

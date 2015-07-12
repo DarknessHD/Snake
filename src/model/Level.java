@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -132,6 +133,22 @@ public class Level {
 		items.add(item);
 
 		GameFrame.getInstance().getGamePanel().doRepaint(item.getPosition());
+	}
+
+	/**
+	 * Removes an Item.
+	 * 
+	 * @param index
+	 *            the Item-index
+	 */
+	public void removeItem(int index) {
+		if (index >= items.size())
+			return;
+
+		Point position = items.get(index).getPosition();
+		items.remove(index);
+
+		GameFrame.getInstance().getGamePanel().doRepaint(position);
 	}
 
 	@Override

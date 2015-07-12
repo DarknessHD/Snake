@@ -32,7 +32,7 @@ public class GameThread implements Runnable {
 	private int defaultSpeed;
 
 	private double ns;
-	private int speed;
+	private int speed, sec;
 	private boolean running;
 
 	private Snake[] snakes;
@@ -125,6 +125,7 @@ public class GameThread implements Runnable {
 			lastTime = now;
 
 			boolean paused = gamePanel.isPaused();
+			boolean done = false;
 
 			while (delta >= 1) {
 				if (!paused)
@@ -135,8 +136,10 @@ public class GameThread implements Runnable {
 			GameFrame.getInstance().requestFocus();
 
 			if (!paused) {
-				if (KeyBoard.getInstance().isKeyPressed(KeyEvent.VK_ESCAPE))
+				if (KeyBoard.getInstance().isKeyPressed(KeyEvent.VK_ESCAPE)) {
 					gamePanel.setPaused(true);
+					continue;
+				}
 
 				if (snakes == null) {
 					snakes = gamePanel.getLevel().snakes;
@@ -154,13 +157,25 @@ public class GameThread implements Runnable {
 					if (dir != null)
 						dirs[s] = dir;
 				}
+
+				if (System.currentTimeMillis() - timer > 1000) {
+					done = true;
+					timer += 1000;
+					sec++;
+
+					if (sec % Constants.DESPAWNTIME == 0) {
+						gamePanel.getLevel().removeItem(0);
+						gamePanel.getLevel().addItem(ItemSpawner.getRandomItem());
+					}
+
+					for (Snake s : snakes)
+						s.increaseScore(speed * 2);
+				}
 			}
 
-			if (System.currentTimeMillis() - timer > 1000) {
-				timer += 1000;
-				for (Snake s : snakes)
-					s.increaseScore(speed * 2);
-			}
+			if (!done)
+				if (System.currentTimeMillis() - timer > 1000)
+					timer += 1000;
 
 			try {
 				Thread.sleep(15);

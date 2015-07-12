@@ -1,57 +1,82 @@
 package control;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.util.Properties;
 
 /**
  * @author Stefan Kameter
- * @version 08.07.2015
+ * @version 12.07.2015
  */
 public class Constants {
+	private static final String INI = "snake.ini";
+
+	private static Properties props;
 
 	/**
 	 * The path of data.
 	 */
-	public static final String DATAPATH;
+	public static String DATAPATH;
 	/**
 	 * Game version.
 	 */
-	public static final String VERSION;
+	public static String VERSION;
 	/**
 	 * Max number of entries in scoreList.
 	 */
-	public static final int SCORELIST_ENTRIES_MAX;
+	public static int SCORELIST_ENTRIES_MAX;
 
 	/**
 	 * The pixel size of a tile.
 	 */
-	public static final int TILE_SIZE;
+	public static int TILE_SIZE;
 	/**
 	 * The width of tiles in the level.
 	 */
-	public static final int LEVEL_WIDTH;
+	public static int LEVEL_WIDTH;
 	/**
 	 * The height of tiles in the level.
 	 */
-	public static final int LEVEL_HEIGHT;
+	public static int LEVEL_HEIGHT;
 	/**
 	 * The minimal speed.
 	 */
-	public static final int SPEED_MIN;
+	public static int SPEED_MIN;
 	/**
 	 * The maximal speed.
 	 */
-	public static final int SPEED_MAX;
+	public static int SPEED_MAX;
+	/**
+	 * The time a items despawns.
+	 */
+	public static int DESPAWNTIME;
 	/**
 	 * The minimal number of segments a snake must have.
 	 */
-	public static final int MIN_SEGMENTS;
+	public static int MIN_SEGMENTS;
 
-	static {
-		Properties props = new Properties();
+	/**
+	 * The size of a tile (BW).
+	 */
+	public static int TILE_SIZE_BW;
+	/**
+	 * Component width.
+	 */
+	public static int CONTENT_WIDTH;
+	/**
+	 * Component height.
+	 */
+	public static int CONTENT_HEIGHT;
+
+	/**
+	 * Loads the Constants.
+	 */
+	public static void load() {
+		props = new Properties();
 		try {
-			props.load(new FileReader(new File("snake.ini")));
+			props.load(new FileReader(new File(INI)));
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -65,6 +90,7 @@ public class Constants {
 		LEVEL_HEIGHT = Integer.parseInt(props.getProperty("level_height"));
 		SPEED_MIN = Integer.parseInt(props.getProperty("speed_min"));
 		SPEED_MAX = Integer.parseInt(props.getProperty("speed_max"));
+		DESPAWNTIME = Integer.parseInt(props.getProperty("despawntime"));
 		MIN_SEGMENTS = Integer.parseInt(props.getProperty("segments_min"));
 
 		if (DATAPATH == null || VERSION == null)
@@ -72,15 +98,33 @@ public class Constants {
 	}
 
 	/**
-	 * The size of a tile (BW).
+	 * Calculates other Constants.
 	 */
-	public static final int TILE_SIZE_BW = (int) (Math.log(TILE_SIZE) / Math.log(2));
+	public static void calc() {
+		TILE_SIZE_BW = (int) (Math.log(TILE_SIZE) / Math.log(2));
+		CONTENT_WIDTH = LEVEL_WIDTH * TILE_SIZE;
+		CONTENT_HEIGHT = LEVEL_HEIGHT * TILE_SIZE;
+	}
+
 	/**
-	 * Component width.
+	 * Save the Constants.
 	 */
-	public static final int CONTENT_WIDTH = LEVEL_WIDTH * TILE_SIZE;
-	/**
-	 * Component height.
-	 */
-	public static final int CONTENT_HEIGHT = LEVEL_HEIGHT * TILE_SIZE;
+	public static void save() {
+		try {
+			props.setProperty("datapath", DATAPATH);
+			props.setProperty("version", VERSION);
+			props.setProperty("scorelist_entries_max", SCORELIST_ENTRIES_MAX + "");
+			props.setProperty("tile_size", TILE_SIZE + "");
+			props.setProperty("level_width", LEVEL_WIDTH + "");
+			props.setProperty("level_height", LEVEL_HEIGHT + "");
+			props.setProperty("speed_min", SPEED_MIN + "");
+			props.setProperty("speed_max", SPEED_MAX + "");
+			props.setProperty("despawntime", DESPAWNTIME + "");
+			props.setProperty("segments_min", MIN_SEGMENTS + "");
+			props.save(new FileOutputStream(new File(INI)), "# Stefan Kameter");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
 }

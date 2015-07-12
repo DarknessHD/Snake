@@ -151,12 +151,14 @@ public class GamePanel extends JPanel {
 		}
 
 		if (level.snakes.length != 1)
-			for (SnakeSegment seg : level.snakes[(index + 1) % 2].getSegments()) {
-				if (seg.equals(head))
-					continue;
-				if (hp.equals(seg.getPosition()))
-					seg.onSnakeHitCellObject(level.snakes[index]);
-			}
+			for (int i = 0; i < level.snakes.length; i++)
+				if (i != index)
+					for (SnakeSegment seg : level.snakes[i].getSegments()) {
+						if (seg.equals(head))
+							continue;
+						if (hp.equals(seg.getPosition()))
+							seg.onSnakeHitCellObject(level.snakes[index]);
+					}
 
 		for (int i = 0; i < level.staticCellObjects.length; i++) {
 			CellObject obj = level.staticCellObjects[i];
@@ -317,7 +319,7 @@ public class GamePanel extends JPanel {
 		case 1:
 			drawScoreSP();
 			break;
-		case 2:
+		default:
 			drawScoreMP();
 			break;
 		}

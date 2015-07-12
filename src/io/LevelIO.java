@@ -29,6 +29,8 @@ public class LevelIO {
 	 * Loads all Levels of the directory 'DIR_LEVELS'.
 	 */
 	public static void load() {
+		levels.clear();
+
 		File[] files = new File(DIR_LEVELS).listFiles();
 
 		for (File file : files) {
@@ -76,6 +78,8 @@ public class LevelIO {
 					counter++;
 				}
 				reader.close();
+				if (objects == null)
+					objects = new StaticCellObject[0];
 				levels.put(name, new Level(name, width, height, endless, defaultSpeed, itemNumber, snakes, objects));
 			} catch (IOException e) {
 				System.err.println(STR_ERROR);

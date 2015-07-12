@@ -5,18 +5,19 @@ STEFAN:
 	- rework ScoreListPanel-JTable code
 
 ERIC:
-	- PathFinder
+	- PathFinder (level_3 - indexOutOfBoundsException (no StaticCellObjects))
+	- out of map bug (if you change direction, if you´re out of map)
+		the problem is, that then the position.x/.y is negative one or sth. like that. WHY?? fix it.
 	
 BUGs
 ----
 
-	- false drawing, if one snake hits the other snake
-	- sometimes there are no StaticCellObjects (maybe fixed)
-	- sometimes you cannot see, that the snakes hits each other, but then the game is over
+	- not best drawing, if one snake hits the other snake
+	- sometimes you cannot see, that the snakes hits each other (for example: they are standing parallel to each other), but then the game is over
+	- level_3 - game is hanging
 
 OTHERs
 ------
 
-- INI-change-launcher
 - load Items from files
 - Level-/ItemEditor
