@@ -13,8 +13,6 @@ import control.snakecontroller.Pathfinder;
  * @version 23.06.2015
  */
 public class Snake {
-	
-	//TODO getAdjacent behavior has changed
 
 	private static final int MIN_SCORE_VALUE = 0;
 
