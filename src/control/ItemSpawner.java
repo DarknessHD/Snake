@@ -1,8 +1,8 @@
 package control;
 
-import java.awt.Point;
 import java.util.Random;
 
+import model.TilePosition;
 import model.item.Apple;
 import model.item.Booze;
 import model.item.Item;
@@ -37,7 +37,7 @@ public class ItemSpawner {
 			int x = random.nextInt(Constants.LEVEL_WIDTH);
 			int y = random.nextInt(Constants.LEVEL_HEIGHT);
 
-			if (item.setPosition(new Point(x, y)))
+			if (item.setPosition(new TilePosition(x, y)))
 				break;
 		}
 
