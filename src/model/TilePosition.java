@@ -41,8 +41,12 @@ public class TilePosition extends Point {
 	 */
 	public TilePosition getAdjacent(Direction direction) {
 		TilePosition adjacent = new TilePosition((int) this.getX() + direction.getXOffset(), (int) this.getY() + direction.getYOffset());
-
-		if (GameFrame.getInstance().getGamePanel().getLevel().endless) {
+		Level level = GameFrame.getInstance().getGamePanel().getLevel();
+		boolean endless = false;
+		if(level != null)
+			endless = level.endless;
+		
+		if (endless) {
 			if (adjacent.getX() < 0)
 				adjacent.setLocation(Constants.LEVEL_WIDTH - 1, adjacent.getY());
 			else if (adjacent.getY() < 0)
