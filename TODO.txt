@@ -2,19 +2,15 @@ TODOs
 ----
 
 STEFAN:
-	- rework ScoreListPanel-JTable code (own column-sizes)
-
-ERIC:
-	- out of map bug (if you change direction, if you´re out of map)
-		the problem is, that then the position.x/.y is negative one or sth. like that. WHY?? fix it.
+   (- rework ScoreListPanel-JTable code (own column-sizes))
 	
 BUGs
 ----
 
 	- ?
 
-OTHERs
-------
+EVTL.
+-----
 
 - load Items from files
 - ItemEditor
