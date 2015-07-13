@@ -1,13 +1,8 @@
 TODOs
 ----
-
-STEFAN:
-   (- rework ScoreListPanel-JTable code (own column-sizes))
 	
 BUGs
 ----
-
-	- ?
 
 EVTL.
 -----
