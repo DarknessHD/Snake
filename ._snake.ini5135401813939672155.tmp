@@ -1,0 +1,13 @@
+#Snake
+#Sun Jul 12 19:49:30 CEST 2015
+datapath=data
+version=v0.9
+scorelist_entries_max=10
+tile_size=16
+level_width=30
+level_height=20
+speed_min=2
+speed_max=10
+despawntime=15
+segments_min=3
+launcher=true
