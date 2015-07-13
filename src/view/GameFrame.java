@@ -51,7 +51,7 @@ public class GameFrame extends JFrame {
 
 	private GameFrame() {
 		setTitle(STR_TITLE);
-
+		
 		setLayout(new BorderLayout());
 
 		initComponents();

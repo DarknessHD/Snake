@@ -1,9 +1,9 @@
 package control;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.Properties;
 
 /**
@@ -11,7 +11,7 @@ import java.util.Properties;
  * @version 12.07.2015
  */
 public class Constants {
-	private static final String STR_ERROR = "Corupted INI!";
+	private static final String STR_ERROR = "Corrupted INI!";
 
 	private static final String INI = "snake.ini";
 	private static final String STR_COMMENT = " Snake";
@@ -100,6 +100,7 @@ public class Constants {
 			if (DATAPATH == null || VERSION == null)
 				System.exit(1);
 
+			calc();
 		} catch (Exception e) {
 			System.err.println(STR_ERROR);
 			System.exit(1);
@@ -132,8 +133,8 @@ public class Constants {
 			props.setProperty("segments_min", MIN_SEGMENTS + "");
 			props.setProperty("launcher", LAUNCHER + "");
 
-			props.save(new FileOutputStream(new File(INI)), STR_COMMENT);
-		} catch (FileNotFoundException e) {
+			props.store(new FileOutputStream(new File(INI)), STR_COMMENT);
+		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
 		}

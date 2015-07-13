@@ -121,6 +121,7 @@ public class Launcher extends JPanel {
 		} catch (Exception exc) {
 			return false;
 		}
+		Constants.calc();
 		Constants.save();
 		return true;
 	}
@@ -128,7 +129,6 @@ public class Launcher extends JPanel {
 	private static void start() {
 		if (frame != null)
 			frame.setVisible(false);
-		Constants.calc();
 		GameFrame.start();
 	}
 
