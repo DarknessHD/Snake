@@ -1,9 +1,9 @@
 package control;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.Properties;
 
 /**
@@ -139,8 +139,8 @@ public class Constants {
 			props.setProperty("segments_min", MIN_SEGMENTS + "");
 			props.setProperty("launcher", LAUNCHER + "");
 
-			props.save(new FileOutputStream(new File(INI)), STR_COMMENT);
-		} catch (FileNotFoundException e) {
+			props.store(new FileOutputStream(new File(INI)), STR_COMMENT);
+		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
 		}

@@ -9,7 +9,7 @@ import model.Direction;
  */
 public class PlayerController implements SnakeController {
 	private static KeyBoard keyBoard;
-	
+
 	@Override
 	public Direction getDirection(int index) {
 		if (keyBoard == null)

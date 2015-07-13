@@ -65,7 +65,7 @@ public class GameFrame extends JFrame {
 
 		scoreList = ScoreListIO.load();
 		scoreListPanel.setScoreList(scoreList);
-		
+
 		setBackground(Color.LIGHT_GRAY);
 	}
 
