@@ -23,7 +23,8 @@ public abstract class CellObject implements Cloneable {
 	 */
 	public CellObject(String image, TilePosition position) {
 		this.image = image;
-		this.position = new TilePosition(position); //TODO ?
+		if (position != null)
+			this.position = new TilePosition(position);
 	}
 
 	/**
