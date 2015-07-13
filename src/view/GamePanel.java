@@ -316,8 +316,6 @@ public class GamePanel extends JPanel {
 
 		bufferGraphics.drawString(STR_GAMEOVER, (Constants.CONTENT_WIDTH - getFontWidth(STR_GAMEOVER, 60)) / 2, Constants.CONTENT_HEIGHT / 4);
 
-		drawWinning();
-
 		drawScore();
 
 		drawCTC();
@@ -348,11 +346,6 @@ public class GamePanel extends JPanel {
 			String string = STR_SCOREMP.replace("<index>", i + "") + level.snakes[i].getScore();
 			bufferGraphics.drawString(string, (Constants.CONTENT_WIDTH - getFontWidth(string, 45)) / 2, Constants.CONTENT_HEIGHT / 2 + i * 80);
 		}
-	}
-
-	private void drawWinning() {
-		// TODO whether you have won or lost
-		bufferGraphics.setColor(Color.ORANGE);
 	}
 
 	private void drawCTC() {

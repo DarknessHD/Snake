@@ -1,9 +1,11 @@
 package model;
 
+import io.ImageHolder;
+
 import java.awt.image.BufferedImage;
 
-import control.ShiftType;
 import view.GamePanel;
+import control.ShiftType;
 
 /**
  * @author Eric Armbruster
