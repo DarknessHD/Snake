@@ -61,8 +61,11 @@ public class LevelIO {
 						itemNumber = Integer.parseInt(values[5]);
 						break;
 					case 1:
-						snakes = new Snake[values.length];
-						for (int i = 0; i < values.length; i++) {
+						if (values.length == 1)
+							snakes = new Snake[1];
+						else
+							snakes = new Snake[2];
+						for (int i = 0; i < snakes.length; i++) {
 							String[] vs = values[i].split(",");
 							snakes[i] = new Snake(Integer.parseInt(vs[0]), new TilePosition(Integer.parseInt(vs[1]), Integer.parseInt(vs[2])), Direction.parseDirection(vs[3]));
 							if (Boolean.parseBoolean(vs[4]))

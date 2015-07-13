@@ -26,7 +26,6 @@ public class Level {
 	 */
 	public final boolean endless;
 	private final int defaultSpeed;
-
 	private final int itemNumber;
 
 	/**
