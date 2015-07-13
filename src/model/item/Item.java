@@ -1,8 +1,7 @@
 package model.item;
 
-import java.awt.Point;
-
 import model.CellObject;
+import model.TilePosition;
 
 /**
  * @author Eric Armbruster
@@ -25,7 +24,7 @@ public abstract class Item extends CellObject {
 	 * @param usefulness
 	 *            the usefulness (for AI)
 	 */
-	public Item(String image, Point position, int chance, int usefulness) {
+	public Item(String image, TilePosition position, int chance, int usefulness) {
 		super(image, position);
 		this.chance = chance;
 		this.usefulness = usefulness;

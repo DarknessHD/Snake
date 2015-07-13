@@ -1,7 +1,5 @@
 package model;
 
-import java.awt.Point;
-
 import view.GameFrame;
 
 /**
@@ -16,12 +14,12 @@ public class StaticCellObject extends CellObject {
 	 * @param position
 	 *            the position of the CellObject
 	 */
-	public StaticCellObject(Point position) {
+	public StaticCellObject(TilePosition position) {
 		super("wall", position);
 	}
 
 	@Override
-	public boolean setPosition(Point position) {
+	public boolean setPosition(TilePosition position) {
 		throw new UnsupportedOperationException();
 	}
 

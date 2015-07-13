@@ -21,7 +21,10 @@ public class Level {
 	 */
 	public final String name;
 	private final int width, height;
-	private final boolean endless;
+	/**
+	 * Whether the game field is endless.
+	 */
+	public final boolean endless;
 	private final int defaultSpeed;
 
 	private final int itemNumber;
@@ -76,8 +79,6 @@ public class Level {
 	public boolean init() {
 		if (!isAllowed())
 			return false;
-
-		Snake.setEndless(endless);
 
 		int rottenApples = 0;
 		Item item = null;

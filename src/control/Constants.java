@@ -11,7 +11,10 @@ import java.util.Properties;
  * @version 12.07.2015
  */
 public class Constants {
+	private static final String STR_ERROR = "Corupted INI!";
+
 	private static final String INI = "snake.ini";
+	private static final String STR_COMMENT = " Snake";
 
 	private static Properties props;
 
@@ -56,6 +59,10 @@ public class Constants {
 	 * The minimal number of segments a snake must have.
 	 */
 	public static int MIN_SEGMENTS;
+	/**
+	 * Whether the Launcher is activated.
+	 */
+	public static boolean LAUNCHER;
 
 	/**
 	 * The size of a tile (BW).
@@ -77,24 +84,26 @@ public class Constants {
 		props = new Properties();
 		try {
 			props.load(new FileReader(new File(INI)));
+
+			DATAPATH = props.getProperty("datapath") + "/";
+			VERSION = props.getProperty("version");
+			SCORELIST_ENTRIES_MAX = Integer.parseInt(props.getProperty("scorelist_entries_max"));
+			TILE_SIZE = Integer.parseInt(props.getProperty("tile_size"));
+			LEVEL_WIDTH = Integer.parseInt(props.getProperty("level_width"));
+			LEVEL_HEIGHT = Integer.parseInt(props.getProperty("level_height"));
+			SPEED_MIN = Integer.parseInt(props.getProperty("speed_min"));
+			SPEED_MAX = Integer.parseInt(props.getProperty("speed_max"));
+			DESPAWNTIME = Integer.parseInt(props.getProperty("despawntime"));
+			MIN_SEGMENTS = Integer.parseInt(props.getProperty("segments_min"));
+			LAUNCHER = Boolean.parseBoolean(props.getProperty("launcher"));
+
+			if (DATAPATH == null || VERSION == null)
+				System.exit(1);
+
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.err.println(STR_ERROR);
 			System.exit(1);
 		}
-
-		DATAPATH = props.getProperty("datapath") + "/";
-		VERSION = props.getProperty("version");
-		SCORELIST_ENTRIES_MAX = Integer.parseInt(props.getProperty("scorelist_entries_max"));
-		TILE_SIZE = Integer.parseInt(props.getProperty("tile_size"));
-		LEVEL_WIDTH = Integer.parseInt(props.getProperty("level_width"));
-		LEVEL_HEIGHT = Integer.parseInt(props.getProperty("level_height"));
-		SPEED_MIN = Integer.parseInt(props.getProperty("speed_min"));
-		SPEED_MAX = Integer.parseInt(props.getProperty("speed_max"));
-		DESPAWNTIME = Integer.parseInt(props.getProperty("despawntime"));
-		MIN_SEGMENTS = Integer.parseInt(props.getProperty("segments_min"));
-
-		if (DATAPATH == null || VERSION == null)
-			System.exit(1);
 	}
 
 	/**
@@ -111,7 +120,7 @@ public class Constants {
 	 */
 	public static void save() {
 		try {
-			props.setProperty("datapath", DATAPATH);
+			props.setProperty("datapath", DATAPATH.replaceAll("/", ""));
 			props.setProperty("version", VERSION);
 			props.setProperty("scorelist_entries_max", SCORELIST_ENTRIES_MAX + "");
 			props.setProperty("tile_size", TILE_SIZE + "");
@@ -121,7 +130,9 @@ public class Constants {
 			props.setProperty("speed_max", SPEED_MAX + "");
 			props.setProperty("despawntime", DESPAWNTIME + "");
 			props.setProperty("segments_min", MIN_SEGMENTS + "");
-			props.save(new FileOutputStream(new File(INI)), "# Stefan Kameter");
+			props.setProperty("launcher", LAUNCHER + "");
+
+			props.save(new FileOutputStream(new File(INI)), STR_COMMENT);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			System.exit(1);

@@ -9,6 +9,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
 import javax.swing.JPanel;
@@ -30,6 +31,10 @@ import control.ShiftType;
  */
 public class GamePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
+
+	private static final Color COLOR = new Color(238, 238, 238);
+
+	private static final String STR_ERROR = "ConcurrentModificationException!";
 
 	private static final String STR_PAUSED = "Game Paused";
 	private static final String STR_GAMEOVER = "Game Over";
@@ -233,7 +238,7 @@ public class GamePanel extends JPanel {
 				objs.add(i);
 				break;
 			}
-		bufferGraphics.setColor(getBackground());
+		bufferGraphics.setColor(COLOR);
 		bufferGraphics.fillRect(position.x << Constants.TILE_SIZE_BW, position.y << Constants.TILE_SIZE_BW, Constants.TILE_SIZE, Constants.TILE_SIZE);
 
 		drawCellObjects(objs);
@@ -264,7 +269,7 @@ public class GamePanel extends JPanel {
 	private void drawGame() {
 		first = false;
 
-		bufferGraphics.setColor(getBackground());
+		bufferGraphics.setColor(COLOR);
 		bufferGraphics.fillRect(0, 0, getWidth(), getHeight());
 
 		// Items
@@ -286,9 +291,13 @@ public class GamePanel extends JPanel {
 	}
 
 	private void drawCellObjects(Iterable<? extends CellObject> objects) {
-		for (CellObject obj : objects) {
-			Point p = obj.getPosition();
-			bufferGraphics.drawImage(obj.getImage(), p.x << Constants.TILE_SIZE_BW, p.y << Constants.TILE_SIZE_BW, Constants.TILE_SIZE, Constants.TILE_SIZE, null);
+		try {
+			for (CellObject obj : objects) {
+				Point p = obj.getPosition();
+				bufferGraphics.drawImage(obj.getImage(), p.x << Constants.TILE_SIZE_BW, p.y << Constants.TILE_SIZE_BW, Constants.TILE_SIZE, Constants.TILE_SIZE, null);
+			}
+		} catch (ConcurrentModificationException e) {
+			System.err.println(STR_ERROR); // TODO
 		}
 	}
 

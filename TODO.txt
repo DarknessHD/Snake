@@ -2,7 +2,7 @@ TODOs
 ----
 
 STEFAN:
-	- rework ScoreListPanel-JTable code
+	- rework ScoreListPanel-JTable code (own column-sizes)
 
 ERIC:
 	- out of map bug (if you change direction, if you´re out of map)
@@ -11,9 +11,7 @@ ERIC:
 BUGs
 ----
 
-	- not best drawing, if one snake hits the other snake
-	- sometimes you cannot see, that the snakes hits each other (for example: they are standing parallel to each other), but then the game is over
-	- level_3 - game is hanging
+	- ?
 
 OTHERs
 ------

@@ -61,14 +61,12 @@ public class GameMenuPanel extends JPanel {
 				dialog.pack();
 				dialog.setLocationRelativeTo(GameFrame.getInstance());
 				dialog.setVisible(true);
-				// GameFrame.getInstance().setLevel(new Level("hardcoded testlevel", 30, 20, true, 5, 5, null, null));
 			}
 		});
 
 		scoreList.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				GameFrame.getInstance().updateScoreListPanel();
 				GameFrame.getInstance().changeComponent(Comp.SCORELISTPANEL);
 			}
 		});

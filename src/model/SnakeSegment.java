@@ -1,10 +1,8 @@
 package model;
 
-import java.awt.Point;
 import java.util.Objects;
 
 import view.GameFrame;
-import control.Constants;
 
 /**
  * @author Eric Armbruster
@@ -12,7 +10,6 @@ import control.Constants;
  */
 public class SnakeSegment extends CellObject {
 
-	private static int count = 0;
 	private Direction direction;
 
 	/**
@@ -25,7 +22,7 @@ public class SnakeSegment extends CellObject {
 	 * @param direction
 	 *            the direction of the snake segment
 	 */
-	public SnakeSegment(String image, Point position, Direction direction) {
+	public SnakeSegment(String image, TilePosition position, Direction direction) {
 		super(image, position);
 		this.direction = Objects.requireNonNull(direction);
 	}
@@ -43,8 +40,9 @@ public class SnakeSegment extends CellObject {
 	 * @param endlessLevel
 	 *            whether or not the level is endless
 	 */
-	public SnakeSegment(String image, Point startPosition, Direction direction, boolean opposite, boolean endlessLevel) {
-		this(image, getAdjacentPosition(startPosition, (opposite) ? direction.getOpposite() : direction, endlessLevel), direction);
+	public SnakeSegment(String image, TilePosition startPosition, Direction direction, boolean opposite) {
+		//Adjacent behaviour was changed!
+		this(image, startPosition.getAdjacent((opposite) ? direction.getOpposite() : direction), direction);
 	}
 
 	/**
@@ -69,31 +67,5 @@ public class SnakeSegment extends CellObject {
 	@Override
 	public void onSnakeHitCellObject(Snake snake) {
 		GameFrame.getInstance().stop();
-	}
-
-	private static Point getAdjacentPosition(Point startPosition, Direction direction, boolean endlessLevel) {
-		Point copyStartPosition = new Point(startPosition);
-		startPosition.setLocation((int) startPosition.getX() + direction.getXOffset(), (int) startPosition.getY() + direction.getYOffset());
-
-		Point adjacent = new Point(startPosition);
-		count++;
-
-		if (endlessLevel) {
-			if (adjacent.getX() < -1)
-				adjacent.setLocation(Constants.LEVEL_WIDTH - 1, adjacent.getY());
-			else if (adjacent.getY() < -1)
-				adjacent.setLocation(adjacent.getX(), Constants.LEVEL_HEIGHT - 1);
-			else if (adjacent.getX() > Constants.LEVEL_WIDTH - 1)
-				adjacent.setLocation(0, adjacent.getY());
-			else if (adjacent.getY() > Constants.LEVEL_HEIGHT - 1)
-				adjacent.setLocation(adjacent.getX(), 0);
-		} else if (adjacent.getX() > Constants.LEVEL_WIDTH - 1 || adjacent.getY() > Constants.LEVEL_HEIGHT - 1 || adjacent.getX() < 0 || adjacent.getY() < 0) {
-			if (count < Direction.values().length)
-				getAdjacentPosition(copyStartPosition, direction.getNext(), endlessLevel);
-			else
-				count = 0;
-		}
-
-		return adjacent;
 	}
 }

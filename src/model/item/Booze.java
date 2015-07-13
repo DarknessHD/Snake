@@ -1,9 +1,8 @@
 package model.item;
 
-import java.awt.Point;
-
-import view.GameFrame;
 import model.Snake;
+import model.TilePosition;
+import view.GameFrame;
 
 /**
  * @author Alexander Donocik
@@ -17,7 +16,7 @@ public class Booze extends Item {
 	 * @param position
 	 *            the position in the map
 	 */
-	public Booze(Point position) {
+	public Booze(TilePosition position) {
 		super("booze", position, 2, 4);
 	}
 

@@ -1,6 +1,5 @@
 package io;
 
-import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -12,6 +11,7 @@ import model.Direction;
 import model.Level;
 import model.Snake;
 import model.StaticCellObject;
+import model.TilePosition;
 import control.Constants;
 
 /**
@@ -64,7 +64,7 @@ public class LevelIO {
 						snakes = new Snake[values.length];
 						for (int i = 0; i < values.length; i++) {
 							String[] vs = values[i].split(",");
-							snakes[i] = new Snake(Integer.parseInt(vs[0]), new Point(Integer.parseInt(vs[1]), Integer.parseInt(vs[2])), Direction.parseDirection(vs[3]));
+							snakes[i] = new Snake(Integer.parseInt(vs[0]), new TilePosition(Integer.parseInt(vs[1]), Integer.parseInt(vs[2])), Direction.parseDirection(vs[3]));
 							if (Boolean.parseBoolean(vs[4]))
 								snakes[i].setPathfinder();
 						}
@@ -72,7 +72,7 @@ public class LevelIO {
 					case 2:
 						objects = new StaticCellObject[values.length / 2];
 						for (int i = 0; i < objects.length; i++)
-							objects[i] = new StaticCellObject(new Point(Integer.parseInt(values[i * 2]), Integer.parseInt(values[i * 2 + 1])));
+							objects[i] = new StaticCellObject(new TilePosition(Integer.parseInt(values[i * 2]), Integer.parseInt(values[i * 2 + 1])));
 						break;
 					}
 					counter++;
@@ -86,6 +86,15 @@ public class LevelIO {
 				System.exit(1);
 			}
 		}
+	}
+
+	/**
+	 * Returns the total number of Levels.
+	 * 
+	 * @return the total number of Levels
+	 */
+	public static int getLevelNumber() {
+		return levels.size();
 	}
 
 	/**

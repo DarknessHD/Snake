@@ -1,8 +1,7 @@
 package model.item;
 
-import java.awt.Point;
-
 import model.Snake;
+import model.TilePosition;
 
 /**
  * @author Alexander Donocik
@@ -16,7 +15,7 @@ public class Apple extends Item {
 	 * @param position
 	 *            the position in the map
 	 */
-	public Apple(Point position) {
+	public Apple(TilePosition position) {
 		super("apple", position, 10, 3);
 	}
 

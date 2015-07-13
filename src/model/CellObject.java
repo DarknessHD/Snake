@@ -1,6 +1,5 @@
 package model;
 
-import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 import view.GameFrame;
@@ -12,7 +11,7 @@ import view.GameFrame;
 public abstract class CellObject implements Cloneable {
 
 	protected String image;
-	protected Point position;
+	protected TilePosition position;
 
 	/**
 	 * Subclasses can use this constructor to create a new CellObject.
@@ -22,7 +21,7 @@ public abstract class CellObject implements Cloneable {
 	 * @param position
 	 *            the position of the CellObject
 	 */
-	public CellObject(String image, Point position) {
+	public CellObject(String image, TilePosition position) {
 		this.image = image;
 		this.position = position;
 	}
@@ -51,7 +50,7 @@ public abstract class CellObject implements Cloneable {
 	 * 
 	 * @return the position
 	 */
-	public Point getPosition() {
+	public TilePosition getPosition() {
 		return position;
 	}
 
@@ -62,7 +61,7 @@ public abstract class CellObject implements Cloneable {
 	 *            the position
 	 * @return true when the position was set, false otherwise
 	 */
-	public boolean setPosition(Point position) {
+	public boolean setPosition(TilePosition position) {
 		if (GameFrame.getInstance().getGamePanel().checkPosition(position)) {
 			this.position = position;
 			return true;
