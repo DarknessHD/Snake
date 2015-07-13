@@ -17,4 +17,4 @@ OTHERs
 ------
 
 - load Items from files
-- Level-/ItemEditor
+- ItemEditor
