@@ -7,21 +7,20 @@ import model.TilePosition;
  * @author Eric Armbruster
  * @version 13.07.2015
  */
-public class Melon extends Item {
+public class Crown extends Item {
 
 	/**
-	 * Creates an instance of Melon.
+	 * Creates an instance of Crown.
 	 * 
 	 * @param position
 	 *            the position in the map
 	 */
-	public Melon(TilePosition position) {
-		super("melon", position, 2, 5);
+	public Crown(TilePosition position) {
+		super("crown", position, 1, 6);
 	}
 
 	@Override
 	public void onSnakeHitCellObject(Snake snake) {
-		snake.addSegments(5);
-		snake.increaseScore(300);
+		snake.increaseScore(500);
 	}
 }

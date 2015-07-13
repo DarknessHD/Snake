@@ -17,7 +17,7 @@ public class Poop extends Item {
 	 *            the position in the map
 	 */
 	public Poop(TilePosition position) {
-		super("poop", position, 2, 1);
+		super("poop", position, 3, 1);
 	}
 
 	@Override

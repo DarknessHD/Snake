@@ -15,7 +15,7 @@ public class RottenApple extends Item {
 	 *            the position in the map
 	 */
 	public RottenApple(TilePosition position) {
-		super("apple_rotten", position, 4, 2);
+		super("apple_rotten", position, 15, 2);
 	}
 
 	@Override

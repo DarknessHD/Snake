@@ -17,7 +17,7 @@ public class Booze extends Item {
 	 *            the position in the map
 	 */
 	public Booze(TilePosition position) {
-		super("booze", position, 2, 4);
+		super("booze", position, 4, 4);
 	}
 
 	@Override

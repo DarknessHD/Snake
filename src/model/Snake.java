@@ -12,6 +12,8 @@ import control.snakecontroller.Pathfinder;
  * @version 23.06.2015
  */
 public class Snake {
+	
+	//Curve wrong direction.
 
 	private static final int MIN_SCORE_VALUE = 0;
 
