@@ -1,6 +1,5 @@
 package model;
 
-import java.awt.Point;
 import java.util.LinkedList;
 import java.util.Objects;
 
@@ -16,8 +15,10 @@ public class Snake {
 
 	private static final int MIN_SCORE_VALUE = 0;
 
-	// /* #java1.8 */ private static final Predicate<Integer> MIN_SEGMENTS = t -> t >= Constants.MIN_SEGMENTS; // ORIGINAL
-	// /* #java1.8 */ private static final Predicate<Integer> MIN_SCORE = t -> t >= MIN_SCORE_VALUE; // ORIGINAL
+	// /* #java1.8 */ private static final Predicate<Integer> MIN_SEGMENTS = t
+	// -> t >= Constants.MIN_SEGMENTS; // ORIGINAL
+	// /* #java1.8 */ private static final Predicate<Integer> MIN_SCORE = t -> t
+	// >= MIN_SCORE_VALUE; // ORIGINAL
 
 	private LinkedList<SnakeSegment> segments;
 	private Direction lastDirection;
@@ -36,23 +37,28 @@ public class Snake {
 	 *            the direction the snake is looking into
 	 */
 	public Snake(int startSegments, TilePosition startPosition, Direction startDirection) {
-		 // /* #java1.8 */ if (!MIN_SEGMENTS.test(startSegments)) // ORIGINAL
-		 /* #java1.7 */ if(startSegments < Constants.MIN_SEGMENTS)
+		// /* #java1.8 */ if (!MIN_SEGMENTS.test(startSegments)) // ORIGINAL
+		/* #java1.7 */if (startSegments < Constants.MIN_SEGMENTS)
 			startSegments = Constants.MIN_SEGMENTS;
 
 		this.lastDirection = Objects.requireNonNull(startDirection);
 
 		segments = new LinkedList<SnakeSegment>();
 
-		segments.addFirst(new SnakeSegment(RotatedImage.get(startDirection, RotatedImage.HEAD_IMAGE), startPosition, startDirection));
+		segments.addFirst(new SnakeSegment(RotatedImage.get(startDirection, RotatedImage.HEAD_IMAGE), startPosition,
+				startDirection));
 
 		for (int i = 1; i < startSegments - 1; i++) {
 			startPosition.setAdjacent(startDirection.getOpposite());
-			segments.add(new SnakeSegment(RotatedImage.get(startDirection, RotatedImage.BODY_IMAGE), startPosition, startDirection)); //TODO Start Position, Adjacent
+			segments.add(new SnakeSegment(RotatedImage.get(startDirection, RotatedImage.BODY_IMAGE), startPosition,
+					startDirection)); // TODO Start Position, Adjacent
 		}
 
 		startPosition.getAdjacent(startDirection.getOpposite());
-		segments.addLast(new SnakeSegment(RotatedImage.get(startDirection.getOpposite(), RotatedImage.TAIL_IMAGE), startPosition, startDirection.getOpposite())); //TODO Start Position, Adjacent
+		segments.addLast(new SnakeSegment(RotatedImage.get(startDirection.getOpposite(), RotatedImage.TAIL_IMAGE),
+				startPosition, startDirection.getOpposite())); // TODO Start
+																// Position,
+																// Adjacent
 	}
 
 	/**
@@ -71,8 +77,8 @@ public class Snake {
 	 *            the new score
 	 */
 	public void setScore(int score) {
-		 /* #java1.8 */ // if (!MIN_SCORE.test(score)) // ORIGINAL
-		 /* #java1.7 */ if(this.score < MIN_SCORE_VALUE)
+		/* #java1.8 */// if (!MIN_SCORE.test(score)) // ORIGINAL
+		/* #java1.7 */if (this.score < MIN_SCORE_VALUE)
 			this.score = MIN_SCORE_VALUE;
 		else
 			this.score = score;
@@ -95,8 +101,8 @@ public class Snake {
 	 *            the value by that the score gets decreased
 	 */
 	public void decreaseScore(int decreaseBy) {
-		 /* #java1.8 */ // if (MIN_SCORE.test(score - decreaseBy)) // ORIGINAL
-		 /* #java1.7 */ if(!(score-decreaseBy < MIN_SCORE_VALUE))
+		/* #java1.8 */// if (MIN_SCORE.test(score - decreaseBy)) // ORIGINAL
+		/* #java1.7 */if (!(score - decreaseBy < MIN_SCORE_VALUE))
 			score -= decreaseBy;
 		else
 			score = MIN_SCORE_VALUE;
@@ -121,7 +127,8 @@ public class Snake {
 	}
 
 	/**
-	 * Returns all body parts of the snake. This doesn't contain the head and the tail.
+	 * Returns all body parts of the snake. This doesn't contain the head and
+	 * the tail.
 	 * 
 	 * @return the body parts of the snake
 	 */
@@ -167,7 +174,8 @@ public class Snake {
 	}
 
 	/**
-	 * IMPORTANT: Always use this method to change the direction of the snake's head! Sets the direction the snake's head is looking into.
+	 * IMPORTANT: Always use this method to change the direction of the snake's
+	 * head! Sets the direction the snake's head is looking into.
 	 * 
 	 * @param direction
 	 *            of the snake's head
@@ -187,11 +195,13 @@ public class Snake {
 	/**
 	 * Removes the last segment from the snake.
 	 * 
-	 * @return true, when the last segment was removed and false otherwise, when there are not enough segments left to remove one more.
+	 * @return true, when the last segment was removed and false otherwise, when
+	 *         there are not enough segments left to remove one more.
 	 */
 	public boolean removeSegment() {
-		 /* #java1.8 */ // if (!MIN_SEGMENTS.test(segments.size() - 1)) { // ORIGINAL
-		 /* #java1.7 */ if(segments.size()-1 < Constants.MIN_SEGMENTS) {
+		/* #java1.8 */// if (!MIN_SEGMENTS.test(segments.size() - 1)) { //
+						// ORIGINAL
+		/* #java1.7 */if (segments.size() - 1 < Constants.MIN_SEGMENTS) {
 			GameFrame.getInstance().stop();
 			return false;
 		}
@@ -204,26 +214,39 @@ public class Snake {
 
 	/**
 	 * Adds a segment to the end of the snake.
+	 * 
+	 * @param amount
+	 *            the amount of segments to add
 	 */
-	public void addSegment() {
-		SnakeSegment newBody = getTail();
-		newBody.setImage(RotatedImage.get(newBody.getDirection(), RotatedImage.BODY_IMAGE));
-		TilePosition last = new TilePosition(newBody.getPosition());
-		last.setAdjacent(newBody.getDirection().getOpposite());
-		segments.addLast(new SnakeSegment(RotatedImage.get(newBody.getDirection().getOpposite(), RotatedImage.TAIL_IMAGE), last, newBody.getDirection().getOpposite())); //TODO Start Position, Adjacent
-		GameFrame.getInstance().getGamePanel().doRepaint(newBody.getPosition());
+	public void addSegments(int amount) {
+		for (int i = 0; i < amount; i++) {
+			SnakeSegment newBody = getTail();
+			newBody.setImage(RotatedImage.get(newBody.getDirection(), RotatedImage.BODY_IMAGE));
+			TilePosition last = new TilePosition(newBody.getPosition());
+			last.setAdjacent(newBody.getDirection().getOpposite());
+
+			if (i == amount - 1)
+				segments.addLast(new SnakeSegment(RotatedImage.get(newBody.getDirection().getOpposite(),
+						RotatedImage.TAIL_IMAGE), last, newBody.getDirection().getOpposite()));
+			else
+				segments.addLast(new SnakeSegment(RotatedImage.get(newBody.getDirection(), RotatedImage.BODY_IMAGE),
+						last, newBody.getDirection()));
+
+			GameFrame.getInstance().getGamePanel().doRepaint(getTail().getPosition());
+		}
 	}
 
 	/**
-	 * Moves the snake one cell forward into the direction its looking into, if possible.
+	 * Moves the snake one cell forward into the direction its looking into, if
+	 * possible.
 	 * 
 	 * @return true when the snake was moved, false otherwise.
 	 */
 	public boolean move() {
 		SnakeSegment newBody = getHead();
-		Point headPos = newBody.getPosition();
+		TilePosition headPos = newBody.getPosition();
 		if (!GameFrame.getInstance().getGamePanel().getLevel().endless)
-			if (headPos.getX() > Constants.LEVEL_WIDTH - 1 || headPos.getY() > Constants.LEVEL_HEIGHT - 1 || headPos.getX() < 0 || headPos.getY() < 0)
+			if (TilePosition.isWithinGameField(headPos))
 				return false;
 
 		if (directionChange) {
@@ -234,7 +257,8 @@ public class Snake {
 
 		TilePosition first = new TilePosition(newBody.getPosition());
 		first.setAdjacent(newBody.getDirection());
-		segments.addFirst(new SnakeSegment(RotatedImage.get(newBody.getDirection(), RotatedImage.HEAD_IMAGE), first, newBody.getDirection())); //TODO Start Position, Adjacent
+		segments.addFirst(new SnakeSegment(RotatedImage.get(newBody.getDirection(), RotatedImage.HEAD_IMAGE), first,
+				newBody.getDirection())); // TODO Start Position, Adjacent
 
 		segments.removeLast();
 		getTail().setImage(RotatedImage.get(getTail().getDirection().getOpposite(), RotatedImage.TAIL_IMAGE));
@@ -245,7 +269,7 @@ public class Snake {
 	@Override
 	public Snake clone() {
 		Snake snake = new Snake(segments.size(), new TilePosition(getHead().position), getHead().getDirection());
-		if(this.pathfinder != null)
+		if (this.pathfinder != null)
 			snake.setPathfinder();
 		return snake;
 	}

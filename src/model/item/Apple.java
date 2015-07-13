@@ -21,7 +21,7 @@ public class Apple extends Item {
 
 	@Override
 	public void onSnakeHitCellObject(Snake snake) {
-		snake.addSegment();
+		snake.addSegments(1);
 		snake.increaseScore(75);
 	}
 }
