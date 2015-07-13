@@ -37,7 +37,7 @@ public class TilePosition extends Point {
 	 * Gets the adjacent position.
 	 * 
 	 * @param direction the direction to use
-	 * @return the adjacent TilePosition in the direction
+	 * @return a new adjacent TilePosition in the direction
 	 */
 	public TilePosition getAdjacent(Direction direction) {
 		TilePosition adjacent = new TilePosition((int) this.getX() + direction.getXOffset(), (int) this.getY() + direction.getYOffset());
@@ -62,6 +62,16 @@ public class TilePosition extends Point {
 		}
 
 		return adjacent;
+	}
+	
+	/**
+	 * Sets the position to the adjacent position in the direction.
+	 * 
+	 * @param direction
+	 *            the direction
+	 */
+	public void setAdjacent(Direction direction) {
+		this.setLocation(this.getAdjacent(direction));
 	}
 	
 	/**

@@ -19,7 +19,7 @@ public class StaticCellObject extends CellObject {
 	}
 
 	@Override
-	public boolean setPosition(TilePosition position) {
+	public void setPosition(TilePosition position) {
 		throw new UnsupportedOperationException();
 	}
 

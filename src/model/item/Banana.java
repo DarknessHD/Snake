@@ -17,12 +17,12 @@ public class Banana extends Item {
 	 */
 	public Banana(TilePosition position) {
 		super("banana", position, 3, 4);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void onSnakeHitCellObject(Snake snake) {
-		// TODO Auto-generated method stub
-
+		for(int i = 0; i < 2; i++)
+			snake.addSegment();
+		snake.increaseScore(130);
 	}
 }

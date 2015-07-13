@@ -2,8 +2,6 @@ package model;
 
 import java.awt.image.BufferedImage;
 
-import view.GameFrame;
-
 /**
  * @author Stefan Kameter, Eric Armbruster
  * @version 08.07.2015
@@ -23,7 +21,7 @@ public abstract class CellObject implements Cloneable {
 	 */
 	public CellObject(String image, TilePosition position) {
 		this.image = image;
-		this.position = position;
+		this.position = new TilePosition(position); //TODO ?
 	}
 
 	/**
@@ -58,15 +56,10 @@ public abstract class CellObject implements Cloneable {
 	 * Sets the position of the CellObject.
 	 * 
 	 * @param position
-	 *            the position
-	 * @return true when the position was set, false otherwise
+	 *            the position to set
 	 */
-	public boolean setPosition(TilePosition position) {
-		if (GameFrame.getInstance().getGamePanel().checkPosition(position)) {
-			this.position = position;
-			return true;
-		} else
-			return false;
+	public void setPosition(TilePosition position) {
+		this.position = position;
 	}
 
 	@Override

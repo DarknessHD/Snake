@@ -28,24 +28,6 @@ public class SnakeSegment extends CellObject {
 	}
 
 	/**
-	 * Creates a new SnakeSegment instance.
-	 * 
-	 * @param image
-	 *            the image of the snake segment
-	 * @param startPosition sP
-	 * @param direction
-	 *            the direction of the snake segment
-	 * @param opposite
-	 *            whether or not the opposite direction is used for getting the adjacent position
-	 * @param endlessLevel
-	 *            whether or not the level is endless
-	 */
-	public SnakeSegment(String image, TilePosition startPosition, Direction direction, boolean opposite) {
-		//Adjacent behaviour was changed!
-		this(image, startPosition.getAdjacent((opposite) ? direction.getOpposite() : direction), direction);
-	}
-
-	/**
 	 * Returns the direction of the snake segment.
 	 * 
 	 * @return the direction of the snake segment

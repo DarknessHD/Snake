@@ -2,6 +2,7 @@ package control;
 
 import java.util.Random;
 
+import view.GameFrame;
 import model.TilePosition;
 import model.item.Apple;
 import model.item.Banana;
@@ -41,8 +42,12 @@ public class ItemSpawner {
 			int x = random.nextInt(Constants.LEVEL_WIDTH);
 			int y = random.nextInt(Constants.LEVEL_HEIGHT);
 
-			if (item.setPosition(new TilePosition(x, y)))
+			TilePosition randomPos = new TilePosition(x, y);
+			
+			if (GameFrame.getInstance().getGamePanel().checkPosition(randomPos)) {
+				item.setPosition(randomPos);
 				break;
+			}
 		}
 
 		return item;
