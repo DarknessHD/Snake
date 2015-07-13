@@ -1,5 +1,7 @@
 package model;
 
+import io.ImageHolder;
+
 import java.awt.image.BufferedImage;
 
 import view.GameFrame;

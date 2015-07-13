@@ -14,7 +14,7 @@ public class Constants {
 	private static final String STR_ERROR = "Corupted INI!";
 
 	private static final String INI = "snake.ini";
-	private static final String STR_COMMENT = " Snake";
+	private static final String STR_COMMENT = "Snake";
 
 	private static Properties props;
 
@@ -81,7 +81,10 @@ public class Constants {
 	 * Loads the Constants.
 	 */
 	public static void load() {
+		boolean error = false;
+
 		props = new Properties();
+
 		try {
 			props.load(new FileReader(new File(INI)));
 
@@ -98,9 +101,13 @@ public class Constants {
 			LAUNCHER = Boolean.parseBoolean(props.getProperty("launcher"));
 
 			if (DATAPATH == null || VERSION == null)
-				System.exit(1);
+				error = true;
 
 		} catch (Exception e) {
+			error = true;
+		}
+
+		if (error) {
 			System.err.println(STR_ERROR);
 			System.exit(1);
 		}
