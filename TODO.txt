@@ -1,0 +1,11 @@
+TODOs
+----
+	
+BUGs
+----
+
+EVTL.
+-----
+
+- load Items from files
+- ItemEditor
