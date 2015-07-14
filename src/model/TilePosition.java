@@ -12,7 +12,6 @@ import control.Constants;
 public class TilePosition extends Point {
 	
 	private static final long serialVersionUID = 1L;
-	private static int count = 0;
 	
 	/**
 	 * Creates a new TilePosition instance.
@@ -46,23 +45,18 @@ public class TilePosition extends Point {
 		if(level != null)
 			endless = level.endless;
 		
-		if (endless) {
-			if (adjacent.getX() < 0)
-				adjacent.setLocation(Constants.LEVEL_WIDTH - 1, adjacent.getY());
-			else if (adjacent.getY() < 0)
-				adjacent.setLocation(adjacent.getX(), Constants.LEVEL_HEIGHT - 1);
-			else if (adjacent.getX() > Constants.LEVEL_WIDTH - 1)
-				adjacent.setLocation(0, adjacent.getY());
-			else if (adjacent.getY() > Constants.LEVEL_HEIGHT - 1)
-				adjacent.setLocation(adjacent.getX(), 0);
-			
-		} else if (adjacent.getX() > Constants.LEVEL_WIDTH - 1 || adjacent.getY() > Constants.LEVEL_HEIGHT - 1 || adjacent.getX() < 0 || adjacent.getY() < 0) {
-			//Does this make sense?
-			count++;
-			if (count < Direction.values().length)
-				getAdjacent(direction.getNext());
-			else
-				count = 0;
+		if(!isWithinGameField(adjacent)) {
+			if (endless) {
+				if (adjacent.getX() < 0)
+					adjacent.setLocation(Constants.LEVEL_WIDTH - 1, adjacent.getY());
+				else if (adjacent.getY() < 0)
+					adjacent.setLocation(adjacent.getX(), Constants.LEVEL_HEIGHT - 1);
+				else if (adjacent.getX() > Constants.LEVEL_WIDTH - 1)
+					adjacent.setLocation(0, adjacent.getY());
+				else if (adjacent.getY() > Constants.LEVEL_HEIGHT - 1)
+					adjacent.setLocation(adjacent.getX(), 0);
+				
+			}	
 		}
 
 		return adjacent;
