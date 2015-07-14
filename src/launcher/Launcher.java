@@ -1,5 +1,6 @@
 package launcher;
 
+import io.ImageHolder;
 import io.LevelIO;
 
 import java.awt.Dimension;
@@ -155,6 +156,7 @@ public class Launcher extends JPanel {
 		CONTENTS[5] = Constants.SPEED_MAX;
 
 		frame = new JFrame(STR_TITLE);
+		frame.setIconImage(ImageHolder.getImage(GameFrame.CORNERIMAGE));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(new Launcher());
 		frame.pack();

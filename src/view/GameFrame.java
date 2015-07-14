@@ -1,6 +1,7 @@
 package view;
 
 import input.KeyBoard;
+import io.ImageHolder;
 import io.ScoreListIO;
 
 import java.awt.BorderLayout;
@@ -28,6 +29,11 @@ public class GameFrame extends JFrame {
 	private static final String STR_TITLE = ("Snake " + Constants.VERSION).trim();
 	private static final Object STR_YOURNAME = "Your name:";
 
+	/**
+	 * The image in the left upper corner of the frame.
+	 */
+	public static final String CORNERIMAGE = "apple";
+
 	private static GameFrame instance;
 
 	/**
@@ -51,7 +57,8 @@ public class GameFrame extends JFrame {
 
 	private GameFrame() {
 		setTitle(STR_TITLE);
-		
+		setIconImage(ImageHolder.getImage(CORNERIMAGE));
+
 		setLayout(new BorderLayout());
 
 		initComponents();
@@ -65,7 +72,7 @@ public class GameFrame extends JFrame {
 
 		scoreList = ScoreListIO.load();
 		scoreListPanel.setScoreList(scoreList);
-		
+
 		setBackground(Color.LIGHT_GRAY);
 	}
 

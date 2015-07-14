@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -258,12 +259,36 @@ public class GamePanel extends JPanel {
 				drawPaused();
 			else if (gameOver)
 				drawGameOver();
+			else
+				drawScore2(); // only two snakes
 
 			if (first)
 				drawGame();
 
 			g.drawImage(buffer, 5, 5, buffer.getWidth(), buffer.getHeight(), null);
 		}
+	}
+
+	private void drawScore2() {
+		fL();
+
+		bufferGraphics.setColor(Color.YELLOW);
+
+		for (int i = 0; i < level.snakes.length; i++) {
+			if (i == 2)
+				return;
+
+			String score = STR_SCOREMP.replace("<index>", i + "") + level.snakes[i].getScore();
+			int x = 10;
+			if (i != 0)
+				x = Constants.CONTENT_WIDTH - getFontWidth(score, 20) - 10;
+			bufferGraphics.drawString(score, x, getFontHeight(score, 20));
+		}
+	}
+
+	private void fL() {
+		for (int x = 0; x < Constants.LEVEL_WIDTH; x++)
+			doRepaint(new Point(x, 0));
 	}
 
 	private void drawGame() {
@@ -302,6 +327,8 @@ public class GamePanel extends JPanel {
 	}
 
 	private void drawPaused() {
+		fL();
+		
 		bufferGraphics.setColor(Color.BLACK);
 
 		bufferGraphics.drawString(STR_PAUSED, (Constants.CONTENT_WIDTH - getFontWidth(STR_PAUSED, 60)) / 2, Constants.CONTENT_HEIGHT / 4);
@@ -312,6 +339,8 @@ public class GamePanel extends JPanel {
 	}
 
 	private void drawGameOver() {
+		fL();
+		
 		bufferGraphics.setColor(Color.BLACK);
 
 		bufferGraphics.drawString(STR_GAMEOVER, (Constants.CONTENT_WIDTH - getFontWidth(STR_GAMEOVER, 60)) / 2, Constants.CONTENT_HEIGHT / 4);
@@ -358,8 +387,14 @@ public class GamePanel extends JPanel {
 		Font font = new Font("SanSarif", Font.BOLD, newSize);
 		bufferGraphics.setFont(font);
 
-		// int height = (int) font.getLineMetrics(label, ((Graphics2D) bufferGraphics).getFontRenderContext()).getHeight()
 		return bufferGraphics.getFontMetrics(font).stringWidth(label);
+	}
+
+	private int getFontHeight(String label, int newSize) {
+		Font font = new Font("SanSarif", Font.BOLD, newSize);
+		bufferGraphics.setFont(font);
+
+		return (int) bufferGraphics.getFont().getLineMetrics(label, ((Graphics2D) bufferGraphics).getFontRenderContext()).getHeight();
 	}
 
 	/**
