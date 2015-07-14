@@ -3,6 +3,7 @@ package model;
 import java.util.LinkedList;
 import java.util.Objects;
 
+import model.SnakeSegment.SegmentType;
 import view.GameFrame;
 import control.Constants;
 import control.snakecontroller.Pathfinder;
@@ -12,8 +13,6 @@ import control.snakecontroller.Pathfinder;
  * @version 23.06.2015
  */
 public class Snake {
-	
-	//Curve wrong direction.
 
 	private static final int MIN_SCORE_VALUE = 0;
 
@@ -47,20 +46,15 @@ public class Snake {
 
 		segments = new LinkedList<SnakeSegment>();
 
-		segments.addFirst(new SnakeSegment(RotatedImage.get(startDirection, RotatedImage.HEAD_IMAGE), startPosition,
-				startDirection));
+		segments.addFirst(new SnakeSegment(startPosition, startDirection, SegmentType.SNAKE_HEAD));
 
 		for (int i = 1; i < startSegments - 1; i++) {
 			startPosition.setAdjacent(startDirection.getOpposite());
-			segments.add(new SnakeSegment(RotatedImage.get(startDirection, RotatedImage.BODY_IMAGE), startPosition,
-					startDirection)); // TODO Start Position, Adjacent
+			segments.add(new SnakeSegment(startPosition, startDirection, SegmentType.SNAKE_BODY));
 		}
 
-		startPosition.getAdjacent(startDirection.getOpposite());
-		segments.addLast(new SnakeSegment(RotatedImage.get(startDirection.getOpposite(), RotatedImage.TAIL_IMAGE),
-				startPosition, startDirection.getOpposite())); // TODO Start
-																// Position,
-																// Adjacent
+		startPosition.setAdjacent(startDirection.getOpposite());
+		segments.addLast(new SnakeSegment(startPosition, startDirection, SegmentType.SNAKE_TAIL));
 	}
 
 	/**
@@ -187,7 +181,7 @@ public class Snake {
 		Direction currentDirection = head.getDirection();
 		if (direction != currentDirection && direction != currentDirection.getOpposite()) {
 			this.lastDirection = head.getDirection();
-			head.setImage(RotatedImage.get(direction, RotatedImage.HEAD_IMAGE));
+			head.setSegmentType(SegmentType.SNAKE_HEAD);
 			directionChange = true;
 
 			head.setDirection(direction);
@@ -209,7 +203,7 @@ public class Snake {
 		}
 
 		TilePosition position = segments.removeLast().getPosition();
-		getTail().setImage(RotatedImage.get(getTail().getDirection().getOpposite(), RotatedImage.TAIL_IMAGE));
+		getTail().setSegmentType(SegmentType.SNAKE_TAIL);
 		GameFrame.getInstance().getGamePanel().doRepaint(position);
 		return true;
 	}
@@ -223,17 +217,16 @@ public class Snake {
 	public void addSegments(int amount) {
 		for (int i = 0; i < amount; i++) {
 			SnakeSegment newBody = getTail();
-			newBody.setImage(RotatedImage.get(newBody.getDirection(), RotatedImage.BODY_IMAGE));
+			newBody.setSegmentType(SegmentType.SNAKE_BODY);
 			TilePosition last = new TilePosition(newBody.getPosition());
 			last.setAdjacent(newBody.getDirection().getOpposite());
 
 			if (i == amount - 1)
-				segments.addLast(new SnakeSegment(RotatedImage.get(newBody.getDirection().getOpposite(),
-						RotatedImage.TAIL_IMAGE), last, newBody.getDirection().getOpposite()));
+				segments.addLast(new SnakeSegment(last, newBody.getDirection(), SegmentType.SNAKE_TAIL));
 			else
-				segments.addLast(new SnakeSegment(RotatedImage.get(newBody.getDirection(), RotatedImage.BODY_IMAGE),
-						last, newBody.getDirection()));
+				segments.addLast(new SnakeSegment(last, newBody.getDirection(), SegmentType.SNAKE_BODY));
 
+			GameFrame.getInstance().getGamePanel().doRepaint(newBody.getPosition());
 			GameFrame.getInstance().getGamePanel().doRepaint(getTail().getPosition());
 		}
 	}
@@ -246,24 +239,22 @@ public class Snake {
 	 */
 	public boolean move() {
 		SnakeSegment newBody = getHead();
-		TilePosition headPos = newBody.getPosition();
+		TilePosition headPos = new TilePosition(newBody.getPosition());
 		if (!GameFrame.getInstance().getGamePanel().getLevel().endless)
-			if (TilePosition.isWithinGameField(headPos))
+			if (!TilePosition.isWithinGameField(headPos))
 				return false;
 
 		if (directionChange) {
-			newBody.setImage(RotatedImage.getCurve(lastDirection, getLookingDirection()));
+			newBody.setSegmentType(SegmentType.SNAKE_CURVE, lastDirection, getLookingDirection());
 			directionChange = false;
 		} else
-			newBody.setImage(RotatedImage.get(newBody.getDirection(), RotatedImage.BODY_IMAGE));
+			newBody.setSegmentType(SegmentType.SNAKE_BODY);
 
-		TilePosition first = new TilePosition(newBody.getPosition());
-		first.setAdjacent(newBody.getDirection());
-		segments.addFirst(new SnakeSegment(RotatedImage.get(newBody.getDirection(), RotatedImage.HEAD_IMAGE), first,
-				newBody.getDirection())); // TODO Start Position, Adjacent
+		headPos.setAdjacent(newBody.getDirection());
+		segments.addFirst(new SnakeSegment(headPos, newBody.getDirection(), SegmentType.SNAKE_HEAD));
 
 		segments.removeLast();
-		getTail().setImage(RotatedImage.get(getTail().getDirection().getOpposite(), RotatedImage.TAIL_IMAGE));
+		getTail().setSegmentType(SegmentType.SNAKE_TAIL);
 
 		return true;
 	}
