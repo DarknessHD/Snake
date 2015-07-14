@@ -1,6 +1,9 @@
 package view;
 
+import io.ImageHolder;
+
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -18,6 +21,8 @@ import control.Constants;
  */
 public class GameMenuPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
+
+	static final String SCREENIMAGE = "screen";
 
 	private static final String STR_START = "Start Game";
 	private static final String STR_SCORELIST = "Score List";
@@ -77,5 +82,11 @@ public class GameMenuPanel extends JPanel {
 				GameFrame.getInstance().exit();
 			}
 		});
+	}
+
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponents(g);
+		g.drawImage(ImageHolder.getImage(SCREENIMAGE), 0, 0, getWidth(), getHeight(), null);
 	}
 }

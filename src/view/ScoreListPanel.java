@@ -1,6 +1,9 @@
 package view;
 
+import io.ImageHolder;
+
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -71,5 +74,11 @@ public class ScoreListPanel extends JPanel {
 	 */
 	public void setScoreList(List<ScoreListEntry> entries) {
 		((GameTableModel) table.getModel()).setData(entries);
+	}
+
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponents(g);
+		g.drawImage(ImageHolder.getImage(GameMenuPanel.SCREENIMAGE), 0, 0, getWidth(), getHeight(), null);
 	}
 }
