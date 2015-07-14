@@ -226,6 +226,7 @@ public class Snake {
 			else
 				segments.addLast(new SnakeSegment(last, newBody.getDirection(), SegmentType.SNAKE_BODY));
 
+			GameFrame.getInstance().getGamePanel().doRepaint(newBody.getPosition());
 			GameFrame.getInstance().getGamePanel().doRepaint(getTail().getPosition());
 		}
 	}
@@ -244,7 +245,7 @@ public class Snake {
 				return false;
 
 		if (directionChange) {
-			newBody.setSegmentType(SegmentType.SNAKE_CURVE, lastDirection, getLookingDirection()); //Is get looking direction used?
+			newBody.setSegmentType(SegmentType.SNAKE_CURVE, lastDirection, getLookingDirection());
 			directionChange = false;
 		} else
 			newBody.setSegmentType(SegmentType.SNAKE_BODY);
