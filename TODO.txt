@@ -4,6 +4,48 @@ TODOs
 BUGs
 ----
 
+- Exception in thread "AWT-EventQueue-0" java.lang.ArrayIndexOutOfBoundsException: 7
+	at java.util.LinkedList.toArray(Unknown Source)
+	at java.util.LinkedList.addAll(Unknown Source)
+	at java.util.LinkedList.addAll(Unknown Source)
+	at java.util.LinkedList.<init>(Unknown Source)
+	at model.Snake.getSegments(Snake.java:144)
+	at view.GamePanel.doRepaint(GamePanel.java:227)
+	at view.GamePanel.fL(GamePanel.java:297)
+	at view.GamePanel.drawScore2(GamePanel.java:277)
+	at view.GamePanel.paint(GamePanel.java:270)
+	at javax.swing.JComponent.paintToOffscreen(Unknown Source)
+	at javax.swing.RepaintManager$PaintManager.paintDoubleBuffered(Unknown Source)
+	at javax.swing.RepaintManager$PaintManager.paint(Unknown Source)
+	at javax.swing.RepaintManager.paint(Unknown Source)
+	at javax.swing.JComponent._paintImmediately(Unknown Source)
+	at javax.swing.JComponent.paintImmediately(Unknown Source)
+	at javax.swing.RepaintManager$4.run(Unknown Source)
+	at javax.swing.RepaintManager$4.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(Unknown Source)
+	at javax.swing.RepaintManager.paintDirtyRegions(Unknown Source)
+	at javax.swing.RepaintManager.paintDirtyRegions(Unknown Source)
+	at javax.swing.RepaintManager.prePaintDirtyRegions(Unknown Source)
+	at javax.swing.RepaintManager.access$1300(Unknown Source)
+	at javax.swing.RepaintManager$ProcessingRunnable.run(Unknown Source)
+	at java.awt.event.InvocationEvent.dispatch(Unknown Source)
+	at java.awt.EventQueue.dispatchEventImpl(Unknown Source)
+	at java.awt.EventQueue.access$400(Unknown Source)
+	at java.awt.EventQueue$3.run(Unknown Source)
+	at java.awt.EventQueue$3.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(Unknown Source)
+	at java.awt.EventQueue.dispatchEvent(Unknown Source)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEvents(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEvents(Unknown Source)
+	at java.awt.EventDispatchThread.run(Unknown Source)
+	
+- Unknown NullPointerE.
+
 EVTL.
 -----
 

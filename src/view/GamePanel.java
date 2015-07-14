@@ -224,13 +224,15 @@ public class GamePanel extends JPanel {
 		List<CellObject> objs = new ArrayList<CellObject>();
 
 		back: for (Snake s : level.snakes)
-			for (SnakeSegment seg : s.getSegments()) {
-				System.out.println(seg);
+			for (SnakeSegment seg : s.getSegments())
+				// {
+				// if (seg == null)
+				// System.out.println(0);
 				if (seg.getPosition().equals(position)) {
 					objs.add(seg);
 					break back;
 				}
-			}
+		// }
 		for (StaticCellObject sco : level.staticCellObjects)
 			if (sco.getPosition().equals(position)) {
 				objs.add(sco);
@@ -242,8 +244,7 @@ public class GamePanel extends JPanel {
 				break;
 			}
 		bufferGraphics.setColor(COLOR);
-		bufferGraphics.fillRect(position.x << Constants.TILE_SIZE_BW, position.y << Constants.TILE_SIZE_BW,
-				Constants.TILE_SIZE, Constants.TILE_SIZE);
+		bufferGraphics.fillRect(position.x << Constants.TILE_SIZE_BW, position.y << Constants.TILE_SIZE_BW, Constants.TILE_SIZE, Constants.TILE_SIZE);
 
 		drawCellObjects(objs);
 
@@ -254,8 +255,7 @@ public class GamePanel extends JPanel {
 	public void paint(Graphics g) {
 		if (level != null) {
 			if (bufferGraphics == null) {
-				buffer = new BufferedImage(Constants.CONTENT_WIDTH, Constants.CONTENT_HEIGHT,
-						BufferedImage.TYPE_INT_ARGB);
+				buffer = new BufferedImage(Constants.CONTENT_WIDTH, Constants.CONTENT_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 				bufferGraphics = buffer.getGraphics();
 			}
 
@@ -263,11 +263,12 @@ public class GamePanel extends JPanel {
 				drawPaused();
 			else if (gameOver)
 				drawGameOver();
-			else
-				drawScore2(); // only two snakes
 
 			if (first)
 				drawGame();
+
+			if (!paused && !gameOver)
+				drawScore2();
 
 			g.drawImage(buffer, 5, 5, buffer.getWidth(), buffer.getHeight(), null);
 		}
@@ -275,6 +276,8 @@ public class GamePanel extends JPanel {
 
 	private void drawScore2() {
 		fL();
+
+		// only two snakes
 
 		bufferGraphics.setColor(Color.YELLOW);
 
@@ -291,8 +294,9 @@ public class GamePanel extends JPanel {
 	}
 
 	private void fL() {
-		for (int x = 0; x < Constants.LEVEL_WIDTH; x++)
+		for (int x = 0; x < Constants.LEVEL_WIDTH; x++) {
 			doRepaint(new Point(x, 0));
+		}
 	}
 
 	private void drawGame() {
@@ -315,8 +319,7 @@ public class GamePanel extends JPanel {
 	private void drawCellObjects(CellObject[] objects) {
 		for (CellObject obj : objects) {
 			Point p = obj.getPosition();
-			bufferGraphics.drawImage(obj.getImage(), p.x << Constants.TILE_SIZE_BW, p.y << Constants.TILE_SIZE_BW,
-					Constants.TILE_SIZE, Constants.TILE_SIZE, null);
+			bufferGraphics.drawImage(obj.getImage(), p.x << Constants.TILE_SIZE_BW, p.y << Constants.TILE_SIZE_BW, Constants.TILE_SIZE, Constants.TILE_SIZE, null);
 		}
 	}
 
@@ -324,8 +327,7 @@ public class GamePanel extends JPanel {
 		try {
 			for (CellObject obj : objects) {
 				Point p = obj.getPosition();
-				bufferGraphics.drawImage(obj.getImage(), p.x << Constants.TILE_SIZE_BW, p.y << Constants.TILE_SIZE_BW,
-						Constants.TILE_SIZE, Constants.TILE_SIZE, null);
+				bufferGraphics.drawImage(obj.getImage(), p.x << Constants.TILE_SIZE_BW, p.y << Constants.TILE_SIZE_BW, Constants.TILE_SIZE, Constants.TILE_SIZE, null);
 			}
 		} catch (ConcurrentModificationException e) {
 			System.err.println(STR_ERROR); // TODO
@@ -333,12 +335,9 @@ public class GamePanel extends JPanel {
 	}
 
 	private void drawPaused() {
-		fL();
-
 		bufferGraphics.setColor(Color.BLACK);
 
-		bufferGraphics.drawString(STR_PAUSED, (Constants.CONTENT_WIDTH - getFontWidth(STR_PAUSED, 60)) / 2,
-				Constants.CONTENT_HEIGHT / 4);
+		bufferGraphics.drawString(STR_PAUSED, (Constants.CONTENT_WIDTH - getFontWidth(STR_PAUSED, 60)) / 2, Constants.CONTENT_HEIGHT / 4);
 
 		drawScore();
 
@@ -346,12 +345,9 @@ public class GamePanel extends JPanel {
 	}
 
 	private void drawGameOver() {
-		fL();
-
 		bufferGraphics.setColor(Color.BLACK);
 
-		bufferGraphics.drawString(STR_GAMEOVER, (Constants.CONTENT_WIDTH - getFontWidth(STR_GAMEOVER, 60)) / 2,
-				Constants.CONTENT_HEIGHT / 4);
+		bufferGraphics.drawString(STR_GAMEOVER, (Constants.CONTENT_WIDTH - getFontWidth(STR_GAMEOVER, 60)) / 2, Constants.CONTENT_HEIGHT / 4);
 
 		drawScore();
 
@@ -373,8 +369,7 @@ public class GamePanel extends JPanel {
 		bufferGraphics.setColor(Color.BLACK);
 
 		String string = STR_SCORESP + level.snakes[0].getScore();
-		bufferGraphics.drawString(string, (Constants.CONTENT_WIDTH - getFontWidth(string, 45)) / 2,
-				Constants.CONTENT_HEIGHT / 2);
+		bufferGraphics.drawString(string, (Constants.CONTENT_WIDTH - getFontWidth(string, 45)) / 2, Constants.CONTENT_HEIGHT / 2);
 	}
 
 	private void drawScoreMP() {
@@ -382,16 +377,14 @@ public class GamePanel extends JPanel {
 
 		for (int i = 0; i < level.snakes.length; i++) {
 			String string = STR_SCOREMP.replace("<index>", i + "") + level.snakes[i].getScore();
-			bufferGraphics.drawString(string, (Constants.CONTENT_WIDTH - getFontWidth(string, 45)) / 2,
-					Constants.CONTENT_HEIGHT / 2 + i * 80);
+			bufferGraphics.drawString(string, (Constants.CONTENT_WIDTH - getFontWidth(string, 45)) / 2, Constants.CONTENT_HEIGHT / 2 + i * 80);
 		}
 	}
 
 	private void drawCTC() {
 		bufferGraphics.setColor(Color.BLACK);
 
-		bufferGraphics.drawString(STR_CTC, (Constants.CONTENT_WIDTH - getFontWidth(STR_CTC, 20)) / 2,
-				Constants.CONTENT_HEIGHT - 50);
+		bufferGraphics.drawString(STR_CTC, (Constants.CONTENT_WIDTH - getFontWidth(STR_CTC, 20)) / 2, Constants.CONTENT_HEIGHT - 50);
 	}
 
 	private int getFontWidth(String label, int newSize) {
@@ -405,8 +398,7 @@ public class GamePanel extends JPanel {
 		Font font = new Font("SanSarif", Font.BOLD, newSize);
 		bufferGraphics.setFont(font);
 
-		return (int) bufferGraphics.getFont()
-				.getLineMetrics(label, ((Graphics2D) bufferGraphics).getFontRenderContext()).getHeight();
+		return (int) bufferGraphics.getFont().getLineMetrics(label, ((Graphics2D) bufferGraphics).getFontRenderContext()).getHeight();
 	}
 
 	/**
