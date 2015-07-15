@@ -16,7 +16,7 @@ public class Banana extends Item {
 	 *            the position in the map
 	 */
 	public Banana(TilePosition position) {
-		super("banana", position, 5, 4);
+		super("banana", position, 4, 4);
 	}
 
 	@Override

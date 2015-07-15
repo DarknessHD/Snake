@@ -21,7 +21,7 @@ public class Melon extends Item {
 
 	@Override
 	public void onSnakeHitCellObject(Snake snake) {
-		snake.addSegments(5);
+		snake.addSegments(4);
 		snake.increaseScore(300);
 	}
 }
