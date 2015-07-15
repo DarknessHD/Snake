@@ -1,6 +1,8 @@
 package model;
 
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 import model.SnakeSegment.SegmentType;
@@ -21,7 +23,7 @@ public class Snake {
 	// /* #java1.8 */ private static final Predicate<Integer> MIN_SCORE = t -> t
 	// >= MIN_SCORE_VALUE; // ORIGINAL
 
-	private LinkedList<SnakeSegment> segments;
+	private List<SnakeSegment> segments;
 	private Direction lastDirection;
 	private boolean directionChange = false;
 	private int score = 0;
@@ -43,10 +45,9 @@ public class Snake {
 			startSegments = Constants.MIN_SEGMENTS;
 
 		this.lastDirection = Objects.requireNonNull(startDirection);
+		segments = Collections.synchronizedList(new LinkedList<SnakeSegment>());
 
-		segments = new LinkedList<SnakeSegment>();
-
-		segments.addFirst(new SnakeSegment(startPosition, startDirection, SegmentType.SNAKE_HEAD));
+		segments.add(0, new SnakeSegment(startPosition, startDirection, SegmentType.SNAKE_HEAD));
 
 		for (int i = 1; i < startSegments - 1; i++) {
 			startPosition.setAdjacent(startDirection.getOpposite());
@@ -54,7 +55,7 @@ public class Snake {
 		}
 
 		startPosition.setAdjacent(startDirection.getOpposite());
-		segments.addLast(new SnakeSegment(startPosition, startDirection, SegmentType.SNAKE_TAIL));
+		segments.add(new SnakeSegment(startPosition, startDirection, SegmentType.SNAKE_TAIL));
 	}
 
 	/**
@@ -110,7 +111,7 @@ public class Snake {
 	 * @return the head segment
 	 */
 	public SnakeSegment getHead() {
-		return segments.getFirst();
+		return segments.get(0);
 	}
 
 	/**
@@ -119,7 +120,7 @@ public class Snake {
 	 * @return the tail segment
 	 */
 	public SnakeSegment getTail() {
-		return segments.getLast();
+		return segments.get(segments.size()-1);
 	}
 
 	/**
@@ -128,10 +129,10 @@ public class Snake {
 	 * 
 	 * @return the body parts of the snake
 	 */
-	public LinkedList<SnakeSegment> getBodyParts() {
-		LinkedList<SnakeSegment> segments = getSegments();
-		segments.removeFirst();
-		segments.removeLast();
+	public List<SnakeSegment> getBodyParts() {
+		List<SnakeSegment> segments = getSegments();
+		segments.remove(0);
+		segments.remove(segments.size()-1);
 		return segments;
 	}
 
@@ -140,8 +141,8 @@ public class Snake {
 	 * 
 	 * @return the segments of the snake
 	 */
-	public LinkedList<SnakeSegment> getSegments() {
-		return new LinkedList<SnakeSegment>(segments);
+	public List<SnakeSegment> getSegments() {
+		return Collections.synchronizedList(new LinkedList<SnakeSegment>(segments));
 	}
 
 	/**
@@ -166,7 +167,7 @@ public class Snake {
 	 * @return the direction of the snake's head
 	 */
 	public Direction getLookingDirection() {
-		return segments.getFirst().getDirection();
+		return segments.get(0).getDirection();
 	}
 
 	/**
@@ -177,7 +178,7 @@ public class Snake {
 	 *            of the snake's head
 	 */
 	public void setLookingDirection(Direction direction) {
-		SnakeSegment head = segments.getFirst();
+		SnakeSegment head = segments.get(0);
 		Direction currentDirection = head.getDirection();
 		if (direction != currentDirection && direction != currentDirection.getOpposite()) {
 			this.lastDirection = head.getDirection();
@@ -202,7 +203,7 @@ public class Snake {
 			return false;
 		}
 
-		TilePosition position = segments.removeLast().getPosition();
+		TilePosition position = segments.remove(segments.size()-1).getPosition();
 		getTail().setSegmentType(SegmentType.SNAKE_TAIL);
 		GameFrame.getInstance().getGamePanel().doRepaint(position);
 		return true;
@@ -222,9 +223,9 @@ public class Snake {
 			last.setAdjacent(newBody.getDirection().getOpposite());
 
 			if (i == amount - 1)
-				segments.addLast(new SnakeSegment(last, newBody.getDirection(), SegmentType.SNAKE_TAIL));
+				segments.add(new SnakeSegment(last, newBody.getDirection(), SegmentType.SNAKE_TAIL));
 			else
-				segments.addLast(new SnakeSegment(last, newBody.getDirection(), SegmentType.SNAKE_BODY));
+				segments.add(new SnakeSegment(last, newBody.getDirection(), SegmentType.SNAKE_BODY));
 
 			GameFrame.getInstance().getGamePanel().doRepaint(newBody.getPosition());
 			GameFrame.getInstance().getGamePanel().doRepaint(getTail().getPosition());
@@ -251,9 +252,9 @@ public class Snake {
 			newBody.setSegmentType(SegmentType.SNAKE_BODY);
 
 		headPos.setAdjacent(newBody.getDirection());
-		segments.addFirst(new SnakeSegment(headPos, newBody.getDirection(), SegmentType.SNAKE_HEAD));
+		segments.add(0, new SnakeSegment(headPos, newBody.getDirection(), SegmentType.SNAKE_HEAD));
 
-		segments.removeLast();
+		segments.remove(segments.size()-1);
 		getTail().setSegmentType(SegmentType.SNAKE_TAIL);
 
 		return true;
