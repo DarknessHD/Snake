@@ -127,11 +127,8 @@ public class Pathfinder {
 			if (cellObject.getPosition().equals(currentPosition)) {
 				if(cellObject instanceof SnakeSegment || cellObject instanceof StaticCellObject) {
 					Direction safeDirection = findSafeDirection(targetDirection);
-					System.out.println("Search safe direction");
 					if(safeDirection != null)
 						targetDirection = safeDirection;
-					else
-						System.out.println("Couldn't find safe direction");
 				}
 			}
 		}
